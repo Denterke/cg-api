@@ -1,0 +1,112 @@
+<?php
+
+namespace Farpost\StoreBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Users
+ *
+ * @ORM\Table(name="users")
+ * @ORM\Entity
+ */
+class User
+{
+   /**
+    * @var integer
+    *
+    * @ORM\Column(name="id", type="integer")
+    * @ORM\Id
+    * @ORM\GeneratedValue(strategy="AUTO")
+    */
+   private $id;
+
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="first_name", type="string", length=255)
+    */
+   private $first_name;
+
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="last_name", type="string", length=255)
+    */
+   private $last_name;
+
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="middle_name", type="string", length=255)
+    */
+   private $middle_name;
+
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="pass_md5", type="string", length=255)
+    */
+   private $pass_md5;
+
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="login", type="string", length=255, unique=true)
+    */
+   private $login;
+
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="salt", type="string", length=255)
+    */
+   private $salt;
+
+   /**
+    * @ORM\ManyToMany(targetEntity="Role")
+    * @ORM\JoinTable(name="users_roles",
+    * joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+    * inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
+    * )
+    */
+   private $roles;
+
+   public function __construct()
+   {
+      $roles = new ArrayCollection();
+   }
+
+
+   /**
+    * Get id
+    *
+    * @return integer
+    */
+   public function getId()
+   {
+      return $this->id;
+   }
+
+   /**
+    * Set alias
+    *
+    * @param string $alias
+    * @return Users
+    */
+   public function setAlias($alias)
+   {
+      $this->alias = $alias;
+      return $this;
+   }
+
+   /**
+    * Get alias
+    *
+    * @return string
+    */
+   public function getAlias()
+   {
+      return $this->alias;
+   }
+}

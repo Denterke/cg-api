@@ -1,0 +1,3 @@
+farpost_test_homepage:
+    path:     /test/{name}
+    defaults: { _controller: FarpostTestBundle:Default:index }

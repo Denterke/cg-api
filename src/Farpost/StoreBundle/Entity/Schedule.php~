@@ -1,0 +1,154 @@
+<?php
+
+namespace Farpost\StoreBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Schedule
+ *
+ * @ORM\Table(name="schedule")
+ * @ORM\Entity
+ */
+class Schedule
+{
+   /**
+    * @var integer
+    *
+    * @ORM\Column(name="id", type="integer")
+    * @ORM\Id
+    * @ORM\GeneratedValue(strategy="AUTO")
+    */
+   private $id;
+
+   /**
+    * @var datetime,
+    *
+    * @ORM\Column(name="time_start", type="datetime,")
+    */
+   private $time_start;
+
+   /**
+    * @var datetime,
+    *
+    * @ORM\Column(name="time_end", type="datetime,")
+    */
+   private $time_end;
+
+   /**
+    * @var integer
+    *
+    * @ORM\Column(name="period", type="integer")
+    */
+   private $period;
+
+   /**
+    * @var Schedule_part
+    *
+    * @ORM\ManyToOne(targetEntity="Schedule_part")
+    * @ORM\JoinColumn(name="schedule_part_id", referencedColumnName="id")
+    */
+   private $schedule_part;
+
+   /**
+    * @var Auditory
+    *
+    * @ORM\ManyToOne(targetEntity="Auditory")
+    * @ORM\JoinColumn(name="auditory_id", referencedColumnName="id")
+    */
+   private $auditory;
+
+   /**
+    * @var Time
+    *
+    * @ORM\ManyToOne(targetEntity="Time")
+    * @ORM\JoinColumn(name="time_id", referencedColumnName="id")
+    */
+   private $time;
+
+   /**
+    * @var Lesson_type
+    *
+    * @ORM\ManyToOne(targetEntity="Lesson_type")
+    * @ORM\JoinColumn(name="lesson_type_id", referencedColumnName="id")
+    */
+   private $lesson_type;
+
+
+
+   /**
+    * Get id
+    *
+    * @return integer
+    */
+   public function getId()
+   {
+       return $this->id;
+   }
+
+   /**
+    * Set time_start
+    *
+    * @param datetime $timeStart
+    * @return Schedule
+    */
+   public function setTimeStart(datetime $timeStart)
+   {
+      $this->time_start = $timeStart;
+      return $this;
+   }
+
+   /**
+    * Get time_start
+    *
+    * @return \datetime,
+    */
+   public function getTimeStart()
+   {
+      return $this->time_start;
+   }
+
+   /**
+    * Set time_end
+    *
+    * @param datetime $timeEnd
+    * @return Schedule
+    */
+   public function setTimeEnd(datetime $timeEnd)
+   {
+      $this->time_end = $timeEnd;
+      return $this;
+   }
+
+   /**
+    * Get time_end
+    *
+    * @return \datetime,
+    */
+   public function getTimeEnd()
+   {
+      return $this->time_end;
+   }
+
+   /**
+    * Set period
+    *
+    * @param integer $period
+    * @return Schedule
+    */
+   public function setPeriod($period)
+   {
+      $this->period = $period;
+      return $this;
+   }
+
+   /**
+    * Get period
+    *
+    * @return integer
+    */
+   public function getPeriod()
+   {
+      return $this->period;
+   }
+}

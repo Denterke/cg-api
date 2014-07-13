@@ -1,0 +1,8 @@
+farpost_test:
+    resource: "@FarpostTestBundle/Resources/config/routing.yml"
+    prefix:   /
+
+farpost_store:
+    resource: "@FarpostStoreBundle/Resources/config/routing.yml"
+    prefix:   /
+

@@ -1,0 +1,87 @@
+<?php
+
+namespace Farpost\StoreBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Auditories
+ *
+ * @ORM\Table(name="auditories")
+ * @ORM\Entity
+ */
+class Auditory
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="alias", type="string", length=255)
+     */
+    private $alias;
+
+    /**
+     * @var Auditory_type
+     *
+     * @ORM\ManyToOne(targetEntity="Auditory_type")
+     * @ORM\JoinColumn(name="auditory_type_id", referencedColumnName="id")
+     */
+    private $auditory_type;
+
+    /**
+     * @var Building
+     *
+     * @ORM\ManyToOne(targetEntity="Building")
+     * @ORM\JoinColumn(name="building_id", referencedColumnName="id")
+     */
+    private $building;
+
+    /**
+     * @var Level
+     * @ORM\ManyToOne(targetEntity="Level")
+     * @ORM\JoinColumn(name="level_id", referencedColumnName="id")
+     */
+    private $level;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set alias
+     *
+     * @param string $alias
+     * @return Auditory
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string 
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+}
