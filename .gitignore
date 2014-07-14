@@ -10,3 +10,4 @@
 /bin/
 /composer.phar
 /back-end/
+/app/config/config.yml
