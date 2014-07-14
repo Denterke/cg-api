@@ -5,12 +5,12 @@ namespace Farpost\StoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Schools
+ * DisciplineSections
  *
- * @ORM\Table(name="schools")
+ * @ORM\Table(name="discipline_sections")
  * @ORM\Entity
  */
-class School
+class DisciplineSection
 {
    /**
     * @var integer
@@ -36,14 +36,14 @@ class School
     */
    public function getId()
    {
-       return $this->id;
+      return $this->id;
    }
 
    /**
     * Set alias
     *
     * @param string $alias
-    * @return Schools
+    * @return DisciplineSection
     */
    public function setAlias($alias)
    {

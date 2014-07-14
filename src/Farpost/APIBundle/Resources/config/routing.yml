@@ -1,0 +1,12 @@
+farpost_api_lister:
+   path:     /{name}.list.json
+   defaults: { _controller: FarpostAPIBundle:Default:list }
+
+farpost_api_groups_get:
+   path:     /groups.get.json
+   defaults: { _controller: FarpostAPIBundle:Default:getGroups }
+
+farpost_api_getters_for_group:
+   path:     /{name}.get.json
+   defaults: { _controller: FarpostAPIBundle:Default:getForGroup }
+

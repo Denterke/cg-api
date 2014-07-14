@@ -19,36 +19,36 @@ class Schedule
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
     */
-   private $id;
+   protected $id;
 
    /**
     * @var date
     *
     * @ORM\Column(name="time_start", type="date")
     */
-   private $time_start;
+   protected $time_start;
 
    /**
     * @var date
     *
     * @ORM\Column(name="time_end", type="date")
     */
-   private $time_end;
+   protected $time_end;
 
    /**
     * @var integer
     *
     * @ORM\Column(name="period", type="integer")
     */
-   private $period;
+   protected $period;
 
    /**
-    * @var Schedule_part
+    * @var SchedulePart
     *
-    * @ORM\ManyToOne(targetEntity="Schedule_part")
+    * @ORM\ManyToOne(targetEntity="SchedulePart")
     * @ORM\JoinColumn(name="schedule_part_id", referencedColumnName="id")
     */
-   private $schedule_part;
+   protected $schedule_part;
 
    /**
     * @var Auditory
@@ -56,7 +56,7 @@ class Schedule
     * @ORM\ManyToOne(targetEntity="Auditory")
     * @ORM\JoinColumn(name="auditory_id", referencedColumnName="id")
     */
-   private $auditory;
+   protected $auditory;
 
    /**
     * @var Time
@@ -64,15 +64,15 @@ class Schedule
     * @ORM\ManyToOne(targetEntity="Time")
     * @ORM\JoinColumn(name="time_id", referencedColumnName="id")
     */
-   private $time;
+   protected $time;
 
    /**
-    * @var Lesson_type
+    * @var LessonType
     *
-    * @ORM\ManyToOne(targetEntity="Lesson_type")
+    * @ORM\ManyToOne(targetEntity="LessonType")
     * @ORM\JoinColumn(name="lesson_type_id", referencedColumnName="id")
     */
-   private $lesson_type;
+   protected $lesson_type;
 
 
 
@@ -152,95 +152,91 @@ class Schedule
       return $this->period;
    }
 
-    /**
-     * Set schedule_part
-     *
-     * @param \Farpost\StoreBundle\Entity\Schedule_part $schedulePart
-     * @return Schedule
-     */
-    public function setSchedulePart(\Farpost\StoreBundle\Entity\Schedule_part $schedulePart = null)
-    {
-        $this->schedule_part = $schedulePart;
+   /**
+    * Set schedule_part
+    *
+    * @param \Farpost\StoreBundle\Entity\SchedulePart $schedulePart
+    * @return Schedule
+    */
+   public function setSchedulePart(\Farpost\StoreBundle\Entity\SchedulePart $schedulePart = null)
+   {
+      $this->schedule_part = $schedulePart;
+      return $this;
+   }
 
-        return $this;
-    }
+   /**
+    * Get schedule_part
+    *
+    * @return \Farpost\StoreBundle\Entity\SchedulePart
+    */
+   public function getSchedulePart()
+   {
+      return $this->schedule_part;
+   }
 
-    /**
-     * Get schedule_part
-     *
-     * @return \Farpost\StoreBundle\Entity\Schedule_part
-     */
-    public function getSchedulePart()
-    {
-        return $this->schedule_part;
-    }
+   /**
+    * Set auditory
+    *
+    * @param \Farpost\StoreBundle\Entity\Auditory $auditory
+    * @return Schedule
+    */
+   public function setAuditory(\Farpost\StoreBundle\Entity\Auditory $auditory = null)
+   {
+      $this->auditory = $auditory;
+      return $this;
+   }
 
-    /**
-     * Set auditory
-     *
-     * @param \Farpost\StoreBundle\Entity\Auditory $auditory
-     * @return Schedule
-     */
-    public function setAuditory(\Farpost\StoreBundle\Entity\Auditory $auditory = null)
-    {
-        $this->auditory = $auditory;
+   /**
+    * Get auditory
+    *
+    * @return \Farpost\StoreBundle\Entity\Auditory
+    */
+   public function getAuditory()
+   {
+      return $this->auditory;
+   }
 
-        return $this;
-    }
+   /**
+    * Set time
+    *
+    * @param \Farpost\StoreBundle\Entity\Time $time
+    * @return Schedule
+    */
+   public function setTime(\Farpost\StoreBundle\Entity\Time $time = null)
+   {
+      $this->time = $time;
+      return $this;
+   }
 
-    /**
-     * Get auditory
-     *
-     * @return \Farpost\StoreBundle\Entity\Auditory
-     */
-    public function getAuditory()
-    {
-        return $this->auditory;
-    }
+   /**
+    * Get time
+    *
+    * @return \Farpost\StoreBundle\Entity\Time
+    */
+   public function getTime()
+   {
+      return $this->time;
+   }
 
-    /**
-     * Set time
-     *
-     * @param \Farpost\StoreBundle\Entity\Time $time
-     * @return Schedule
-     */
-    public function setTime(\Farpost\StoreBundle\Entity\Time $time = null)
-    {
-        $this->time = $time;
+   /**
+    * Set lesson_type
+    *
+    * @param \Farpost\StoreBundle\Entity\LessonType $lessonType
+    * @return Schedule
+    */
+   public function setLessonType(\Farpost\StoreBundle\Entity\LessonType $lessonType = null)
+   {
+      $this->lesson_type = $lessonType;
+      return $this;
+   }
 
-        return $this;
-    }
-
-    /**
-     * Get time
-     *
-     * @return \Farpost\StoreBundle\Entity\Time
-     */
-    public function getTime()
-    {
-        return $this->time;
-    }
-
-    /**
-     * Set lesson_type
-     *
-     * @param \Farpost\StoreBundle\Entity\Lesson_type $lessonType
-     * @return Schedule
-     */
-    public function setLessonType(\Farpost\StoreBundle\Entity\Lesson_type $lessonType = null)
-    {
-        $this->lesson_type = $lessonType;
-
-        return $this;
-    }
-
-    /**
-     * Get lesson_type
-     *
-     * @return \Farpost\StoreBundle\Entity\Lesson_type
-     */
-    public function getLessonType()
-    {
-        return $this->lesson_type;
-    }
+   /**
+    * Get lesson_type
+    *
+    * @return \Farpost\StoreBundle\Entity\LessonType
+    */
+   public function getLessonType()
+   {
+      return $this->lesson_type;
+   }
 }

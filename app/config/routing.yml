@@ -1,3 +1,7 @@
+farpost_api:
+    resource: "@FarpostAPIBundle/Resources/config/routing.yml"
+    prefix:   /method/
+
 farpost_test:
     resource: "@FarpostTestBundle/Resources/config/routing.yml"
     prefix:   /

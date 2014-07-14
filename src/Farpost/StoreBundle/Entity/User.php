@@ -19,49 +19,49 @@ class User
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
     */
-   private $id;
+   protected $id;
 
    /**
     * @var string
     *
     * @ORM\Column(name="first_name", type="string", length=255)
     */
-   private $first_name;
+   protected $first_name;
 
    /**
     * @var string
     *
     * @ORM\Column(name="last_name", type="string", length=255)
     */
-   private $last_name;
+   protected $last_name;
 
    /**
     * @var string
     *
     * @ORM\Column(name="middle_name", type="string", length=255)
     */
-   private $middle_name;
+   protected $middle_name;
 
    /**
     * @var string
     *
     * @ORM\Column(name="pass_md5", type="string", length=255)
     */
-   private $pass_md5;
+   protected $pass_md5;
 
    /**
     * @var string
     *
     * @ORM\Column(name="login", type="string", length=255, unique=true)
     */
-   private $login;
+   protected $login;
 
    /**
     * @var string
     *
     * @ORM\Column(name="salt", type="string", length=255)
     */
-   private $salt;
+   protected $salt;
 
    /**
     * @ORM\ManyToMany(targetEntity="Role")
@@ -70,7 +70,7 @@ class User
     * inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
     * )
     */
-   private $roles;
+   protected $roles;
 
    public function __construct()
    {
@@ -110,174 +110,167 @@ class User
       return $this->alias;
    }
 
-    /**
-     * Set first_name
-     *
-     * @param string $firstName
-     * @return User
-     */
-    public function setFirstName($firstName)
-    {
-        $this->first_name = $firstName;
+   /**
+    * Set first_name
+    *
+    * @param string $firstName
+    * @return User
+    */
+   public function setFirstName($firstName)
+   {
+      $this->first_name = $firstName;
+      return $this;
+   }
 
-        return $this;
-    }
+   /**
+    * Get first_name
+    *
+    * @return string
+    */
+   public function getFirstName()
+   {
+      return $this->first_name;
+   }
 
-    /**
-     * Get first_name
-     *
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->first_name;
-    }
+   /**
+    * Set last_name
+    *
+    * @param string $lastName
+    * @return User
+    */
+   public function setLastName($lastName)
+   {
+      $this->last_name = $lastName;
+      return $this;
+   }
 
-    /**
-     * Set last_name
-     *
-     * @param string $lastName
-     * @return User
-     */
-    public function setLastName($lastName)
-    {
-        $this->last_name = $lastName;
+   /**
+    * Get last_name
+    *
+    * @return string
+    */
+   public function getLastName()
+   {
+      return $this->last_name;
+   }
 
-        return $this;
-    }
+   /**
+    * Set middle_name
+    *
+    * @param string $middleName
+    * @return User
+    */
+   public function setMiddleName($middleName)
+   {
+      $this->middle_name = $middleName;
+      return $this;
+   }
 
-    /**
-     * Get last_name
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->last_name;
-    }
+   /**
+    * Get middle_name
+    *
+    * @return string
+    */
+   public function getMiddleName()
+   {
+      return $this->middle_name;
+   }
 
-    /**
-     * Set middle_name
-     *
-     * @param string $middleName
-     * @return User
-     */
-    public function setMiddleName($middleName)
-    {
-        $this->middle_name = $middleName;
+   /**
+    * Set pass_md5
+    *
+    * @param string $passMd5
+    * @return User
+    */
+   public function setPassMd5($passMd5)
+   {
+      $this->pass_md5 = $passMd5;
+      return $this;
+   }
 
-        return $this;
-    }
+   /**
+    * Get pass_md5
+    *
+    * @return string
+    */
+   public function getPassMd5()
+   {
+      return $this->pass_md5;
+   }
 
-    /**
-     * Get middle_name
-     *
-     * @return string
-     */
-    public function getMiddleName()
-    {
-        return $this->middle_name;
-    }
+   /**
+    * Set login
+    *
+    * @param string $login
+    * @return User
+    */
+   public function setLogin($login)
+   {
+      $this->login = $login;
+      return $this;
+   }
 
-    /**
-     * Set pass_md5
-     *
-     * @param string $passMd5
-     * @return User
-     */
-    public function setPassMd5($passMd5)
-    {
-        $this->pass_md5 = $passMd5;
+   /**
+    * Get login
+    *
+    * @return string
+    */
+   public function getLogin()
+   {
+      return $this->login;
+   }
 
-        return $this;
-    }
+   /**
+    * Set salt
+    *
+    * @param string $salt
+    * @return User
+    */
+   public function setSalt($salt)
+   {
+      $this->salt = $salt;
+      return $this;
+   }
 
-    /**
-     * Get pass_md5
-     *
-     * @return string
-     */
-    public function getPassMd5()
-    {
-        return $this->pass_md5;
-    }
+   /**
+    * Get salt
+    *
+    * @return string
+    */
+   public function getSalt()
+   {
+      return $this->salt;
+   }
 
-    /**
-     * Set login
-     *
-     * @param string $login
-     * @return User
-     */
-    public function setLogin($login)
-    {
-        $this->login = $login;
+   /**
+    * Add roles
+    *
+    * @param \Farpost\StoreBundle\Entity\Role $roles
+    * @return User
+    */
+   public function addRole(\Farpost\StoreBundle\Entity\Role $roles)
+   {
+      $this->roles[] = $roles;
+      return $this;
+   }
 
-        return $this;
-    }
+   /**
+    * Remove roles
+    *
+    * @param \Farpost\StoreBundle\Entity\Role $roles
+    */
+   public function removeRole(\Farpost\StoreBundle\Entity\Role $roles)
+   {
+      $this->roles->removeElement($roles);
+   }
 
-    /**
-     * Get login
-     *
-     * @return string
-     */
-    public function getLogin()
-    {
-        return $this->login;
-    }
-
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     * @return User
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-
-        return $this;
-    }
-
-    /**
-     * Get salt
-     *
-     * @return string
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
-
-    /**
-     * Add roles
-     *
-     * @param \Farpost\StoreBundle\Entity\Role $roles
-     * @return User
-     */
-    public function addRole(\Farpost\StoreBundle\Entity\Role $roles)
-    {
-        $this->roles[] = $roles;
-
-        return $this;
-    }
-
-    /**
-     * Remove roles
-     *
-     * @param \Farpost\StoreBundle\Entity\Role $roles
-     */
-    public function removeRole(\Farpost\StoreBundle\Entity\Role $roles)
-    {
-        $this->roles->removeElement($roles);
-    }
-
-    /**
-     * Get roles
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
+   /**
+    * Get roles
+    *
+    * @return \Doctrine\Common\Collections\Collection
+    */
+   public function getRoles()
+   {
+      return $this->roles;
+   }
 }

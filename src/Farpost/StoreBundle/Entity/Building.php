@@ -3,139 +3,169 @@
 namespace Farpost\StoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Buildings
  *
- * @ORM\Table(name="buildings")
  * @ORM\Entity
+ * @ORM\Table(name="buildings")
  */
 class Building
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+   /**
+    * @var integer
+    *
+    * @ORM\Column(name="id", type="integer")
+    * @ORM\Id
+    * @ORM\GeneratedValue(strategy="AUTO")
+    */
+   protected $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="alias", type="string", length=255)
-     */
-    private $alias;
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="alias", type="string", length=255)
+    */
+   protected $alias;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="number", type="string", length=255)
-     */
-    private $number;
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="number", type="string", length=255)
+    */
+   protected $number;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Building_type")
-     * @ORM\JoinTable(name="buildings_types",
-     * joinColumns={@ORM\JoinColumn(name="building_id", referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="building_type_id", referencedColumnName="id")}
-     * )
-     */
-    private $building_types;
+   /**
+    * @ORM\ManyToMany(targetEntity="BuildingType")
+    * @ORM\JoinTable(name="buildings_types",
+    * joinColumns={@ORM\JoinColumn(name="building_id", referencedColumnName="id")},
+    * inverseJoinColumns={@ORM\JoinColumn(name="building_type_id", referencedColumnName="id")}
+    * )
+    */
+   protected $building_types;
 
-    public function __construct()
-    {
-        $this->building_types = new ArrayCollection();
-    }
+   public function __construct()
+   {
+      $this->building_types = new ArrayCollection();
+   }
 
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+   /**
+    * Get id
+    *
+    * @return integer
+    */
+   public function getId()
+   {
+      return $this->id;
+   }
 
-    /**
-     * Set alias
-     *
-     * @param string $alias
-     * @return Building
-     */
-    public function setAlias($alias)
-    {
-        $this->alias = $alias;
+   /**
+    * Set alias
+    *
+    * @param string $alias
+    * @return Building
+    */
+   public function setAlias($alias)
+   {
+      $this->alias = $alias;
+      return $this;
+   }
 
-        return $this;
-    }
+   /**
+    * Get alias
+    *
+    * @return string
+    */
+   public function getAlias()
+   {
+      return $this->alias;
+   }
 
-    /**
-     * Get alias
-     *
-     * @return string
-     */
-    public function getAlias()
-    {
-        return $this->alias;
-    }
+   /**
+    * Set number
+    *
+    * @param string $number
+    * @return Building
+    */
+   public function setNumber($number)
+   {
+      $this->number = $number;
+      return $this;
+   }
 
-    /**
-     * Set number
-     *
-     * @param string $number
-     * @return Building
-     */
-    public function setNumber($number)
-    {
-        $this->number = $number;
+   /**
+    * Get number
+    *
+    * @return string
+    */
+   public function getNumber()
+   {
+      return $this->number;
+   }
 
-        return $this;
-    }
+   /**
+    * Add building_types
+    *
+    * @param \Farpost\StoreBundle\Entity\BuildingType $buildingTypes
+    * @return Building
+    */
+   public function addBuildingType(\Farpost\StoreBundle\Entity\BuildingType $buildingTypes)
+   {
+      $this->building_types[] = $buildingTypes;
+      return $this;
+   }
 
-    /**
-     * Get number
-     *
-     * @return string
-     */
-    public function getNumber()
-    {
-        return $this->number;
-    }
+   /**
+    * Remove building_types
+    *
+    * @param \Farpost\StoreBundle\Entity\Building_type $buildingTypes
+    */
+   public function removeBuildingType(\Farpost\StoreBundle\Entity\BuildingType $buildingTypes)
+   {
+      $this->building_types->removeElement($buildingTypes);
+   }
 
-    /**
-     * Add building_types
-     *
-     * @param \Farpost\StoreBundle\Entity\Building_type $buildingTypes
-     * @return Building
-     */
-    public function addBuildingType(\Farpost\StoreBundle\Entity\Building_type $buildingTypes)
-    {
-        $this->building_types[] = $buildingTypes;
+   /**
+    * Get building_types
+    *
+    * @return \Doctrine\Common\Collections\Collection
+    */
+   public function getBuildingTypes()
+   {
+      return $this->building_types;
+   }
 
-        return $this;
-    }
+   /**
+    * Add buildings_types
+    *
+    * @param \Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes
+    * @return Building
+    */
+   public function addBuildingsType(\Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes)
+   {
+      $this->buildings_types[] = $buildingsTypes;
+      return $this;
+   }
 
-    /**
-     * Remove building_types
-     *
-     * @param \Farpost\StoreBundle\Entity\Building_type $buildingTypes
-     */
-    public function removeBuildingType(\Farpost\StoreBundle\Entity\Building_type $buildingTypes)
-    {
-        $this->building_types->removeElement($buildingTypes);
-    }
+   /**
+    * Remove buildings_types
+    *
+    * @param \Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes
+    */
+   public function removeBuildingsType(\Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes)
+   {
+      $this->buildings_types->removeElement($buildingsTypes);
+   }
 
-    /**
-     * Get building_types
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBuildingTypes()
-    {
-        return $this->building_types;
-    }
+   /**
+    * Get buildings_types
+    *
+    * @return \Doctrine\Common\Collections\Collection
+    */
+   public function getBuildingsTypes()
+   {
+      return $this->buildings_types;
+   }
 }

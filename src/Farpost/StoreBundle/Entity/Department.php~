@@ -19,14 +19,14 @@ class Department
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
     */
-   private $id;
+   protected $id;
 
    /**
     * @var string
     *
     * @ORM\Column(name="alias", type="string", length=255)
     */
-   private $alias;
+   protected $alias;
 
    /**
     * @var School
@@ -34,7 +34,7 @@ class Department
     * @ORM\ManyToOne(targetEntity="School")
     * @ORM\JoinColumn(name="school_id", referencedColumnName="id")
     */
-   private $school;
+   protected $school;
 
    /**
     * @var Study_type
@@ -42,7 +42,7 @@ class Department
     * @ORM\ManyToOne(targetEntity="Study_type")
     * @ORM\JoinColumn(name="study_type_id", referencedColumnName="id")
     */
-   private $study_type;
+   protected $study_type;
 
 
    /**
@@ -76,4 +76,50 @@ class Department
    {
       return $this->alias;
    }
+
+    /**
+     * Set school
+     *
+     * @param \Farpost\StoreBundle\Entity\School $school
+     * @return Department
+     */
+    public function setSchool(\Farpost\StoreBundle\Entity\School $school = null)
+    {
+        $this->school = $school;
+
+        return $this;
+    }
+
+    /**
+     * Get school
+     *
+     * @return \Farpost\StoreBundle\Entity\School 
+     */
+    public function getSchool()
+    {
+        return $this->school;
+    }
+
+    /**
+     * Set study_type
+     *
+     * @param \Farpost\StoreBundle\Entity\Study_type $studyType
+     * @return Department
+     */
+    public function setStudyType(\Farpost\StoreBundle\Entity\Study_type $studyType = null)
+    {
+        $this->study_type = $studyType;
+
+        return $this;
+    }
+
+    /**
+     * Get study_type
+     *
+     * @return \Farpost\StoreBundle\Entity\Study_type 
+     */
+    public function getStudyType()
+    {
+        return $this->study_type;
+    }
 }

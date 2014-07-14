@@ -5,12 +5,12 @@ namespace Farpost\StoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Lessons_types
+ * Lesson_types
  *
- * @ORM\Table(name="lessons_types")
+ * @ORM\Table(name="lesson_types")
  * @ORM\Entity
  */
-class Lesson_type
+class LessonType
 {
     /**
      * @var integer
@@ -19,14 +19,14 @@ class Lesson_type
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="alias", type="string", length=255)
      */
-    private $alias;
+    protected $alias;
 
 
     /**
@@ -43,7 +43,7 @@ class Lesson_type
      * Set alias
      *
      * @param string $alias
-     * @return Lesson_type
+     * @return LessonType
      */
     public function setAlias($alias)
     {

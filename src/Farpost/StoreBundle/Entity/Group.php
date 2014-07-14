@@ -19,14 +19,14 @@ class Group
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
     */
-   private $id;
+   protected $id;
 
    /**
     * @var string
     *
     * @ORM\Column(name="alias", type="string", length=255)
     */
-   private $alias;
+   protected $alias;
 
    /**
     * @var Department
@@ -34,7 +34,7 @@ class Group
     * @ORM\ManyToOne(targetEntity="Department")
     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
     */
-   private $department;
+   protected $department;
 
 
    /**
@@ -85,7 +85,7 @@ class Group
     /**
      * Get department
      *
-     * @return \Farpost\StoreBundle\Entity\Department 
+     * @return \Farpost\StoreBundle\Entity\Department
      */
     public function getDepartment()
     {

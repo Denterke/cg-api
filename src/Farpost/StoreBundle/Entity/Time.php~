@@ -1,7 +1,6 @@
 <?php
 
 namespace Farpost\StoreBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,28 +18,28 @@ class Time
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="alias", type="string", length=255)
      */
-    private $alias;
+    protected $alias;
 
     /**
-     * @var datetime,
+     * @var time
      *
-     * @ORM\Column(name="start_time", type="datetime,")
+     * @ORM\Column(name="start_time", type="time")
      */
-    private $start_time;
+    protected $start_time;
 
     /**
-     * @var \datetime
+     * @var time
      *
-     * @ORM\Column(name="end_time", type="datetime")
+     * @ORM\Column(name="end_time", type="time")
      */
-    private $end_time;
+    protected $end_time;
 
 
     /**
@@ -79,10 +78,10 @@ class Time
     /**
      * Set start_time
      *
-     * @param datetime $startTime
+     * @param time $startTime
      * @return Time
      */
-    public function setStartTime(datetime $startTime)
+    public function setStartTime(time $startTime)
     {
         $this->start_time = $startTime;
 
@@ -92,7 +91,7 @@ class Time
     /**
      * Get start_time
      *
-     * @return datetime
+     * @return time
      */
     public function getStartTime()
     {
@@ -102,7 +101,7 @@ class Time
     /**
      * Set end_time
      *
-     * @param \datetime $endTime
+     * @param time $endTime
      * @return Time
      */
     public function setEndTime($endTime)
@@ -115,7 +114,7 @@ class Time
     /**
      * Get end_time
      *
-     * @return \datetime
+     * @return time
      */
     public function getEndTime()
     {

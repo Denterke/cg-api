@@ -5,12 +5,12 @@ namespace Farpost\StoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Study_sets
+ * StudySets
  *
  * @ORM\Table(name="study_sets")
  * @ORM\Entity
  */
-class Study_set
+class StudySet
 {
    /**
     * @var integer
@@ -47,7 +47,7 @@ class Study_set
    /**
     * Get id
     *
-    * @return integer 
+    * @return integer
     */
    public function getId()
    {
@@ -58,7 +58,7 @@ class Study_set
     * Set alias
     *
     * @param string $alias
-    * @return Study_set
+    * @return StudySet
     */
    public function setAlias($alias)
    {
@@ -69,56 +69,54 @@ class Study_set
    /**
     * Get alias
     *
-    * @return string 
+    * @return string
     */
    public function getAlias()
    {
       return $this->alias;
    }
 
-    /**
-     * Set specialization
-     *
-     * @param \Farpost\StoreBundle\Entity\Specialization $specialization
-     * @return Study_set
-     */
-    public function setSpecialization(\Farpost\StoreBundle\Entity\Specialization $specialization = null)
-    {
-        $this->specialization = $specialization;
+   /**
+    * Set specialization
+    *
+    * @param \Farpost\StoreBundle\Entity\Specialization $specialization
+    * @return StudySet
+    */
+   public function setSpecialization(\Farpost\StoreBundle\Entity\Specialization $specialization = null)
+   {
+      $this->specialization = $specialization;
+      return $this;
+   }
 
-        return $this;
-    }
+   /**
+    * Get specialization
+    *
+    * @return \Farpost\StoreBundle\Entity\Specialization
+    */
+   public function getSpecialization()
+   {
+      return $this->specialization;
+   }
 
-    /**
-     * Get specialization
-     *
-     * @return \Farpost\StoreBundle\Entity\Specialization 
-     */
-    public function getSpecialization()
-    {
-        return $this->specialization;
-    }
+   /**
+    * Set course
+    *
+    * @param \Farpost\StoreBundle\Entity\Course $course
+    * @return StudySet
+    */
+   public function setCourse(\Farpost\StoreBundle\Entity\Course $course = null)
+   {
+      $this->course = $course;
+      return $this;
+   }
 
-    /**
-     * Set course
-     *
-     * @param \Farpost\StoreBundle\Entity\Course $course
-     * @return Study_set
-     */
-    public function setCourse(\Farpost\StoreBundle\Entity\Course $course = null)
-    {
-        $this->course = $course;
-
-        return $this;
-    }
-
-    /**
-     * Get course
-     *
-     * @return \Farpost\StoreBundle\Entity\Course 
-     */
-    public function getCourse()
-    {
-        return $this->course;
-    }
+   /**
+    * Get course
+    *
+    * @return \Farpost\StoreBundle\Entity\Course
+    */
+   public function getCourse()
+   {
+      return $this->course;
+   }
 }

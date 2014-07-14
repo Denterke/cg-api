@@ -12,53 +12,52 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Specialization
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+   /**
+    * @var integer
+    *
+    * @ORM\Column(name="id", type="integer")
+    * @ORM\Id
+    * @ORM\GeneratedValue(strategy="AUTO")
+    */
+   protected $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="alias", type="string", length=255)
-     */
-    private $alias;
+   /**
+    * @var string
+    *
+    * @ORM\Column(name="alias", type="string", length=255)
+    */
+   protected $alias;
 
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+   /**
+    * Get id
+    *
+    * @return integer
+    */
+   public function getId()
+   {
+      return $this->id;
+   }
 
-    /**
-     * Set alias
-     *
-     * @param string $alias
-     * @return Specialization
-     */
-    public function setAlias($alias)
-    {
-        $this->alias = $alias;
+   /**
+    * Set alias
+    *
+    * @param string $alias
+    * @return Specialization
+    */
+   public function setAlias($alias)
+   {
+      $this->alias = $alias;
+      return $this;
+   }
 
-        return $this;
-    }
-
-    /**
-     * Get alias
-     *
-     * @return string 
-     */
-    public function getAlias()
-    {
-        return $this->alias;
-    }
+   /**
+    * Get alias
+    *
+    * @return string
+    */
+   public function getAlias()
+   {
+      return $this->alias;
+   }
 }
