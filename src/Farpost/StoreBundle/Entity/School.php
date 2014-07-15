@@ -17,7 +17,7 @@ class School
     *
     * @ORM\Column(name="id", type="integer")
     * @ORM\Id
-    * @ORM\GeneratedValue(strategy="AUTO")
+    * @ORM\GeneratedValue(strategy="IDENTITY")
     */
    protected $id;
 
@@ -27,7 +27,6 @@ class School
     * @ORM\Column(name="alias", type="string", length=255)
     */
    protected $alias;
-
 
    /**
     * Get id
