@@ -19,12 +19,15 @@ class DefaultController extends Controller
 
    public function listAction($name)
    {
-      // if (!in_array($name, ['building', 'school'])
-      $repository = $this->getDoctrine()->getManager()
-         ->getRepository('FarpostStoreBundle:' . ucfirst($name));
-      $items = $repository->findAll();
-      $response = new Response(json_encode($items));
-      $response->headers->set('Content-Type', 'application/json');
+      $response = new Response('Not found', 404, ['Content-Type' => 'application/json']);
+      if (in_array($name, ['building', 'school'])) {
+         $items = $this->getDoctrine()
+                       ->getManager()
+                       ->getRepository('FarpostStoreBundle:' . ucfirst($name))
+                       ->findAll();
+         $response->setContent(json_encode($items))
+                  ->headers->set('Content-Type', 'application/json');
+      }
       return $response;
    }
 

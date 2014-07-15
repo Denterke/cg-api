@@ -50,7 +50,7 @@ doctrine:
         port:     "5432"
         dbname:   "fefuapp"
         user:     "postgres"
-        password: "16ytu91ito"
+        password: ""
         charset:  UTF8
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: "%kernel.root_dir%/data/data.db3"

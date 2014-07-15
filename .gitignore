@@ -11,3 +11,4 @@
 /composer.phar
 /back-end/
 *php~
+/app/config/config.yml
