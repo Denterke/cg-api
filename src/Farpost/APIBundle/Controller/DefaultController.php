@@ -9,6 +9,11 @@ use Farpost\StoreBundle\Entity;
 class DefaultController extends Controller
 {
 
+   private function _CreateResponse()
+   {
+      return new Response('Not found', 404, ['Content-Type' => 'application/json']);
+   }
+
    public function indexAction($name)
    {
       $response = new Response(json_encode(['method' => $index]));
@@ -18,16 +23,13 @@ class DefaultController extends Controller
 
    public function listAction($name)
    {
-      $response = new Response('Not found', 404, ['Content-Type' => 'application/json']);
-      if (in_array($name, ['building', 'school'])) {
-         $items = $this->getDoctrine()
-                       ->getManager()
-                       ->getRepository('FarpostStoreBundle:' . ucfirst($name))
-                       ->findAll();
-         $response->setContent(json_encode($items))
-                  ->headers->set('Content-Type', 'application/json');
-      }
-      return $response;
+      $response = $this->_CreateResponse();
+      if (!in_array($name, ['building', 'school'])) $response;
+      $items = $this->getDoctrine()
+                    ->getManager()
+                    ->getRepository('FarpostStoreBundle:' . ucfirst($name))
+                    ->findAll();
+      return $response->setStatusCode(200)->setContent(json_encode($items, JSON_UNESCAPED_UNICODE));
    }
 
    public function getGroupsAction()
