@@ -10,6 +10,11 @@ use Doctrine\ORM\Query\Expr\Join;
 
 class DefaultController extends Controller
 {
+   function normJsonStr($str){
+       $str = preg_replace_callback('/\\\u([a-f0-9]{4})/i', create_function('$m', 'return chr(hexdec($m[1])-1072+224);'), $str);
+       return iconv('cp1251', 'utf-8', $str);
+       return $str;
+   }
 
    private function _CreateResponse()
    {
@@ -26,41 +31,41 @@ class DefaultController extends Controller
    public function listAction($name)
    {
       $response = $this->_CreateResponse();
-      if (!in_array($name, ['building', 'school'])) $response;
-      $items = $this->getDoctrine()
-                    ->getManager()
-                    ->getRepository('FarpostStoreBundle:' . ucfirst($name))
-                    ->findAll();
-      return $response->setStatusCode(200)->setContent(json_encode($items, JSON_UNESCAPED_UNICODE));
+      if (!in_array($name, ['building', 'school'])) {
+         return $response;
+      }
+      $em = $this->getDoctrine()->getEntityManager();
+      $items = $em->getRepository('FarpostStoreBundle:' . ucfirst($name))
+               ->createQueryBuilder('g')
+               ->getQuery()
+               ->getArrayResult();
+      return $response->setStatusCode(200)
+                      ->setContent(json_encode($items, JSON_UNESCAPED_UNICODE));
    }
 
    public function getGroupsAction()
    {
+      $response = $this->_CreateResponse();
       parse_str($_SERVER['QUERY_STRING']);
-      //SELECT * FROM Groups g INNER JOIN Study_sets ss ON g.study_set_id = ss.id
-      //INNER JOIN department_sets ds ON ss.id = ds.study_set_id INNER JOIN
-      //Departments d ON ds.department_id = d.id INNER JOIN Study_types st ON
-      //st.id = d.study_type_id INNER JOIN Schools s ON s.id = d.school_id WHERE
-      //s.id = $s_id AND st.id = $st_id
+      if (!isset($study_type) || !isset($school)) {
+         return $response;
+      }
       $em = $this->getDoctrine()->getEntityManager();
-      $repository = $em->getRepository('FarpostStoreBundle:Group');
-      $qb = $repository->createQueryBuilder('g');
-      $qb->innerJoin('FarpostStoreBundle:StudySet', 'ss', Join::WITH, 'g.study_set = ss.id')
-         ->join('ss.departments', 'departments')
-         ->innerJoin('FarpostStoreBundle:School', 's', Join::WITH, 'departments.school = s.id')
-         ->innerJoin('FarpostStoreBundle:StudyType', 'st', Join::WITH, 'departments.study_type = st.id')
-         ->where('st.id = :st_id')
-         ->andwhere('s.id = :s_id');
-      $qb->setParameters([
-         'st_id' => $study_type_id,
-         's_id'  => $school_id
-      ]);
-      echo $qb->getQuery()->getSQL();
-      echo $study_type_id;
-      echo $school_id;
+      $qb = $em->getRepository('FarpostStoreBundle:Group')
+               ->createQueryBuilder('g')
+               ->innerJoin('FarpostStoreBundle:StudySet', 'ss', Join::WITH, 'g.study_set = ss.id')
+               ->join('ss.departments', 'departments')
+               ->innerJoin('FarpostStoreBundle:School', 's', Join::WITH, 'departments.school = s.id')
+               ->innerJoin('FarpostStoreBundle:StudyType', 'st', Join::WITH, 'departments.study_type = st.id')
+               ->where('st.id = :st_id')
+               ->andwhere('s.id = :s_id')
+               ->setParameters([
+                 'st_id' => $study_type,
+                 's_id'  => $school
+              ]);
       $result = $qb->getQuery()->getArrayResult();
-      $response = new Response(json_encode($result));
-      $response->headers->set('Content-Type', 'application/json');
+      $response->setContent(json_encode($result, JSON_UNESCAPED_UNICODE))
+               ->setStatusCode(200);
       return $response;
    }
 
