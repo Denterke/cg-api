@@ -40,7 +40,10 @@ class DefaultController extends Controller
                ->getQuery()
                ->getArrayResult();
       return $response->setStatusCode(200)
-                      ->setContent(json_encode($items, JSON_UNESCAPED_UNICODE));
+                      ->setContent(json_encode(
+                        [$name . 's' => $items],
+                        JSON_UNESCAPED_UNICODE
+                        ));
    }
 
    public function getGroupsAction()
@@ -64,7 +67,10 @@ class DefaultController extends Controller
                  's_id'  => $school
               ]);
       $result = $qb->getQuery()->getArrayResult();
-      $response->setContent(json_encode($result, JSON_UNESCAPED_UNICODE))
+      $response->setContent(json_encode(
+                              ['groups' => $result],
+                              JSON_UNESCAPED_UNICODE
+                           ))
                ->setStatusCode(200);
       return $response;
    }
@@ -114,6 +120,9 @@ class DefaultController extends Controller
             return $v;
          }, $res);
       }
-      return $response->setStatusCode(200)->setContent(json_encode($res, JSON_UNESCAPED_UNICODE));
+      return $response->setStatusCode(200)->setContent(json_encode(
+         [$name => $res],
+         JSON_UNESCAPED_UNICODE
+      ));
    }
 }
