@@ -70,6 +70,7 @@ class DefaultController extends Controller
       $response = $this->_CreateResponse();
       $entities = [
          'times'       => ['c' => 'Time',       'jf' => 'time',       'f' => ['end_time', 'start_time']],
+         //разобраться с doctrine foreign key
          'auditories'  => ['c' => 'Auditory',   'jf' => 'auditory',   'f' => ['alias', 'building_id', 'level_id', 'type_id']],
          'professors'  => ['c' => 'User',       'jf' => 'professor',  'f' => ['first_name', 'middle_name', 'last_name']],
          'disciplines' => ['c' => 'Discipline', 'jf' => 'discipline', 'f' => ['alias']]
