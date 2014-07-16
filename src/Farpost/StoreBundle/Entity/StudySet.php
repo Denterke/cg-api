@@ -3,6 +3,7 @@
 namespace Farpost\StoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * StudySets
@@ -17,16 +18,9 @@ class StudySet
     *
     * @ORM\Column(name="id", type="integer")
     * @ORM\Id
-    * @ORM\GeneratedValue(strategy="AUTO")
+    * @ORM\GeneratedValue(strategy="IDENTITY")
     */
    protected $id;
-
-   /**
-    * @var string
-    *
-    * @ORM\Column(name="alias", type="string", length=255)
-    */
-   protected $alias;
 
    /**
    * @var Specialization
@@ -45,6 +39,20 @@ class StudySet
    protected $course;
 
    /**
+    * @ORM\ManyToMany(targetEntity="Department")
+    * @ORM\JoinTable(name="department_sets",
+    * joinColumns={@ORM\JoinColumn(name="study_set_id", referencedColumnName="id")},
+    * inverseJoinColumns={@ORM\JoinColumn(name="department_id", referencedColumnName="id")}
+    * )
+    */
+   protected $departments;
+
+   public function __construct()
+   {
+    $this->departments = new ArrayCollection();
+   }
+
+   /**
     * Get id
     *
     * @return integer
@@ -52,28 +60,6 @@ class StudySet
    public function getId()
    {
       return $this->id;
-   }
-
-   /**
-    * Set alias
-    *
-    * @param string $alias
-    * @return StudySet
-    */
-   public function setAlias($alias)
-   {
-      $this->alias = $alias;
-      return $this;
-   }
-
-   /**
-    * Get alias
-    *
-    * @return string
-    */
-   public function getAlias()
-   {
-      return $this->alias;
    }
 
    /**
