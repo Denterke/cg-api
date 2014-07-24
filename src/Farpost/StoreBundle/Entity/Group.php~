@@ -29,12 +29,12 @@ class Group
    protected $alias;
 
    /**
-    * @var Department
+    * @var StudySet
     *
-    * @ORM\ManyToOne(targetEntity="Department")
-    * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+    * @ORM\ManyToOne(targetEntity="StudySet")
+    * @ORM\JoinColumn(name="study_set_id", referencedColumnName="id")
     */
-   protected $department;
+   protected $study_set;
 
 
    /**
@@ -70,25 +70,25 @@ class Group
    }
 
     /**
-     * Set department
+     * Set study_set
      *
-     * @param \Farpost\StoreBundle\Entity\Department $department
+     * @param \Farpost\StoreBundle\Entity\StudySet $study_set
      * @return Group
      */
-    public function setDepartment(\Farpost\StoreBundle\Entity\Department $department = null)
+    public function setStudySet(\Farpost\StoreBundle\Entity\StudySet $study_set = null)
     {
-        $this->department = $department;
+        $this->study_set = $study_set;
 
         return $this;
     }
 
     /**
-     * Get department
+     * Get study_set
      *
-     * @return \Farpost\StoreBundle\Entity\Department 
+     * @return \Farpost\StoreBundle\Entity\StudySet
      */
-    public function getDepartment()
+    public function getStudySet()
     {
-        return $this->department;
+        return $this->study_set;
     }
 }

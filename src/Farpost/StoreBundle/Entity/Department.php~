@@ -37,9 +37,9 @@ class Department
    protected $school;
 
    /**
-    * @var Study_type
+    * @var StudyType
     *
-    * @ORM\ManyToOne(targetEntity="Study_type")
+    * @ORM\ManyToOne(targetEntity="StudyType")
     * @ORM\JoinColumn(name="study_type_id", referencedColumnName="id")
     */
    protected $study_type;
@@ -93,7 +93,7 @@ class Department
     /**
      * Get school
      *
-     * @return \Farpost\StoreBundle\Entity\School 
+     * @return \Farpost\StoreBundle\Entity\School
      */
     public function getSchool()
     {
@@ -103,10 +103,10 @@ class Department
     /**
      * Set study_type
      *
-     * @param \Farpost\StoreBundle\Entity\Study_type $studyType
+     * @param \Farpost\StoreBundle\Entity\StudyType $studyType
      * @return Department
      */
-    public function setStudyType(\Farpost\StoreBundle\Entity\Study_type $studyType = null)
+    public function setStudyType(\Farpost\StoreBundle\Entity\StudyType $studyType = null)
     {
         $this->study_type = $studyType;
 
@@ -116,7 +116,7 @@ class Department
     /**
      * Get study_type
      *
-     * @return \Farpost\StoreBundle\Entity\Study_type 
+     * @return \Farpost\StoreBundle\Entity\StudyType
      */
     public function getStudyType()
     {

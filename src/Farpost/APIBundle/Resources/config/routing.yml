@@ -2,11 +2,36 @@ farpost_api_lister:
    path:     /{name}.list.json
    defaults: { _controller: FarpostAPIBundle:Default:list }
 
+farpost_api_type_lister:
+   path:     /{name}.types.get.json
+   defaults: { _controller: FarpostAPIBundle:Default:getTypes }
+
+farpost_api_login:
+   path:     /login
+   defaults: { _controller: FarpostAPIBundle:Default:login }
+
+farpost_api_server_time_get:
+   path:     /server.time.get.json
+   defaults: { _controller: FarpostAPIBundle:Default:getTime }
+
 farpost_api_groups_get:
    path:     /groups.get.json
    defaults: { _controller: FarpostAPIBundle:Default:getGroups }
 
+farpost_api_schedule_get:
+   path:     /schedule.get.json
+   defaults: { _controller: FarpostAPIBundle:Schedule:getSchedule }
+
+farpost_api_schedule_render:
+   path:     /schedule.render
+   defaults: { _controller: FarpostAPIBundle:Schedule:renderSchedule }
+
+farpost_api_update_get:
+   path:    /updates.get.json
+   defaults: { _controller: FarpostAPIBundle:Default:getUpdates }
+
 farpost_api_getters_for_group:
    path:     /{name}.get.json
    defaults: { _controller: FarpostAPIBundle:Default:getForGroup }
+
 

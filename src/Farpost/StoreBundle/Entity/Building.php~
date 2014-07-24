@@ -6,8 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity
+ * Buildings
  *
+ * @ORM\Entity
+ * @ORM\Table(name="buildings")
  */
 class Building
 {
@@ -35,7 +37,7 @@ class Building
    protected $number;
 
    /**
-    * @ORM\ManyToMany(targetEntity="Building_type")
+    * @ORM\ManyToMany(targetEntity="BuildingType")
     * @ORM\JoinTable(name="buildings_types",
     * joinColumns={@ORM\JoinColumn(name="building_id", referencedColumnName="id")},
     * inverseJoinColumns={@ORM\JoinColumn(name="building_type_id", referencedColumnName="id")}
@@ -106,10 +108,10 @@ class Building
    /**
     * Add building_types
     *
-    * @param \Farpost\StoreBundle\Entity\Building_type $buildingTypes
+    * @param \Farpost\StoreBundle\Entity\BuildingType $buildingTypes
     * @return Building
     */
-   public function addBuildingType(\Farpost\StoreBundle\Entity\Building_type $buildingTypes)
+   public function addBuildingType(\Farpost\StoreBundle\Entity\BuildingType $buildingTypes)
    {
       $this->building_types[] = $buildingTypes;
       return $this;
@@ -120,7 +122,7 @@ class Building
     *
     * @param \Farpost\StoreBundle\Entity\Building_type $buildingTypes
     */
-   public function removeBuildingType(\Farpost\StoreBundle\Entity\Building_type $buildingTypes)
+   public function removeBuildingType(\Farpost\StoreBundle\Entity\BuildingType $buildingTypes)
    {
       $this->building_types->removeElement($buildingTypes);
    }
@@ -138,10 +140,10 @@ class Building
    /**
     * Add buildings_types
     *
-    * @param \Farpost\StoreBundle\Entity\Buildings_types $buildingsTypes
+    * @param \Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes
     * @return Building
     */
-   public function addBuildingsType(\Farpost\StoreBundle\Entity\Buildings_types $buildingsTypes)
+   public function addBuildingsType(\Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes)
    {
       $this->buildings_types[] = $buildingsTypes;
       return $this;
@@ -150,9 +152,9 @@ class Building
    /**
     * Remove buildings_types
     *
-    * @param \Farpost\StoreBundle\Entity\Buildings_types $buildingsTypes
+    * @param \Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes
     */
-   public function removeBuildingsType(\Farpost\StoreBundle\Entity\Buildings_types $buildingsTypes)
+   public function removeBuildingsType(\Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes)
    {
       $this->buildings_types->removeElement($buildingsTypes);
    }

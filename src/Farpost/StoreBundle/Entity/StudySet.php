@@ -105,4 +105,37 @@ class StudySet
    {
       return $this->course;
    }
+
+    /**
+     * Add departments
+     *
+     * @param \Farpost\StoreBundle\Entity\Department $departments
+     * @return StudySet
+     */
+    public function addDepartment(\Farpost\StoreBundle\Entity\Department $departments)
+    {
+        $this->departments[] = $departments;
+
+        return $this;
+    }
+
+    /**
+     * Remove departments
+     *
+     * @param \Farpost\StoreBundle\Entity\Department $departments
+     */
+    public function removeDepartment(\Farpost\StoreBundle\Entity\Department $departments)
+    {
+        $this->departments->removeElement($departments);
+    }
+
+    /**
+     * Get departments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDepartments()
+    {
+        return $this->departments;
+    }
 }

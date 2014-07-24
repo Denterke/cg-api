@@ -74,6 +74,11 @@ class Schedule
     */
    protected $lesson_type;
 
+   /**
+    *@ORM\OneToMany(targetEntity="ScheduleRendered", mappedBy="schedule")
+    */
+   protected $schedule_rendered;
+
 
 
    /**
@@ -89,10 +94,10 @@ class Schedule
    /**
     * Set time_start
     *
-    * @param date $timeStart
+    * @param date
     * @return Schedule
     */
-   public function setTimeStart(date $timeStart)
+   public function setTimeStart(\DateTime $timeStart)
    {
       $this->time_start = $timeStart;
       return $this;
@@ -101,7 +106,7 @@ class Schedule
    /**
     * Get time_start
     *
-    * @return date,
+    * @return date
     */
    public function getTimeStart()
    {
@@ -111,10 +116,10 @@ class Schedule
    /**
     * Set time_end
     *
-    * @param date $timeEnd
+    * @param date
     * @return Schedule
     */
-   public function setTimeEnd(date $timeEnd)
+   public function setTimeEnd(\DateTime $timeEnd)
    {
       $this->time_end = $timeEnd;
       return $this;
@@ -123,7 +128,7 @@ class Schedule
    /**
     * Get time_end
     *
-    * @return \date,
+    * @return date
     */
    public function getTimeEnd()
    {
@@ -239,4 +244,44 @@ class Schedule
    {
       return $this->lesson_type;
    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->schedule_rendered = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add schedule_rendered
+     *
+     * @param \Farpost\StoreBundle\Entity\ScheduleRendered $scheduleRendered
+     * @return Schedule
+     */
+    public function addScheduleRendered(\Farpost\StoreBundle\Entity\ScheduleRendered $scheduleRendered)
+    {
+        $this->schedule_rendered[] = $scheduleRendered;
+
+        return $this;
+    }
+
+    /**
+     * Remove schedule_rendered
+     *
+     * @param \Farpost\StoreBundle\Entity\ScheduleRendered $scheduleRendered
+     */
+    public function removeScheduleRendered(\Farpost\StoreBundle\Entity\ScheduleRendered $scheduleRendered)
+    {
+        $this->schedule_rendered->removeElement($scheduleRendered);
+    }
+
+    /**
+     * Get schedule_rendered
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getScheduleRendered()
+    {
+        return $this->schedule_rendered;
+    }
 }

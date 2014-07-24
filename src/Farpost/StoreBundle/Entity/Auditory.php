@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Auditories
  *
  * @ORM\Table(name="auditories")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Farpost\StoreBundle\Entity\AuditoryRepository")
  */
 class Auditory
 {

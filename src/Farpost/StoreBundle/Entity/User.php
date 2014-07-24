@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Users
  *
  * @ORM\Table(name="users")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Farpost\StoreBundle\Entity\UserRepository")
  */
 class User
 {

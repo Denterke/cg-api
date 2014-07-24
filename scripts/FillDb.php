@@ -1,6 +1,75 @@
 <?php
+   function setUpdating(&$conn, &$table_name)
+   {
+      $foo_name = $table_name . '_func_upd()';
+      $qname = '\'' . $table_name . '\'';
+      echo "creating function " . $foo_name . "\n";
+      $trig_name = $table_name . '_trig_upd';
+      $foo = 'CREATE OR REPLACE FUNCTION ' . $foo_name . ' RETURNS trigger AS ' .
+         '$BODY$' .
+         'BEGIN ' .
+           'IF (TG_OP = \'INSERT\') THEN ' .
+              'INSERT INTO last_modified(table_name, record_id, last_modified, status) ' .
+                 'VALUES(' . $qname . ', NEW.id, NOW(), 0);' .
+              'RETURN NEW; ' .
+           'ELSIF (TG_OP = \'UPDATE\') THEN ' .
+              'UPDATE last_modified SET last_modified = NOW(), status = 1 WHERE ' .
+                 'table_name = ' . $qname . ' AND record_id = NEW.id; '.
+              'RETURN NEW; ' .
+           'ELSIF (TG_OP = \'DELETE\') THEN ' .
+              'UPDATE last_modified SET last_modified = NOW(), status = 2 WHERE ' .
+                 'table_name = ' . $qname . ' AND record_id = OLD.id; '.
+              'RETURN NEW; ' .
+           'END IF; ' .
+         'END; ' .
+         '$BODY$ LANGUAGE plpgsql';
+      $result = pg_query($conn, $foo);
+      if (!$result) {
+         die("function creation failed\n");
+      }
+      echo "creating trigger " . $trig_name . "\n";
+      $trigger = 'DROP TRIGGER IF EXISTS ' . $trig_name . ' ON ' . $table_name . '; ' .
+                 'CREATE TRIGGER ' . $trig_name . ' AFTER INSERT OR UPDATE OR DELETE ' .
+                 'ON ' . $table_name . ' FOR EACH row EXECUTE PROCEDURE ' . $foo_name . ';';
+      $result = pg_query($conn, $trigger);
+      if (!$result) {
+         die("trigger creation failed\n");
+      }
+      echo "trigger added on table " . $table_name . "\n";
+   }
 
-   function complexDelete(&$conn) {
+   function initTriggers(&$conn)
+   {
+      $updating_table = [
+         // 'departments',
+         // 'schools',
+         // 'study_types',
+         // 'schedule',
+         // 'schedule_parts',
+         'schedule_rendered',
+         'disciplines',
+         // 'discipline_sections',
+         // 'roles',
+         'users',
+         // 'groups',
+         // 'study_sets',
+         // 'courses',
+         // 'specializations',
+         'auditories',
+         'times'
+         // 'lesson_types',
+         // 'auditory_types',
+         // 'levels',
+         // 'buildings',
+         // 'building_types',
+      ];
+      foreach($updating_table as &$table) {
+         setUpdating($conn, $table);
+      }
+   }
+
+   function complexDelete(&$conn)
+   {
       //sys part
       //WARNING: ORDER IS IMPORTANT!
       $arrays = [
@@ -10,6 +79,7 @@
          'study_types',
          'schedule',
          'schedule_parts',
+         'schedule_rendered',
          'disciplines',
          'discipline_sections',
          'users_roles',
@@ -26,7 +96,8 @@
          'levels',
          'buildings_types',
          'buildings',
-         'building_types'
+         'building_types',
+         'last_modified'
       ];
       echo "let's delete all fcking entities\n";
       for ($i = 0; $i < count($arrays); $i++) {
@@ -146,7 +217,9 @@
    } else {
       echo "connection succeed!\n";
    }
-   complexDelete($dbcon); //tables && sequences
+   complexDelete($dbcon); //tables && sequences && triggers
+   initTriggers($dbcon);
+
 
    //hard code part
    $study_types = [
@@ -396,54 +469,54 @@
    advInsert($schedule_parts, $dbcon, 'schedule_parts', $schedule_parts_meta);
 
    $schedule = [
-      [0, $schedule_parts[0][0], $auditories[0][0], $times[0][1], $lesson_types['Лекция'],              '09.01.2014', '01.01.2015', 14],
-      [0, $schedule_parts[1][0], $auditories[1][0], $times[1][1], $lesson_types['Лабораторная работа'], '09.01.2014', '01.01.2015', 14],
-      [0, $schedule_parts[2][0], $auditories[0][0], $times[2][1], $lesson_types['Лекция'],              '09.01.2014', '01.01.2015', 14],
-      [0, $schedule_parts[3][0], $auditories[2][0], $times[3][1], $lesson_types['Практика'],            '09.01.2014', '01.01.2015', 14],
-      [0, $schedule_parts[4][0], $auditories[7][0], $times[0][1], $lesson_types['Лекция'],              '09.02.2014', '01.01.2015', 14],
-      [0, $schedule_parts[5][0], $auditories[1][0], $times[1][1], $lesson_types['Лекция'],              '09.02.2014', '01.01.2015', 14],
-      [0, $schedule_parts[6][0], $auditories[0][0], $times[2][1], $lesson_types['Практика'],            '09.02.2014', '01.01.2015', 14],
-      [0, $schedule_parts[7][0], $auditories[0][0], $times[3][1], $lesson_types['Лекция'],              '09.02.2014', '01.01.2015', 14],
-      [0, $schedule_parts[2][0], $auditories[6][0], $times[0][1], $lesson_types['Лекция'],              '09.03.2014', '01.01.2015', 14],
-      [0, $schedule_parts[5][0], $auditories[1][0], $times[1][1], $lesson_types['Лабораторная работа'], '09.03.2014', '01.01.2015', 14],
-      [0, $schedule_parts[4][0], $auditories[6][0], $times[2][1], $lesson_types['Лекция'],              '09.03.2014', '01.01.2015', 14],
-      [0, $schedule_parts[7][0], $auditories[7][0], $times[3][1], $lesson_types['Лекция'],              '09.03.2014', '01.01.2015', 14],
-      [0, $schedule_parts[1][0], $auditories[2][0], $times[0][1], $lesson_types['Лекция'],              '09.04.2014', '01.01.2015', 14],
-      [0, $schedule_parts[3][0], $auditories[3][0], $times[1][1], $lesson_types['Практика'],            '09.04.2014', '01.01.2015', 14],
-      [0, $schedule_parts[4][0], $auditories[5][0], $times[2][1], $lesson_types['Лекция'],              '09.04.2014', '01.01.2015', 14],
-      [0, $schedule_parts[6][0], $auditories[6][0], $times[3][1], $lesson_types['Лабораторная работа'], '09.04.2014', '01.01.2015', 14],
-      [0, $schedule_parts[6][0], $auditories[1][0], $times[0][1], $lesson_types['Лекция'],              '09.05.2014', '01.01.2015', 14],
-      [0, $schedule_parts[2][0], $auditories[1][0], $times[1][1], $lesson_types['Практика'],            '09.05.2014', '01.01.2015', 14],
-      [0, $schedule_parts[4][0], $auditories[2][0], $times[2][1], $lesson_types['Практика'],            '09.05.2014', '01.01.2015', 14],
-      [0, $schedule_parts[3][0], $auditories[3][0], $times[3][1], $lesson_types['Практика'],            '09.05.2014', '01.01.2015', 14],
-      [0, $schedule_parts[6][0], $auditories[4][0], $times[0][1], $lesson_types['Лекция'],              '09.06.2014', '01.01.2015', 14],
-      [0, $schedule_parts[1][0], $auditories[7][0], $times[1][1], $lesson_types['Лекция'],              '09.06.2014', '01.01.2015', 14],
-      [0, $schedule_parts[7][0], $auditories[5][0], $times[2][1], $lesson_types['Лекция'],              '09.06.2014', '01.01.2015', 14],
-      [0, $schedule_parts[0][0], $auditories[6][0], $times[3][1], $lesson_types['Лекция'],              '09.06.2014', '01.01.2015', 14],
-      [0, $schedule_parts[2][0], $auditories[1][0], $times[0][1], $lesson_types['Лекция'],              '09.08.2014', '01.01.2015', 14],
-      [0, $schedule_parts[3][0], $auditories[2][0], $times[1][1], $lesson_types['Практика'],            '09.08.2014', '01.01.2015', 14],
-      [0, $schedule_parts[5][0], $auditories[1][0], $times[2][1], $lesson_types['Лекция'],              '09.08.2014', '01.01.2015', 14],
-      [0, $schedule_parts[3][0], $auditories[0][0], $times[3][1], $lesson_types['Практика'],            '09.08.2014', '01.01.2015', 14],
-      [0, $schedule_parts[4][0], $auditories[6][0], $times[0][1], $lesson_types['Лекция'],              '09.09.2014', '01.01.2015', 14],
-      [0, $schedule_parts[6][0], $auditories[5][0], $times[1][1], $lesson_types['Практика'],            '09.09.2014', '01.01.2015', 14],
-      [0, $schedule_parts[5][0], $auditories[4][0], $times[2][1], $lesson_types['Лабораторная работа'], '09.09.2014', '01.01.2015', 14],
-      [0, $schedule_parts[7][0], $auditories[0][0], $times[3][1], $lesson_types['Лекция'],              '09.09.2014', '01.01.2015', 14],
-      [0, $schedule_parts[2][0], $auditories[2][0], $times[0][1], $lesson_types['Практика'],            '09.10.2014', '01.01.2015', 14],
-      [0, $schedule_parts[1][0], $auditories[1][0], $times[1][1], $lesson_types['Лекция'],              '09.10.2014', '01.01.2015', 14],
-      [0, $schedule_parts[0][0], $auditories[0][0], $times[2][1], $lesson_types['Лекция'],              '09.10.2014', '01.01.2015', 14],
-      [0, $schedule_parts[6][0], $auditories[6][0], $times[3][1], $lesson_types['Лекция'],              '09.10.2014', '01.01.2015', 14],
-      [0, $schedule_parts[6][0], $auditories[5][0], $times[0][1], $lesson_types['Лекция'],              '09.11.2014', '01.01.2015', 14],
-      [0, $schedule_parts[6][0], $auditories[2][0], $times[1][1], $lesson_types['Практика'],            '09.11.2014', '01.01.2015', 14],
-      [0, $schedule_parts[4][0], $auditories[0][0], $times[2][1], $lesson_types['Лекция'],              '09.11.2014', '01.01.2015', 14],
-      [0, $schedule_parts[2][0], $auditories[0][0], $times[3][1], $lesson_types['Практика'],            '09.11.2014', '01.01.2015', 14],
-      [0, $schedule_parts[3][0], $auditories[5][0], $times[0][1], $lesson_types['Лекция'],              '09.12.2014', '01.01.2015', 14],
-      [0, $schedule_parts[1][0], $auditories[6][0], $times[1][1], $lesson_types['Лабораторная работа'], '09.12.2014', '01.01.2015', 14],
-      [0, $schedule_parts[5][0], $auditories[1][0], $times[2][1], $lesson_types['Практика'],            '09.12.2014', '01.01.2015', 14],
-      [0, $schedule_parts[6][0], $auditories[2][0], $times[3][1], $lesson_types['Лекция'],              '09.12.2014', '01.01.2015', 14],
-      [0, $schedule_parts[2][0], $auditories[3][0], $times[0][1], $lesson_types['Лекция'],              '09.13.2014', '01.01.2015', 14],
-      [0, $schedule_parts[3][0], $auditories[7][0], $times[1][1], $lesson_types['Практика'],            '09.13.2014', '01.01.2015', 14],
-      [0, $schedule_parts[4][0], $auditories[6][0], $times[2][1], $lesson_types['Лабораторная работа'], '09.13.2014', '01.01.2015', 14],
-      [0, $schedule_parts[7][0], $auditories[0][0], $times[3][1], $lesson_types['Лекция'],              '09.13.2014', '01.01.2015', 14]
+      [0, $schedule_parts[0][0], $auditories[0][0], $times[0][1], $lesson_types['Лекция'],              '06.01.2014', '01.01.2015', 14],
+      [0, $schedule_parts[1][0], $auditories[1][0], $times[1][1], $lesson_types['Лабораторная работа'], '06.01.2014', '01.01.2015', 14],
+      [0, $schedule_parts[2][0], $auditories[0][0], $times[2][1], $lesson_types['Лекция'],              '06.01.2014', '01.01.2015', 14],
+      [0, $schedule_parts[3][0], $auditories[2][0], $times[3][1], $lesson_types['Практика'],            '06.01.2014', '01.01.2015', 14],
+      [0, $schedule_parts[4][0], $auditories[7][0], $times[0][1], $lesson_types['Лекция'],              '06.02.2014', '01.01.2015', 14],
+      [0, $schedule_parts[5][0], $auditories[1][0], $times[1][1], $lesson_types['Лекция'],              '06.02.2014', '01.01.2015', 14],
+      [0, $schedule_parts[6][0], $auditories[0][0], $times[2][1], $lesson_types['Практика'],            '06.02.2014', '01.01.2015', 14],
+      [0, $schedule_parts[7][0], $auditories[0][0], $times[3][1], $lesson_types['Лекция'],              '06.02.2014', '01.01.2015', 14],
+      [0, $schedule_parts[2][0], $auditories[6][0], $times[0][1], $lesson_types['Лекция'],              '06.03.2014', '01.01.2015', 14],
+      [0, $schedule_parts[5][0], $auditories[1][0], $times[1][1], $lesson_types['Лабораторная работа'], '06.03.2014', '01.01.2015', 14],
+      [0, $schedule_parts[4][0], $auditories[6][0], $times[2][1], $lesson_types['Лекция'],              '06.03.2014', '01.01.2015', 14],
+      [0, $schedule_parts[7][0], $auditories[7][0], $times[3][1], $lesson_types['Лекция'],              '06.03.2014', '01.01.2015', 14],
+      [0, $schedule_parts[1][0], $auditories[2][0], $times[0][1], $lesson_types['Лекция'],              '06.04.2014', '01.01.2015', 14],
+      [0, $schedule_parts[3][0], $auditories[3][0], $times[1][1], $lesson_types['Практика'],            '06.04.2014', '01.01.2015', 14],
+      [0, $schedule_parts[4][0], $auditories[5][0], $times[2][1], $lesson_types['Лекция'],              '06.04.2014', '01.01.2015', 14],
+      [0, $schedule_parts[6][0], $auditories[6][0], $times[3][1], $lesson_types['Лабораторная работа'], '06.04.2014', '01.01.2015', 14],
+      [0, $schedule_parts[6][0], $auditories[1][0], $times[0][1], $lesson_types['Лекция'],              '06.05.2014', '01.01.2015', 14],
+      [0, $schedule_parts[2][0], $auditories[1][0], $times[1][1], $lesson_types['Практика'],            '06.05.2014', '01.01.2015', 14],
+      [0, $schedule_parts[4][0], $auditories[2][0], $times[2][1], $lesson_types['Практика'],            '06.05.2014', '01.01.2015', 14],
+      [0, $schedule_parts[3][0], $auditories[3][0], $times[3][1], $lesson_types['Практика'],            '06.05.2014', '01.01.2015', 14],
+      [0, $schedule_parts[6][0], $auditories[4][0], $times[0][1], $lesson_types['Лекция'],              '06.06.2014', '01.01.2015', 14],
+      [0, $schedule_parts[1][0], $auditories[7][0], $times[1][1], $lesson_types['Лекция'],              '06.06.2014', '01.01.2015', 14],
+      [0, $schedule_parts[7][0], $auditories[5][0], $times[2][1], $lesson_types['Лекция'],              '06.06.2014', '01.01.2015', 14],
+      [0, $schedule_parts[0][0], $auditories[6][0], $times[3][1], $lesson_types['Лекция'],              '06.06.2014', '01.01.2015', 14],
+      [0, $schedule_parts[2][0], $auditories[1][0], $times[0][1], $lesson_types['Лекция'],              '06.08.2014', '01.01.2015', 14],
+      [0, $schedule_parts[3][0], $auditories[2][0], $times[1][1], $lesson_types['Практика'],            '06.08.2014', '01.01.2015', 14],
+      [0, $schedule_parts[5][0], $auditories[1][0], $times[2][1], $lesson_types['Лекция'],              '06.08.2014', '01.01.2015', 14],
+      [0, $schedule_parts[3][0], $auditories[0][0], $times[3][1], $lesson_types['Практика'],            '06.08.2014', '01.01.2015', 14],
+      [0, $schedule_parts[4][0], $auditories[6][0], $times[0][1], $lesson_types['Лекция'],              '06.09.2014', '01.01.2015', 14],
+      [0, $schedule_parts[6][0], $auditories[5][0], $times[1][1], $lesson_types['Практика'],            '06.09.2014', '01.01.2015', 14],
+      [0, $schedule_parts[5][0], $auditories[4][0], $times[2][1], $lesson_types['Лабораторная работа'], '06.09.2014', '01.01.2015', 14],
+      [0, $schedule_parts[7][0], $auditories[0][0], $times[3][1], $lesson_types['Лекция'],              '06.09.2014', '01.01.2015', 14],
+      [0, $schedule_parts[2][0], $auditories[2][0], $times[0][1], $lesson_types['Практика'],            '06.10.2014', '01.01.2015', 14],
+      [0, $schedule_parts[1][0], $auditories[1][0], $times[1][1], $lesson_types['Лекция'],              '06.10.2014', '01.01.2015', 14],
+      [0, $schedule_parts[0][0], $auditories[0][0], $times[2][1], $lesson_types['Лекция'],              '06.10.2014', '01.01.2015', 14],
+      [0, $schedule_parts[6][0], $auditories[6][0], $times[3][1], $lesson_types['Лекция'],              '06.10.2014', '01.01.2015', 14],
+      [0, $schedule_parts[6][0], $auditories[5][0], $times[0][1], $lesson_types['Лекция'],              '06.11.2014', '01.01.2015', 14],
+      [0, $schedule_parts[6][0], $auditories[2][0], $times[1][1], $lesson_types['Практика'],            '06.11.2014', '01.01.2015', 14],
+      [0, $schedule_parts[4][0], $auditories[0][0], $times[2][1], $lesson_types['Лекция'],              '06.11.2014', '01.01.2015', 14],
+      [0, $schedule_parts[2][0], $auditories[0][0], $times[3][1], $lesson_types['Практика'],            '06.11.2014', '01.01.2015', 14],
+      [0, $schedule_parts[3][0], $auditories[5][0], $times[0][1], $lesson_types['Лекция'],              '06.12.2014', '01.01.2015', 14],
+      [0, $schedule_parts[1][0], $auditories[6][0], $times[1][1], $lesson_types['Лабораторная работа'], '06.12.2014', '01.01.2015', 14],
+      [0, $schedule_parts[5][0], $auditories[1][0], $times[2][1], $lesson_types['Практика'],            '06.12.2014', '01.01.2015', 14],
+      [0, $schedule_parts[6][0], $auditories[2][0], $times[3][1], $lesson_types['Лекция'],              '06.12.2014', '01.01.2015', 14],
+      [0, $schedule_parts[2][0], $auditories[3][0], $times[0][1], $lesson_types['Лекция'],              '06.13.2014', '01.01.2015', 14],
+      [0, $schedule_parts[3][0], $auditories[7][0], $times[1][1], $lesson_types['Практика'],            '06.13.2014', '01.01.2015', 14],
+      [0, $schedule_parts[4][0], $auditories[6][0], $times[2][1], $lesson_types['Лабораторная работа'], '06.13.2014', '01.01.2015', 14],
+      [0, $schedule_parts[7][0], $auditories[0][0], $times[3][1], $lesson_types['Лекция'],              '06.13.2014', '01.01.2015', 14]
    ];
    $schedule_meta = [
       ['id',               'idfield'],

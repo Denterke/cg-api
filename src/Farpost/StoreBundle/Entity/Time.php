@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Times
  *
  * @ORM\Table(name="times")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Farpost\StoreBundle\Entity\TimeRepository")
  */
 class Time
 {
