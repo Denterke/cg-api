@@ -49,9 +49,9 @@ doctrine:
         driver:   "pdo_pgsql"
         host:     "localhost"
         port:     "5432"
-        dbname:   "fefuapp"
-        user:     "postgres"
-        password: "16ytu91ito"
+        dbname:   "backend"
+        user:     "backend"
+        password: "ahjihaR1eeQu"
         #charset:  "UTF-8"
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: "%kernel.root_dir%/data/data.db3"
