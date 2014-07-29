@@ -205,10 +205,10 @@
    echo "dbname: fefuapp\n";
    echo "host: localhost\n";
    echo "port: 5432\n";
-   $connection_string = "dbname = fefuapp " .
+   $connection_string = "dbname = backend " .
                         "host = localhost " .
                         "port = 5432 " .
-                        "user = postgres " .
+                        "user = backend " .
                         "password = " . $pass;
    echo "connection string: \"" . $connection_string . "\"\n";
    $dbcon = pg_connect($connection_string);
