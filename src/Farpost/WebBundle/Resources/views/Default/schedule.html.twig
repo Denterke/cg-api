@@ -1,0 +1,27 @@
+{% extends 'FarpostWebBundle:Default:base.html.twig' %}
+
+{% block head %}
+   {{ parent() }}
+   <link type="text/css" href="{{ asset('bundles/web/css/schedule.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block title %} Редактор расписания {% endblock %}
+
+{% block body %}
+   <table>
+      {% for i in 0..1 %}
+         <tr>
+         {% for j in 0..6 %}
+            <th>
+               <br>
+               {% for item in items[i * 7 + j] %}
+                  {{ item }}
+                  <br>
+               {% endfor %}
+               <br><br>
+            </th>
+         {% endfor %}
+         </tr>
+      {% endfor %}
+   </table>
+{% endblock %}

@@ -50,7 +50,6 @@ class Building
       $this->building_types = new ArrayCollection();
    }
 
-
    /**
     * Get id
     *
@@ -120,7 +119,7 @@ class Building
    /**
     * Remove building_types
     *
-    * @param \Farpost\StoreBundle\Entity\Building_type $buildingTypes
+    * @param \Farpost\StoreBundle\Entity\BuildingType $buildingTypes
     */
    public function removeBuildingType(\Farpost\StoreBundle\Entity\BuildingType $buildingTypes)
    {
@@ -135,37 +134,5 @@ class Building
    public function getBuildingTypes()
    {
       return $this->building_types;
-   }
-
-   /**
-    * Add buildings_types
-    *
-    * @param \Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes
-    * @return Building
-    */
-   public function addBuildingsType(\Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes)
-   {
-      $this->buildings_types[] = $buildingsTypes;
-      return $this;
-   }
-
-   /**
-    * Remove buildings_types
-    *
-    * @param \Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes
-    */
-   public function removeBuildingsType(\Farpost\StoreBundle\Entity\BuildingsTypes $buildingsTypes)
-   {
-      $this->buildings_types->removeElement($buildingsTypes);
-   }
-
-   /**
-    * Get buildings_types
-    *
-    * @return \Doctrine\Common\Collections\Collection
-    */
-   public function getBuildingsTypes()
-   {
-      return $this->buildings_types;
    }
 }

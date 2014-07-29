@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      {% block head %}
+         <meta charset="utf-8">
+         <title>Тег table</title>
+         <style>
+            table {
+               width: 300px;
+               border: 1px solid green;
+               margin: auto;
+            }
+            td {
+               text-align: center;
+            }
+         </style>
+      {% endblock %}
+   </head>
+   <body>
+      <table>
+         {% for i in 0..1 %}
+            <tr>
+            {% for j in 0..6 %}
+               <th> {{ items[i * 7 + j] }} </th>
+            {% endfor %}
+            </tr>
+         {% endfor %}
+      </table>
+   </body>
+</html>

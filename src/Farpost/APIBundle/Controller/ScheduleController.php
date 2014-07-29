@@ -37,18 +37,18 @@ class ScheduleController extends Controller
             if (!$result) {
                die("WHAT THE FUCK IS GOING ON????! I CANNT DO UPDATE!!!!");
             }
-            $current_time->add(new \DateInterval('P' . $period . 'D'));
+            $current_time = $current_time->add(new \DateInterval('P' . $period . 'D'));
             $idx++;
+            $em->flush();
             continue;
          }
-         $idx++;
-         $schedule_elem = new ScheduleRendered;
+         $schedule_elem = new ScheduleRendered();
          $schedule_elem->setExecDate($current_time)
                        ->setSchedule($schedule);
          $em->persist($schedule_elem);
-         $current_time->add(new \DateInterval('P' . $period . 'D'));
+         $em->flush();
+         $current_time = $current_time->add(new \DateInterval('P' . $period . 'D'));
       }
-      $em->flush();
    }
 
    public function renderScheduleAction()

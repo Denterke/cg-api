@@ -53,7 +53,7 @@ class ScheduleRendered
      * @param \DateTime $execDate
      * @return ScheduleRendered
      */
-    public function setExecDate($execDate)
+    public function setExecDate(\DateTime $execDate)
     {
         $this->exec_date = $execDate;
 
