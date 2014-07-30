@@ -189,27 +189,38 @@
       echo "advansed insert complited on table " . $name . "\n";
    }
 
+   function getValue($src) {
+      $left = strpos($src, '"');
+      $right = strpos($src, '"', $left + 1);
+      return mb_substr($src, $left + 1, strlen($src) - $left - 3);
+   }
+
    echo "Welcome to rubish generator!\n";
    echo "WARNING! Be sure, that you launch this script from root Symfony directory!\n";
    $path = system('pwd');
    $symfConfig = fopen($path . '/app/config/config.yml', 'r');
    $str = fgets($symfConfig);
    while (fgets($symfConfig) != "doctrine:\n") { }
-   while (strpos($str = fgets($symfConfig),"password") == FALSE) { }
-   fclose($symfConfig);
-   $left = strpos($str, '"');
-   $right = strpos($str, '"', $left + 1);
-   $pass = mb_substr($str, $left + 1, strlen($str) - $left - 3);
-   echo "dbuser: postgres\n";
-   echo "dbpass: " . $pass . "\n";
-   echo "dbname: fefuapp\n";
-   echo "host: localhost\n";
-   echo "port: 5432\n";
-   $connection_string = "dbname = backend " .
-                        "host = localhost " .
-                        "port = 5432 " .
-                        "user = backend " .
-                        "password = " . $pass;
+   $paramCount = 0;
+   $params = [
+      "dbname"   => "",
+      "user"     => "",
+      "password" => ""
+   ];
+   while ($paramCount < 3) {
+      $str = fgets($symfConfig);
+      foreach ($params as $paramName => $paramValue) {
+         if (strpos($str, $paramName)) {
+            $params[$paramName] = getValue($str);
+            $paramCount++;
+         }
+      }
+   }
+   $connection_string = "dbname = " . $params["dbname"] .
+                        " host = localhost " .
+                        " port = 5432 " .
+                        " user = " . $params["user"] .
+                        " password = " . $params["password"];
    echo "connection string: \"" . $connection_string . "\"\n";
    $dbcon = pg_connect($connection_string);
    if (!$dbcon) {
