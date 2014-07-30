@@ -1,0 +1,41 @@
+html, body, #wrap {
+	height: 100%;
+	margin: 0px;
+}
+body > #wrap {
+	height: auto;
+	min-height: 100%;
+}
+
+#content {
+	padding-bottom: 40px;
+}
+
+.clearfix:after {
+	height: 0;
+	clear: both;
+	content: ".";
+	display: block;
+	visibility: hidden;
+}
+.clearfix {
+	display: inline-block;
+}
+/* Hides from IE-mac \*/
+* html .clearfix {
+	height: 1%;
+}
+.clearfix {
+	display: block;
+}
+/* End hide from IE-mac */
+
+#center {
+	top: 50%; /* Отступ в процентах от верхнего края окна */
+	left: 50%; /* Отступ в процентах от левого края окна */
+	width: 450px; /* Ширина блока */
+	height: 450px; /* Высота блока */
+	position: absolute; /* Абсолютное позиционирование блока */
+	margin-top: -220px; /* Отрицательный отступ от верхнего края страницы, должен равняться половине высоты блока со знаком минус */
+	margin-left: -500px; /* Отрицательный отступ от левого края страницы, должен равняться половине высоты блока со знаком минус */
+}
