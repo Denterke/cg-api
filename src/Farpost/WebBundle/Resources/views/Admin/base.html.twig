@@ -3,7 +3,10 @@
 {% block head %}
    {{ parent() }}
    <link type="text/css" href="{{ asset('bundles/fefu-app/css/admin.css') }}" rel="stylesheet"/>
+   <link type="text/css" href="{{ asset('bundles/fefu-app/css/forms.css') }}" rel="stylesheet" />
 {% endblock %}
+
+{% block title %} - Админ-панель{% endblock %}
 
 {% block body %}
   <header>

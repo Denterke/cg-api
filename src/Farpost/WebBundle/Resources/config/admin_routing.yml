@@ -1,0 +1,19 @@
+admin_index:
+   path:     /
+   defaults: { _controller: FarpostWebBundle:Admin:index }
+
+admin_delete:
+   path:     /delete/{id}
+   defaults: { _controller: FarpostWebBundle:Admin:delete }
+
+admin_schedule:
+   path:     /schedule
+   defaults: { _controller: FarpostWebBundle:Admin:schedule }
+
+admin_structure:
+   path:     /structure
+   defaults: { _controller: FarpostWebBundle:Admin:structure }
+
+admin_study:
+   path:     /study
+   defaults: { _controller: FarpostWebBundle:Admin:study }

@@ -22,6 +22,18 @@ class School
    protected $id;
 
    /**
+    * Set id
+    *
+    * @param integer $alias
+    * @return Schools
+    */
+   public function setId($id)
+   {
+      $this->id = $id;
+      return $this;
+   }
+
+   /**
     * @var string
     *
     * @ORM\Column(name="alias", type="string", length=255)
@@ -58,5 +70,18 @@ class School
    public function getAlias()
    {
       return $this->alias;
+   }
+
+   public function getName()
+   {
+      return $this->alias;
+   }
+
+   public function getData()
+   {
+      return [
+         'id'    => $this->id,
+         'alias' => $this->alias
+      ];
    }
 }
