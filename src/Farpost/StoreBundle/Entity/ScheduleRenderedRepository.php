@@ -17,7 +17,8 @@ class ScheduleRenderedRepository extends EntityRepository
          ->from('FarpostStoreBundle:ScheduleRendered', 'sr')
          ->innerJoin('FarpostStoreBundle:Schedule',     's',  Join::WITH, 'sr.schedule = s.id')
          ->innerJoin('FarpostStoreBundle:SchedulePart', 'sp', Join::WITH, 's.schedule_part = sp.id')
-         ->innerJoin('FarpostStoreBundle:Group',        'g',  Join::WITH, 'sp.group = g.id');
+         ->innerJoin('FarpostStoreBundle:Group',        'g',  Join::WITH, 'sp.group = g.id')
+         ->innerJoin('FarpostStoreBundle:Semester',     'sm', Join::WITH, 's.semester = sm.id');
       return $qb;
    }
 
@@ -25,13 +26,14 @@ class ScheduleRenderedRepository extends EntityRepository
    {
       $result = [];
       foreach ($recs as &$elem) {
+         $schedule_template = $elem['0']->getSchedule();
          $schedule_elem = [
-            "group_id"       => $elem['0']->getSchedule()->getSchedulePart()->getGroup()->getId(),
-            "lesson_type_id" => $elem['0']->getSchedule()->getLessonType()->getId(),
-            "discipline_id"  => $elem['0']->getSchedule()->getSchedulePart()->getDiscipline()->getId(),
-            "time_id"        => $elem['0']->getSchedule()->getTime()->getId(),
-            "auditory_id"    => $elem['0']->getSchedule()->getAuditory()->getId(),
-            "professor_id"   => $elem['0']->getSchedule()->getSchedulePart()->getProfessor()->getId(),
+            "group_id"       => $schedule_template->getSchedulePart()->getGroup()->getId(),
+            "lesson_type_id" => $schedule_template->getLessonType()->getId(),
+            "discipline_id"  => $schedule_template->getSchedulePart()->getDiscipline()->getId(),
+            "time_id"        => $schedule_template->getTime()->getId(),
+            "auditory_id"    => $schedule_template->getAuditory()->getId(),
+            "professor_id"   => $schedule_template->getSchedulePart()->getProfessor()->getId(),
             "date"           => $elem['0']->getExecDate()->getTimestamp(),
             "id"             => $elem['0']->getId(),
             "status"         => $elem['status']
@@ -45,13 +47,14 @@ class ScheduleRenderedRepository extends EntityRepository
    {
       $result = [];
       foreach ($recs as &$elem) {
+         $schedule_template = $elem->getSchedule();
          $schedule_elem = [
-            "group_id"       => $elem->getSchedule()->getSchedulePart()->getGroup()->getId(),
-            "lesson_type_id" => $elem->getSchedule()->getLessonType()->getId(),
-            "discipline_id"  => $elem->getSchedule()->getSchedulePart()->getDiscipline()->getId(),
-            "time_id"        => $elem->getSchedule()->getTime()->getId(),
-            "auditory_id"    => $elem->getSchedule()->getAuditory()->getId(),
-            "professor_id"   => $elem->getSchedule()->getSchedulePart()->getProfessor()->getId(),
+            "group_id"       => $schedule_template->getSchedulePart()->getGroup()->getId(),
+            "lesson_type_id" => $schedule_template->getLessonType()->getId(),
+            "discipline_id"  => $schedule_template->getSchedulePart()->getDiscipline()->getId(),
+            "time_id"        => $schedule_template->getTime()->getId(),
+            "auditory_id"    => $schedule_template->getAuditory()->getId(),
+            "professor_id"   => $schedule_template->getSchedulePart()->getProfessor()->getId(),
             "date"           => $elem->getExecDate()->getTimestamp(),
             "id"             => $elem->getId(),
             "status"         => 0
@@ -65,8 +68,7 @@ class ScheduleRenderedRepository extends EntityRepository
    {
       $recs = $this->_prepareQB()
                    ->where('g.id = :group_id')
-                   ->andWhere('s.time_start <= CURRENT_DATE()')
-                   ->andWhere('s.time_end >= CURRENT_DATE()')
+                   ->andWhere('sm.id = 1')
                    ->setParameter('group_id', $group_id)
                    ->getQuery()
                    ->getResult();
@@ -82,8 +84,7 @@ class ScheduleRenderedRepository extends EntityRepository
                   ->where('lm.table_name = :table_name')
                   ->andWhere('lm.last_modified > :time')
                   ->andWhere('g.id = :group_id')
-                  ->andWhere('s.time_start <= CURRENT_DATE()')
-                  ->andWhere('s.time_end >= CURRENT_DATE()')
+                  ->andWhere('sm.id = 1')
                   ->setParameter('table_name', 'schedule_rendered')
                   ->setParameter('time', $last_time)
                   ->setParameter('group_id', $group_id)

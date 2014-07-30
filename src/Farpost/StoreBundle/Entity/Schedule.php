@@ -22,20 +22,6 @@ class Schedule
    protected $id;
 
    /**
-    * @var date
-    *
-    * @ORM\Column(name="time_start", type="date")
-    */
-   protected $time_start;
-
-   /**
-    * @var date
-    *
-    * @ORM\Column(name="time_end", type="date")
-    */
-   protected $time_end;
-
-   /**
     * @var integer
     *
     * @ORM\Column(name="period", type="integer")
@@ -79,6 +65,19 @@ class Schedule
     */
    protected $schedule_rendered;
 
+   /**
+    * @var Semester
+    *
+    * @ORM\ManyToOne(targetEntity="Semester")
+    * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
+    */
+   protected $semester;
+
+   /**
+    * @var integer
+    * @ORM\Column(name="day", type="integer")
+    */
+   protected $day;
 
 
    /**
@@ -89,50 +88,6 @@ class Schedule
    public function getId()
    {
        return $this->id;
-   }
-
-   /**
-    * Set time_start
-    *
-    * @param date
-    * @return Schedule
-    */
-   public function setTimeStart(\DateTime $timeStart)
-   {
-      $this->time_start = $timeStart;
-      return $this;
-   }
-
-   /**
-    * Get time_start
-    *
-    * @return date
-    */
-   public function getTimeStart()
-   {
-      return $this->time_start;
-   }
-
-   /**
-    * Set time_end
-    *
-    * @param date
-    * @return Schedule
-    */
-   public function setTimeEnd(\DateTime $timeEnd)
-   {
-      $this->time_end = $timeEnd;
-      return $this;
-   }
-
-   /**
-    * Get time_end
-    *
-    * @return date
-    */
-   public function getTimeEnd()
-   {
-      return $this->time_end;
    }
 
    /**
@@ -283,5 +238,51 @@ class Schedule
     public function getScheduleRendered()
     {
         return $this->schedule_rendered;
+    }
+
+    /**
+     * Set day
+     *
+     * @param integer $day
+     * @return Schedule
+     */
+    public function setDay($day)
+    {
+        $this->day = $day;
+
+        return $this;
+    }
+
+    /**
+     * Get day
+     *
+     * @return integer 
+     */
+    public function getDay()
+    {
+        return $this->day;
+    }
+
+    /**
+     * Set semester
+     *
+     * @param \Farpost\StoreBundle\Entity\Semester $semester
+     * @return Schedule
+     */
+    public function setSemester(\Farpost\StoreBundle\Entity\Semester $semester = null)
+    {
+        $this->semester = $semester;
+
+        return $this;
+    }
+
+    /**
+     * Get semester
+     *
+     * @return \Farpost\StoreBundle\Entity\Semester 
+     */
+    public function getSemester()
+    {
+        return $this->semester;
     }
 }

@@ -16,6 +16,7 @@ class ScheduleRepository extends EntityRepository
          ->distinct()
          ->from('FarpostStoreBundle:Schedule', 's')
          ->innerJoin('FarpostStoreBundle:SchedulePart', 'sp', Join::WITH, 's.schedule_part = sp.id')
+         ->innerJoin('FarpostStoreBundle:Time',         't',  Join::WITH, 's.time = t.id')
          ->innerJoin('FarpostStoreBundle:Group',        'g',  Join::WITH, 'sp.group = g.id');
       return $qb;
    }
@@ -44,6 +45,8 @@ class ScheduleRepository extends EntityRepository
                    ->where('g.id = :group_id')
                    ->andWhere('s.time_start <= CURRENT_DATE()')
                    ->andWhere('s.time_end >= CURRENT_DATE()')
+                   ->orderBy('s.time_start', 'ASC')
+                   ->orderBy('t.start_time', 'ASC')
                    ->setParameter('group_id', $group_id)
                    ->getQuery()
                    ->getResult();
