@@ -3,12 +3,13 @@
    <head>
       {% block head %}
          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-         <link type="text/css" href="{{ asset('bundles/web/css/main.css') }}" rel="stylesheet"/>
+         <link type="text/css" href="{{ asset('bundles/fefu-app/css/main.css') }}" rel="stylesheet"/>
+         <link type="text/css" href="{{ asset('bundles/fefu-app/css/style.css') }}" rel="stylesheet" />
          <title>{% block title %}{% endblock %} - FefuApp</title>
       {% endblock %}
    </head>
    <body>
-      <div id="center">
+      <div id="wrap">
          {% block body %}{% endblock %}
       </div>
    </body>

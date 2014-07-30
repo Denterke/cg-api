@@ -1,0 +1,19 @@
+{% extends 'FarpostWebBundle:Default:base.html.twig' %}
+
+{% block head %}
+   {{ parent() }}
+   <link type="text/css" href="{{ asset('bundles/fefu-app/css/admin.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/admin/schedule">Расписание</a></li>
+        <li><a href="/admin/structure">Структура университета</a></li>
+        <li><a href="/admin/study">Учебная часть</a></li>
+      </ul>
+    </nav>
+  </header>
+  {{ parent() }}
+{% endblock %}

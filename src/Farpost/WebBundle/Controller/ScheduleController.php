@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ScheduleController extends Controller
 {
-   public function indexAction()
+   public function scheduleAction()
    {
       $request = Request::createFromGlobals();
       // if (!$request->query->has('group')) return new Response('Not found', 404);

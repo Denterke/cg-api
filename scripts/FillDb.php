@@ -229,6 +229,7 @@
    } else {
       echo "connection succeed!\n";
    }
+   pg_query($dbcon, "SET datestyle='ISO, MDY'");
    complexDelete($dbcon); //tables && sequences && triggers
    initTriggers($dbcon);
 
