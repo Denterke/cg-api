@@ -30,7 +30,7 @@ class AdminController extends Controller
       return $this->render('FarpostWebBundle:Admin:schedule.html.twig');
    }
 
-   public function structureAction(Request $request)
+   public function schoolsAction(Request $request)
    {
       $form = $this->createForm(new SchoolType(), null);
       $form->handleRequest($request);
@@ -40,7 +40,7 @@ class AdminController extends Controller
          $em->flush();
          return $this->redirect($this->generateUrl('admin_structure'));
       }
-      return $this->render('FarpostWebBundle:Admin:structure.html.twig', [
+      return $this->render('FarpostWebBundle:Admin:schools.html.twig', [
          'schools' => $this->_getSchoolRepository()->findBy([], ['alias' => 'asc']),
          'school_edit_form' => $form->createView()
       ]);

@@ -11,8 +11,8 @@ admin_schedule:
    defaults: { _controller: FarpostWebBundle:Admin:schedule }
 
 admin_structure:
-   path:     /structure
-   defaults: { _controller: FarpostWebBundle:Admin:structure }
+   path:     /schools
+   defaults: { _controller: FarpostWebBundle:Admin:schools }
 
 admin_study:
    path:     /study

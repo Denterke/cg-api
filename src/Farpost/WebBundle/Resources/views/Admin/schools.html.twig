@@ -9,9 +9,8 @@
 
 {% block body %}
    {{ parent() }}
-   <h1>Структура университета</h1>
+   <h1>Школы</h1>
    <div class="right_block">
-      <h2>Школы </h2>
       {% include 'FarpostWebBundle:Templates:select_forms.html.twig' with {'label': 'Выберите школу', 'collection': schools} only %}
       <h2>Редактирование школы</h2>
       {{ form_start(school_edit_form) }}
