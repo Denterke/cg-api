@@ -73,6 +73,7 @@
       //sys part
       //WARNING: ORDER IS IMPORTANT!
       $arrays = [
+         'schedule_rendered',
          'department_sets',
          'departments',
          'schools',
@@ -80,7 +81,6 @@
          'schedule',
          'semesters',
          'schedule_parts',
-         'schedule_rendered',
          'disciplines',
          'discipline_sections',
          'users_roles',
@@ -339,8 +339,8 @@
    $users = [
       [0, 'Павел', 'Петрович', 'Петров', 'no_salt', 'no_pass', 'login0'],
       [0, 'Иван', 'Иванович', 'Иванов', 'no_salt', 'no_pass', 'login1'],
-      [0, 'Сергей', 'Сергеевич', 'Сереев', 'no_salt', 'no_pass', 'login2'],
-      [0, 'Кленин', 'Александр', 'Сергеевич', 'no_salt', 'no_pass', 'login3']
+      [0, 'Сергей', 'Сергеевич', 'Сергеев', 'no_salt', 'no_pass', 'login2'],
+      [0, 'Александр', 'Сергеевич', 'Кленин', 'no_salt', 'no_pass', 'login3']
    ];
    $users_meta = [
       ['id',          'idfield'],

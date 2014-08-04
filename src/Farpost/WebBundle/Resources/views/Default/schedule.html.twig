@@ -8,20 +8,48 @@
 {% block title %} Редактор расписания {% endblock %}
 
 {% block body %}
-   <table>
-      {% for i in 0..1 %}
-         <tr>
-         {% for j in 0..6 %}
-            <th>
-               <br>
-               {% for item in items[i * 7 + j] %}
-                  {{ item }}
-                  <br>
-               {% endfor %}
-               <br><br>
-            </th>
+   <table class = "cool-table">
+      {% for dset in dows %}
+         <thead>
+            {% for day in dset %}
+               <td class = "grey"> {{ day }} </td>
+            {% endfor %}
+         </thead>
+         <tbody>
+         {% for num in nums %}
+            <tr>
+               <td> {{ num }} </td>
+                  {% set current_class = "green" %}
+                  {% for day in dset %}
+                     {% if current_class == "green" %}
+                        {% set current_class = "blue" %}
+                     {% else %}
+                        {% set current_class = "green" %}
+                     {% endif %}
+                     {% if day != '' %}
+                        <td class = {{ current_class }}>
+                           <table class = "embeded-table">
+                              <tr>
+                                 <td colspan = "2" class = "discipline"> {{ items[day][num]['Дисциплина'] }} </td>
+                              </tr>
+                              <tr>
+                                 <td class = "little"> {{ items[day][num]['Тип занятия'] }} </td>
+                                 <td class = "little"> {{ items[day][num]['Аудитория'] }} </td>
+                              </tr>
+                              <tr>
+                                 <td colspan = "2"> {{ items[day][num]['Профессор'] }} </td>
+                              </tr>
+                           </table>
+
+                           {# {% for elem in items[day][num] %}
+                              {{ elem }} <br/>
+                           {% endfor %} #}
+                        </td>
+                     {% endif %}
+                  {% endfor %}
+            </tr>
          {% endfor %}
-         </tr>
+         </tbody>
       {% endfor %}
    </table>
 {% endblock %}

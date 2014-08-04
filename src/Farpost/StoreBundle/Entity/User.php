@@ -132,6 +132,13 @@ class User
       return $this->first_name;
    }
 
+   public function getUniName()
+   {
+      return $this->last_name .
+             " " . $this->first_name .
+             " " . $this->middle_name;
+   }
+
    /**
     * Set last_name
     *
