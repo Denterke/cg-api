@@ -2,6 +2,10 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
 
+services:
+    entity_dispatcher:
+        class: Farpost\StoreBundle\Services\EntityDispatcher
+
 framework:
     #esi:             ~
     #translator:      { fallback: "%locale%" }
