@@ -2,17 +2,29 @@ admin_index:
    path:     /
    defaults: { _controller: FarpostWebBundle:Admin:index }
 
+admin_add:
+   path:     /add
+   defaults: { _controller: FarpostWebBundle:Admin:change, isAdd: true }
+
+admin_edit:
+   path:     /edit
+   defaults: { _controller: FarpostWebBundle:Admin:change, isAdd: false }
+
 admin_delete:
-   path:     /delete/{id}
+   path:     /delete
    defaults: { _controller: FarpostWebBundle:Admin:delete }
 
 admin_schedule:
    path:     /schedule
    defaults: { _controller: FarpostWebBundle:Admin:schedule }
 
-admin_structure:
+admin_schools:
    path:     /schools
    defaults: { _controller: FarpostWebBundle:Admin:schools }
+
+admin_departments:
+   path:     /departments
+   defaults: { _controller: FarpostWebBundle:Admin:departments }
 
 admin_study:
    path:     /study

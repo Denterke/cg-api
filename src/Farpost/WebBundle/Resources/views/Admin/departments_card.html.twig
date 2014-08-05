@@ -1,0 +1,37 @@
+{% extends 'FarpostWebBundle:Admin:base.html.twig' %}
+
+{% block title %}{{ parent() }} - Структура университета{% endblock %}
+
+{% block head %}
+   {{ parent() }}
+   <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/select_plugin.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+   {{ parent() }}
+   <h1>Направления</h1>
+   <div class="right_block">
+      <h2>{{ head_label }}</h2>
+      {{ form_start(department_form) }}
+         {{ form_errors(department_form) }}
+         {{ form_widget(department_form.id) }}
+         <div class="form_block">
+            {{ form_label(department_form.school, 'Школа') }}
+            {{ form_errors(department_form.school) }}
+            {{ form_widget(department_form.school) }}
+         </div>
+         <div class="form_block">
+            {{ form_label(department_form.study_type, 'Тип обучения') }}
+            {{ form_errors(department_form.study_type) }}
+            {{ form_widget(department_form.study_type) }}
+         </div>
+         <div class="form_block">
+            {{ form_label(department_form.alias, 'Название направления') }}
+            {{ form_errors(department_form.alias) }}
+            {{ form_widget(department_form.alias) }}
+         </div>
+         <div class="buttons">{{ form_widget(department_form.save) }}</div>
+         {{ form_end(department_form) }}
+      {{ form(department_form) }}
+   </div>
+{% endblock %}

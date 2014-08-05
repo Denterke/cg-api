@@ -1,0 +1,43 @@
+{% extends 'FarpostWebBundle:Admin:base.html.twig' %}
+
+{% block title %}{{ parent() }} - Направления{% endblock %}
+
+{% block head %}
+   {{ parent() }}
+   <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/select_plugin.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+   {{ parent() }}
+   <h1>Направления</h1>
+   <div id="top_div_h1">
+      <button title="Добавить" onClick="javascript:location.assign('{{ path('admin_add', {'entity': 'departments'}) }}')">
+         Добавить
+      </button>
+   </div>
+   <div class="right_block">
+      <table>
+         <tr class="head">
+            <td>Школа</td>
+            <td>Тип обучения</td>
+            <td>Название</td>
+            <td></td>
+         </tr>
+         {% for department in departments %}
+         <tr>
+            <td>{{ department.getSchool().getAlias() }}</td>
+            <td>{{ department.getStudyType().getAlias() }}</td>
+            <td>{{ department.getAlias() }}</td>
+            <td class="buttons">
+            <button title="Редактировать" class="edit"
+            onClick="javascript:location.assign('{{ path('admin_edit', {'entity': 'departments', 'id': department.getId()}) }}')">
+            </button>
+            <button title="Удалить" class="delete"
+            onClick="javascript:location.assign('{{ path('admin_delete', {'entity': 'departments', 'id': department.getId()}) }}')">
+            </button>
+            </td>
+         </tr>
+         {% endfor %}
+      </table>
+   </div>
+{% endblock %}
