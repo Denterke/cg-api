@@ -32,7 +32,7 @@ class Department
     * @var School
     *
     * @ORM\ManyToOne(targetEntity="School")
-    * @ORM\JoinColumn(name="school_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="school_id", referencedColumnName="id", onDelete="CASCADE")
     */
    protected $school;
 
@@ -43,6 +43,18 @@ class Department
     * @ORM\JoinColumn(name="study_type_id", referencedColumnName="id")
     */
    protected $study_type;
+
+   /**
+    * Set id
+    *
+    * @param integer $id
+    * @return Departments
+    */
+   public function setId($id)
+   {
+      $this->id = $id;
+      return $this;
+   }
 
 
    /**

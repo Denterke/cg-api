@@ -84,4 +84,9 @@ class School
          'alias' => $this->alias
       ];
    }
+
+   public function __toString()
+   {
+     return $this->getAlias();
+   }
 }

@@ -41,8 +41,8 @@ class StudySet
    /**
     * @ORM\ManyToMany(targetEntity="Department")
     * @ORM\JoinTable(name="department_sets",
-    * joinColumns={@ORM\JoinColumn(name="study_set_id", referencedColumnName="id")},
-    * inverseJoinColumns={@ORM\JoinColumn(name="department_id", referencedColumnName="id")}
+    * joinColumns={@ORM\JoinColumn(name="study_set_id", referencedColumnName="id", onDelete="CASCADE")},
+    * inverseJoinColumns={@ORM\JoinColumn(name="department_id", referencedColumnName="id", onDelete="CASCADE")}
     * )
     */
    protected $departments;
