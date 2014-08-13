@@ -197,12 +197,15 @@ class DefaultController extends Controller
 
    public function getBaseUpdatesAction()
    {
-      
+      $response = $this->_createResponse();
+      $result = $this->getDoctrine()->getManager()
+                     ->getRepository('FarpostStoreBundle:Version')
+                     ->getBases($this->getRequest()->getHost());
+      return $response->setStatusCode(200)->setContent(json_encode($result));
    }
 
    public function getFileAction($filename)
    {
-      echo 1;
       $response = new Response('Not found', 404);
       if (!ctype_alnum($filename) || !preg_match('/^(?:[a-z0-9_-]|\.(?!\.))+$/iD', $filename)) {
          return $response;

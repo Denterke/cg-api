@@ -30,6 +30,10 @@ farpost_api_update_get:
    path:    /updates.get.json
    defaults: { _controller: FarpostAPIBundle:Default:getUpdates }
 
+farpost_api_base_update_get:
+   path:    /base_update.get.json
+   defaults: { _controller: FarpostAPIBundle:Default:getBaseUpdates }
+
 farpost_api_getters_for_group:
    path:     /{name}.get.json
    defaults: { _controller: FarpostAPIBundle:Default:getForGroup }
