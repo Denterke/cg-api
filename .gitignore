@@ -9,6 +9,7 @@
 /build/
 /vendor/
 /bin/
+/web/static/*
 /composer.phar
 /back-end/
 *php~
