@@ -31,7 +31,7 @@ class DepartmentType extends AbstractType
 
    public function getName()
    {
-      return 'school';
+      return 'department';
    }
 
    public function setDefaultOptions(OptionsResolverInterface $resolver)
