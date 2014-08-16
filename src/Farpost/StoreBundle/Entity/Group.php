@@ -32,7 +32,7 @@ class Group
     * @var StudySet
     *
     * @ORM\ManyToOne(targetEntity="StudySet")
-    * @ORM\JoinColumn(name="study_set_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="study_set_id", referencedColumnName="id", onDelete="CASCADE")
     */
    protected $study_set;
 

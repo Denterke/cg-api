@@ -26,7 +26,7 @@ class StudySet
    * @var Specialization
    *
    * @ORM\ManyToOne(targetEntity="Specialization")
-   * @ORM\JoinColumn(name="specialization_id", referencedColumnName="id")
+   * @ORM\JoinColumn(name="specialization_id", referencedColumnName="id", onDelete="CASCADE")
    */
    protected $specialization;
 

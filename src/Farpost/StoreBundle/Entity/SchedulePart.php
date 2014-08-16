@@ -33,7 +33,7 @@ class SchedulePart
     * @var Group
     *
     * @ORM\ManyToOne(targetEntity="Group")
-    * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")
     */
    protected $group;
 
