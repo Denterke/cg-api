@@ -195,4 +195,21 @@ class DefaultController extends Controller
       $response->setContent(file_get_contents($filename));
       return $response;
    }
+
+   public function getDepartmentsAction(Request $request)
+   {
+      $response = $this->_createResponse();
+      if (!$request->query->has('school') || empty($request->get('school'))) return $response;
+      $result = $this->getDoctrine()
+           ->getRepository('FarpostStoreBundle:Department')
+           ->createQueryBuilder('d')
+           ->where('d.school = :school')
+           ->setParameters(['school' => $request->get('school')])
+           ->getQuery()
+           ->getArrayResult();
+      if (!empty($result)) {
+         $response->setStatusCode(200)->setContent(json_encode($result, JSON_UNESCAPED_UNICODE));
+      }
+      return $response;
+   }
 }

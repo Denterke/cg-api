@@ -18,6 +18,10 @@ farpost_api_groups_get:
    path:     /groups.get.json
    defaults: { _controller: FarpostAPIBundle:Default:getGroups }
 
+farpost_api_departments_get:
+   path:     /departments.get.json
+   defaults: { _controller: FarpostAPIBundle:Default:getDepartments }
+
 farpost_api_schedule_get:
    path:     /schedule.get.json
    defaults: { _controller: FarpostAPIBundle:Schedule:getSchedule }
