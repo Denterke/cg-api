@@ -26,6 +26,6 @@ admin_departments:
    path:     /departments
    defaults: { _controller: FarpostWebBundle:Admin:departments }
 
-admin_study:
-   path:     /study
-   defaults: { _controller: FarpostWebBundle:Admin:study }
+admin_specializations:
+   path:     /specializations
+   defaults: { _controller: FarpostWebBundle:Admin:specializations }

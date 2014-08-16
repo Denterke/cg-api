@@ -157,12 +157,12 @@ hr {
     padding: 20px;
     margin-left: 170px;
 }
-#top_div_h1 h1 {
+.top_div h1 {
     font-size: 120%;
     float: left;
 }
-#top_div_h1 {
-   margin-bottom: 50px;
+.top_div {
+   margin-bottom: 20px;
 }
 #main_area > article div.block {
     margin-bottom: 10px;

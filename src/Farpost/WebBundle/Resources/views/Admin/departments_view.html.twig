@@ -10,7 +10,7 @@
 {% block body %}
    {{ parent() }}
    <h1>Направления</h1>
-   <div id="top_div_h1">
+   <div class="top_div">
       <button title="Добавить" onClick="javascript:location.assign('{{ path('admin_add', {'entity': 'departments'}) }}')">
          Добавить
       </button>

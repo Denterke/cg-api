@@ -4,6 +4,8 @@ namespace Farpost\WebBundle\Controller;
 
 use Farpost\WebBundle\Form\SchoolType;
 use Farpost\WebBundle\Form\DepartmentType;
+use Farpost\WebBundle\Form\SpecializationType;
+use Farpost\WebBundle\Form\SpecializationViewType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -104,8 +106,14 @@ class AdminController extends Controller
       ]);
    }
 
-   public function studyAction()
+   public function specializationsAction(Request $request)
    {
-      return $this->render('FarpostWebBundle:Admin:study.html.twig');
+      $form = $this->createForm(new SpecializationViewType(), null);
+      if ($this->_isValidForm($form, $request)) {
+      }
+      return $this->render('FarpostWebBundle:Admin:specializations_view.html.twig', [
+         'specializations' => $this->_getRep('specializations')->findBy([], ['alias' => 'asc']),
+         'specializations_view_form' => $form->createView()
+      ]);
    }
 }
