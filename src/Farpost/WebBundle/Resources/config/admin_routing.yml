@@ -29,3 +29,7 @@ admin_departments:
 admin_specializations:
    path:     /specializations
    defaults: { _controller: FarpostWebBundle:Admin:specializations }
+
+admin_basemanagement:
+   path:     /base_management
+   defaults: { _controller: FarpostWebBundle:Admin:basemanagment }

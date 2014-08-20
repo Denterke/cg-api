@@ -1,0 +1,67 @@
+{% extends 'FarpostWebBundle:Admin:base.html.twig' %}
+
+{% block title %}{{ parent() }} - Управление базами{% endblock %}
+
+{% block head %}
+   {{ parent() }}
+   <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/select_plugin.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+   {{ parent() }}
+   <h1>Управление базами</h1>
+   <h2>Картография</h2>
+   <div class="right_block">
+      <table>
+         <tr class="head">
+            <td>Тип базы</td>
+            <td>Дата обновления</td>
+            <td></td>
+         </tr>
+         {% for row in versions %}
+         <tr>
+            <td>{{ row.type }}</td>
+            <td>{{ row.version }}</td>
+            <td></td>
+            <td class="buttons">
+            <button title="Загрузить базу" class="edit" onClick="javascript:location.assign('{{ path('admin_edit', {'entity': 'versions', 'id': row.type_id}) }}')">
+            </button>
+            </td>
+         </tr>
+         {% endfor %}
+      </table>
+   </div>
+
+{#    <h2>Расписание</h2>
+   <div class="right_block">
+   <div id="table-wrapper">
+   <div id="table-scroll">
+      <table>
+         <tr class="head">
+            <td>Тип базы</td>
+            <td>Дата обновления</td>
+         </tr>
+         {% for i in 1..30 %}
+            <tr>
+               <td> {{ i }} </td>
+               <td> {{ i }} </td>
+            </tr>
+         {% endfor %}
+         {% for department in departments %}
+         <tr>
+            <td>{{ department.getSchool().getAlias() }}</td>
+            <td>{{ department.getStudyType().getAlias() }}</td>
+            <td>{{ department.getAlias() }}</td>
+            <td class="buttons">
+            <button title="Редактировать" class="edit"
+            onClick="javascript:location.assign('{{ path('admin_edit', {'entity': 'departments', 'id': department.getId()}) }}')">
+            </button>
+            <button title="Удалить" class="delete"
+            onClick="javascript:location.assign('{{ path('admin_delete', {'entity': 'departments', 'id': department.getId()}) }}')">
+            </button>
+            </td>
+         </tr>
+         {% endfor %}
+      </table>
+   </div> #}
+{% endblock %}

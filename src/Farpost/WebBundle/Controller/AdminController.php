@@ -1,7 +1,8 @@
 <?php
-
 namespace Farpost\WebBundle\Controller;
 
+use Farpost\StoreBundle\Entity\Version;
+use Farpost\StoreBundle\Entity\Document;
 use Farpost\WebBundle\Form\SchoolType;
 use Farpost\WebBundle\Form\DepartmentType;
 use Farpost\WebBundle\Form\SpecializationType;
@@ -12,7 +13,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class AdminController extends Controller
 {
-
    private function _getRep($table)
    {
       return $this->getDoctrine()->getRepository('FarpostStoreBundle:' . $this->get('entity_dispatcher')->tableToEntity($table));
@@ -56,7 +56,9 @@ class AdminController extends Controller
          case 'departments':
             return $this->_departmentsChange($request, $isAdd);
             break;
-
+         case 'versions':
+            return $this->_versionAdd($request);
+            break;
          default:
             $this->redirect($this->generateUrl('admin_index'));
             break;
@@ -82,6 +84,33 @@ class AdminController extends Controller
          'department_form' => $form->createView(),
          'head_label' => $isAdd ? 'Добавление' : 'Редактирование'
       ]);
+   }
+
+   private function _versionAdd(Request $request)
+   {
+      $document = new Document();
+      $document->setType($request->query->get('id'));
+      $form = $this->createFormBuilder($document)
+                   ->add('type', 'hidden')
+                   ->add('file')
+                   ->add('save', 'submit', ['label' => 'Сохранить'])
+                   ->getForm();
+      $form->handleRequest($request);
+      if ($form->isValid()) {
+         $em = $this->getDoctrine()->getManager();
+         $document->upload();
+         $em->persist($document);
+         $em->flush();
+         $this->get('database_converter')->AddDb($document->getType(), $document->getAbsolutePath());
+         return $this->redirect($this->generateUrl('admin_basemanagement'));
+      }
+      $dt = new \DateTime();
+      echo $dt->getTimestamp();
+      $promt = $request->query->get('id') == -20 ?
+               'Файл каталога организаций' :
+               'Файл плана уровня ' . $request->query->get('id');
+      return $this->render('FarpostWebBundle:Admin:versions_card.html.twig', [
+         'version_form' => $form->createView(), 'type' => $promt]);
    }
 
    public function departmentsAction(Request $request)
@@ -114,6 +143,13 @@ class AdminController extends Controller
       return $this->render('FarpostWebBundle:Admin:specializations_view.html.twig', [
          'specializations' => $this->_getRep('specializations')->findBy([], ['alias' => 'asc']),
          'specializations_view_form' => $form->createView()
+      ]);
+   }
+
+   public function basemanagmentAction(Request $request)
+   {
+      return $this->render('FarpostWebBundle:Admin:basemanagement.html.twig', [
+         'versions' => $this->_getRep('versions')->getForWeb()
       ]);
    }
 }
