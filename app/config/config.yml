@@ -5,6 +5,8 @@ imports:
 services:
     entity_dispatcher:
         class: Farpost\StoreBundle\Services\EntityDispatcher
+    database_converter:
+        class: Farpost\StoreBundle\Services\DatabaseConverter
 
 framework:
     #esi:             ~

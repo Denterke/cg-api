@@ -20,13 +20,14 @@ class EntityDispatcher
          'study_sets' => 'StudySet',
          'courses' => 'Course',
          'specializations' => 'Specialization',
-         'auditories' => 'Auditory',
+         'geoobjects' => 'GeoObject',
          'times' => 'Time',
          'lesson_types' => 'LessonType',
-         'auditory_types' => 'AuditoryType',
+         'geoobject_types' => 'GeoObjectType',
          'levels' => 'Level',
          'buildings' => 'Building',
-         'building_types' => 'BuildingType'
+         'building_types' => 'BuildingType',
+         'versions' => 'Version'
       ];
       return $tables_entities[$table_name];
    }
