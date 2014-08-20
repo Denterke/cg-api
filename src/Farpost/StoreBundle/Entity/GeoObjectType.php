@@ -5,19 +5,19 @@ namespace Farpost\StoreBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AuditoryTypes
+ * GeoObjectTypes
  *
- * @ORM\Table(name="auditory_types")
+ * @ORM\Table(name="geoobject_types")
  * @ORM\Entity
  */
-class AuditoryType
+class GeoObjectType
 {
    /**
     * @var integer
     *
     * @ORM\Column(name="id", type="integer")
     * @ORM\Id
-    * @ORM\GeneratedValue(strategy="IDENTITY")
+    * @ORM\GeneratedValue(strategy="AUTO")
     */
    protected $id;
 

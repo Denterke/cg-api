@@ -5,17 +5,17 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 
 /*
- *AuditoryRepository
+ * GeoObjectRepository
  */
-class AuditoryRepository extends EntityRepository
+class GeoObjectRepository extends EntityRepository
 {
    private function _prepareQB()
    {
       $qb = $this->_em->createQueryBuilder();
-      $qb->select('a')
+      $qb->select('go')
          ->distinct()
-         ->from('FarpostStoreBundle:Auditory', 'a')
-         ->innerJoin('FarpostStoreBundle:Schedule',     's',  Join::WITH, 'a.id = s.auditory')
+         ->from('FarpostStoreBundle:GeoObject', 'go')
+         ->innerJoin('FarpostStoreBundle:Schedule',     's',  Join::WITH, 'go.id = s.auditory')
          ->innerJoin('FarpostStoreBundle:SchedulePart', 'sp', Join::WITH, 's.schedule_part = sp.id')
          ->innerJoin('FarpostStoreBundle:Group',        'g',  Join::WITH, 'sp.group = g.id');
       return $qb;
@@ -34,8 +34,9 @@ class AuditoryRepository extends EntityRepository
    private function _finalize(&$recs)
    {
       $recs = array_map(function ($v) {
-         $type_id = $v['auditory_type_id'];
-         unset($v['auditory_type_id']);
+         $type_id = $v['geoobject_type_id'];
+         // $type_id = 1;
+         unset($v['geoobject_type_id']);
          $v['type_id'] = $type_id;
          return $v;
       }, $recs);
@@ -56,8 +57,8 @@ class AuditoryRepository extends EntityRepository
    public function getUpdate($last_time, $group_id)
    {
       $recs = $this->_prepareQB()
-                  ->select('a, lm.status')
-                  ->innerJoin('FarpostStoreBundle:LastModified', 'lm', Join::WITH, 'lm.record_id = a.id')
+                  ->select('go, lm.status')
+                  ->innerJoin('FarpostStoreBundle:LastModified', 'lm', Join::WITH, 'lm.record_id = go.id')
                   ->where('lm.table_name = :table_name')
                   ->andWhere('lm.last_modified > :time')
                   ->andWhere('g.id = :group_id')

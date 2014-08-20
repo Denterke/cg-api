@@ -61,9 +61,7 @@ class DefaultController extends Controller
       }
       $em = $this->getDoctrine()->getEntityManager();
       $items = $em->getRepository('FarpostStoreBundle:' . ucfirst($name))
-               ->createQueryBuilder('g')
-               ->getQuery()
-               ->getArrayResult();
+               ->getList();
       return $response->setStatusCode(200)
                       ->setContent(json_encode(
                         [$name . 's' => $items]
@@ -106,7 +104,7 @@ class DefaultController extends Controller
       $response = $this->_createResponse();
       $entities = [
          'times'       => 'Time',
-         'auditories'  => 'Auditory',
+         'auditories'  => 'GeoObject',
          'professors'  => 'User',
          'disciplines' => 'Discipline'
       ];
@@ -173,6 +171,8 @@ class DefaultController extends Controller
       $result = $this->getDoctrine()->getManager()
                      ->getRepository('FarpostStoreBundle:Version')
                      ->getBases($this->getRequest()->getHost());
+
+
       return $response->setStatusCode(200)->setContent(json_encode($result));
    }
 
@@ -199,7 +199,7 @@ class DefaultController extends Controller
    public function getDepartmentsAction(Request $request)
    {
       $response = $this->_createResponse();
-      if (!$request->query->has('school') || empty($request->get('school'))) return $response;
+      if (!$request->query->has('school') || (!$request->get('school'))) return $response;
       $result = $this->getDoctrine()
            ->getRepository('FarpostStoreBundle:Department')
            ->createQueryBuilder('d')

@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Buildings
  *
- * @ORM\Entity
  * @ORM\Table(name="buildings")
+ * @ORM\Entity(repositoryClass="Farpost\StoreBundle\Entity\BuildingRepository")
  */
 class Building
 {
@@ -18,7 +18,7 @@ class Building
     *
     * @ORM\Column(name="id", type="integer")
     * @ORM\Id
-    * @ORM\GeneratedValue(strategy="IDENTITY")
+    * @ORM\GeneratedValue(strategy="AUTO")
     */
    protected $id;
 
@@ -37,102 +37,124 @@ class Building
    protected $number;
 
    /**
-    * @ORM\ManyToMany(targetEntity="BuildingType")
-    * @ORM\JoinTable(name="buildings_types",
-    * joinColumns={@ORM\JoinColumn(name="building_id", referencedColumnName="id")},
-    * inverseJoinColumns={@ORM\JoinColumn(name="building_type_id", referencedColumnName="id")}
-    * )
+      * @var float
+      *
+      * @ORM\Column(name="lon", type="float")
     */
-   protected $building_types;
+   protected $lon;
+
+   /**
+    * @var float
+    *
+    * @ORM\Column(name="lat", type="float")
+    */
+   protected $lat;
 
    public function __construct()
    {
       $this->building_types = new ArrayCollection();
    }
 
-   /**
-    * Get id
-    *
-    * @return integer
-    */
-   public function getId()
-   {
-      return $this->id;
-   }
 
-   /**
-    * Set alias
-    *
-    * @param string $alias
-    * @return Building
-    */
-   public function setAlias($alias)
-   {
-      $this->alias = $alias;
-      return $this;
-   }
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-   /**
-    * Get alias
-    *
-    * @return string
-    */
-   public function getAlias()
-   {
-      return $this->alias;
-   }
+    /**
+     * Set alias
+     *
+     * @param string $alias
+     * @return Building
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
 
-   /**
-    * Set number
-    *
-    * @param string $number
-    * @return Building
-    */
-   public function setNumber($number)
-   {
-      $this->number = $number;
-      return $this;
-   }
+        return $this;
+    }
 
-   /**
-    * Get number
-    *
-    * @return string
-    */
-   public function getNumber()
-   {
-      return $this->number;
-   }
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
 
-   /**
-    * Add building_types
-    *
-    * @param \Farpost\StoreBundle\Entity\BuildingType $buildingTypes
-    * @return Building
-    */
-   public function addBuildingType(\Farpost\StoreBundle\Entity\BuildingType $buildingTypes)
-   {
-      $this->building_types[] = $buildingTypes;
-      return $this;
-   }
+    /**
+     * Set number
+     *
+     * @param string $number
+     * @return Building
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
 
-   /**
-    * Remove building_types
-    *
-    * @param \Farpost\StoreBundle\Entity\BuildingType $buildingTypes
-    */
-   public function removeBuildingType(\Farpost\StoreBundle\Entity\BuildingType $buildingTypes)
-   {
-      $this->building_types->removeElement($buildingTypes);
-   }
+        return $this;
+    }
 
-   /**
-    * Get building_types
-    *
-    * @return \Doctrine\Common\Collections\Collection
-    */
-   public function getBuildingTypes()
-   {
-      return $this->building_types;
-   }
+    /**
+     * Get number
+     *
+     * @return string
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    /**
+     * Set lon
+     *
+     * @param float $lon
+     * @return Building
+     */
+    public function setLon($lon)
+    {
+        $this->lon = $lon;
+
+        return $this;
+    }
+
+    /**
+     * Get lon
+     *
+     * @return float
+     */
+    public function getLon()
+    {
+        return $this->lon;
+    }
+
+    /**
+     * Set lat
+     *
+     * @param float $lat
+     * @return Building
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    /**
+     * Get lat
+     *
+     * @return float
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
 }

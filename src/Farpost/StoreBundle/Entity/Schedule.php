@@ -37,9 +37,9 @@ class Schedule
    protected $schedule_part;
 
    /**
-    * @var Auditory
+    * @var GeoObject
     *
-    * @ORM\ManyToOne(targetEntity="Auditory")
+    * @ORM\ManyToOne(targetEntity="GeoObject")
     * @ORM\JoinColumn(name="auditory_id", referencedColumnName="id")
     */
    protected $auditory;
@@ -79,132 +79,160 @@ class Schedule
     */
    protected $day;
 
-
-   /**
-    * Get id
-    *
-    * @return integer
-    */
-   public function getId()
-   {
-       return $this->id;
-   }
-
-   /**
-    * Set period
-    *
-    * @param integer $period
-    * @return Schedule
-    */
-   public function setPeriod($period)
-   {
-      $this->period = $period;
-      return $this;
-   }
-
-   /**
-    * Get period
-    *
-    * @return integer
-    */
-   public function getPeriod()
-   {
-      return $this->period;
-   }
-
-   /**
-    * Set schedule_part
-    *
-    * @param \Farpost\StoreBundle\Entity\SchedulePart $schedulePart
-    * @return Schedule
-    */
-   public function setSchedulePart(\Farpost\StoreBundle\Entity\SchedulePart $schedulePart = null)
-   {
-      $this->schedule_part = $schedulePart;
-      return $this;
-   }
-
-   /**
-    * Get schedule_part
-    *
-    * @return \Farpost\StoreBundle\Entity\SchedulePart
-    */
-   public function getSchedulePart()
-   {
-      return $this->schedule_part;
-   }
-
-   /**
-    * Set auditory
-    *
-    * @param \Farpost\StoreBundle\Entity\Auditory $auditory
-    * @return Schedule
-    */
-   public function setAuditory(\Farpost\StoreBundle\Entity\Auditory $auditory = null)
-   {
-      $this->auditory = $auditory;
-      return $this;
-   }
-
-   /**
-    * Get auditory
-    *
-    * @return \Farpost\StoreBundle\Entity\Auditory
-    */
-   public function getAuditory()
-   {
-      return $this->auditory;
-   }
-
-   /**
-    * Set time
-    *
-    * @param \Farpost\StoreBundle\Entity\Time $time
-    * @return Schedule
-    */
-   public function setTime(\Farpost\StoreBundle\Entity\Time $time = null)
-   {
-      $this->time = $time;
-      return $this;
-   }
-
-   /**
-    * Get time
-    *
-    * @return \Farpost\StoreBundle\Entity\Time
-    */
-   public function getTime()
-   {
-      return $this->time;
-   }
-
-   /**
-    * Set lesson_type
-    *
-    * @param \Farpost\StoreBundle\Entity\LessonType $lessonType
-    * @return Schedule
-    */
-   public function setLessonType(\Farpost\StoreBundle\Entity\LessonType $lessonType = null)
-   {
-      $this->lesson_type = $lessonType;
-      return $this;
-   }
-
-   /**
-    * Get lesson_type
-    *
-    * @return \Farpost\StoreBundle\Entity\LessonType
-    */
-   public function getLessonType()
-   {
-      return $this->lesson_type;
-   }
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->schedule_rendered = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set period
+     *
+     * @param integer $period
+     * @return Schedule
+     */
+    public function setPeriod($period)
+    {
+        $this->period = $period;
+
+        return $this;
+    }
+
+    /**
+     * Get period
+     *
+     * @return integer 
+     */
+    public function getPeriod()
+    {
+        return $this->period;
+    }
+
+    /**
+     * Set day
+     *
+     * @param integer $day
+     * @return Schedule
+     */
+    public function setDay($day)
+    {
+        $this->day = $day;
+
+        return $this;
+    }
+
+    /**
+     * Get day
+     *
+     * @return integer 
+     */
+    public function getDay()
+    {
+        return $this->day;
+    }
+
+    /**
+     * Set schedule_part
+     *
+     * @param \Farpost\StoreBundle\Entity\SchedulePart $schedulePart
+     * @return Schedule
+     */
+    public function setSchedulePart(\Farpost\StoreBundle\Entity\SchedulePart $schedulePart = null)
+    {
+        $this->schedule_part = $schedulePart;
+
+        return $this;
+    }
+
+    /**
+     * Get schedule_part
+     *
+     * @return \Farpost\StoreBundle\Entity\SchedulePart 
+     */
+    public function getSchedulePart()
+    {
+        return $this->schedule_part;
+    }
+
+    /**
+     * Set auditory
+     *
+     * @param \Farpost\StoreBundle\Entity\GeoObject $auditory
+     * @return Schedule
+     */
+    public function setAuditory(\Farpost\StoreBundle\Entity\GeoObject $auditory = null)
+    {
+        $this->auditory = $auditory;
+
+        return $this;
+    }
+
+    /**
+     * Get auditory
+     *
+     * @return \Farpost\StoreBundle\Entity\GeoObject 
+     */
+    public function getAuditory()
+    {
+        return $this->auditory;
+    }
+
+    /**
+     * Set time
+     *
+     * @param \Farpost\StoreBundle\Entity\Time $time
+     * @return Schedule
+     */
+    public function setTime(\Farpost\StoreBundle\Entity\Time $time = null)
+    {
+        $this->time = $time;
+
+        return $this;
+    }
+
+    /**
+     * Get time
+     *
+     * @return \Farpost\StoreBundle\Entity\Time 
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+    /**
+     * Set lesson_type
+     *
+     * @param \Farpost\StoreBundle\Entity\LessonType $lessonType
+     * @return Schedule
+     */
+    public function setLessonType(\Farpost\StoreBundle\Entity\LessonType $lessonType = null)
+    {
+        $this->lesson_type = $lessonType;
+
+        return $this;
+    }
+
+    /**
+     * Get lesson_type
+     *
+     * @return \Farpost\StoreBundle\Entity\LessonType 
+     */
+    public function getLessonType()
+    {
+        return $this->lesson_type;
     }
 
     /**
@@ -233,34 +261,11 @@ class Schedule
     /**
      * Get schedule_rendered
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getScheduleRendered()
     {
         return $this->schedule_rendered;
-    }
-
-    /**
-     * Set day
-     *
-     * @param integer $day
-     * @return Schedule
-     */
-    public function setDay($day)
-    {
-        $this->day = $day;
-
-        return $this;
-    }
-
-    /**
-     * Get day
-     *
-     * @return integer 
-     */
-    public function getDay()
-    {
-        return $this->day;
     }
 
     /**
