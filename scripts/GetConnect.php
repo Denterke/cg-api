@@ -5,7 +5,7 @@
       return mb_substr($src, $left + 1, strlen($src) - $left - 3);
    }
 
-   function getConnection($dbname) {
+   function getConnection($dbname = "") {
       echo "Let's create some connection....\n";
       $path = dirname(__FILE__);
       $symfConfig = fopen($path . '/../app/config/config.yml', 'r');

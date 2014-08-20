@@ -50,10 +50,54 @@ class VersionRepository extends EntityRepository
       $recs = $result;
    }
 
+   private function _finalizeWeb(&$recs)
+   {
+      $result = [];
+      $used = [-20 => 0];
+      for ($i = 2; $i <= 12; $i++) {
+         $used[$i] = 0;
+      }
+      foreach ($recs as &$rec) {
+         $dt = date('d-m-Y, G:i:s', $rec['v_datetime']);
+         $level = "План уровня " . $rec['type'];
+         if ($rec['type'] == -20) {
+            $level = "Каталог организаций";
+         }
+         $version = $dt;
+         $elem = [
+            "version" => $dt,
+            "type"    => $level,
+            "type_id" => $rec['type']
+         ];
+         $used[$rec['type']] = 1;
+         array_push($result, $elem);
+      }
+      foreach($used as $key=>$val) {
+         if ($val == 0) {
+            $elem = [
+               "version" => "Нет базы",
+               "type"    => "План уровня " . $key,
+               "type_id" => $key
+            ];
+            if ($key == -20) {
+               $elem["type"] = "Каталог организаций";
+            }
+            array_push($result, $elem);
+         }
+      }
+      return $result;
+   }
+
    public function getBases($hostname)
    {
       $recs = $this->_prepareQB()->getQuery()->getArrayResult();
       $this->_finalize($recs, $hostname);
       return $recs;
+   }
+
+   public function getForWeb()
+   {
+      $recs = $this->_prepareQB()->getQuery()->getArrayResult();
+      return $this->_finalizeWeb($recs);
    }
 }

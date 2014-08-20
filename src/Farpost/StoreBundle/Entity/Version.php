@@ -1,7 +1,8 @@
 <?php
 
 namespace Farpost\StoreBundle\Entity;
-
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -55,6 +56,12 @@ class Version
       return $this->id;
    }
 
+   public function setId($id)
+   {
+      $this->id = $id;
+   }
+
+
     /**
      * Set v_datetime
      *
@@ -71,7 +78,7 @@ class Version
     /**
      * Get v_datetime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getVDatetime()
     {
@@ -94,7 +101,7 @@ class Version
     /**
      * Get base
      *
-     * @return string 
+     * @return string
      */
     public function getBase()
     {
@@ -117,7 +124,7 @@ class Version
     /**
      * Get type
      *
-     * @return integer 
+     * @return integer
      */
     public function getType()
     {
