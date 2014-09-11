@@ -10,6 +10,7 @@
 /vendor/
 /bin/
 /web/static/*
+/web/uploads/*
 /composer.phar
 /back-end/
 *php~
