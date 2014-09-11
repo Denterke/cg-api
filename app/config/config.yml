@@ -66,7 +66,7 @@ doctrine:
                 port:     "5432"
                 dbname:   "backend"
                 user:     "backend"
-                password: "16ytu91ito"
+                password: "ahjihaR1eeQu"
             back_up:
                 driver:   "pdo_pgsql"
                 host:     "localhost"
