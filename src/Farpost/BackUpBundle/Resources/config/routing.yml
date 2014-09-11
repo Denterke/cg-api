@@ -1,0 +1,3 @@
+farpost_back_up_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: FarpostBackUpBundle:Default:index }

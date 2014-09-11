@@ -1,0 +1,7 @@
+parameters:
+#    farpost_back_up.example.class: Farpost\BackUpBundle\Example
+
+services:
+#    farpost_back_up.example:
+#        class: %farpost_back_up.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
