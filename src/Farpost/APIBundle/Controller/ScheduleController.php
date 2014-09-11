@@ -69,8 +69,10 @@ class ScheduleController extends Controller
                        ->createQueryBuilder('sc')
                        ->getQuery()
                        ->getResult();
+      $schedule_manager = $this->get('schedule_manager');
       foreach($schedules as &$schedule) {
-         $this->_generateSchedule($schedule);
+         $schedule_manager->generateSchedule($schedule);
+         // $this->_generateSchedule($schedule);
       }
       $response->setStatusCode(200)->setContent('rendering finished!');
       return $response;

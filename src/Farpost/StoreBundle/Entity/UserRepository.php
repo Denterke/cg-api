@@ -44,4 +44,28 @@ class UserRepository extends EntityRepository
                   ->getQuery()
                   ->getArrayResult();
    }
+
+   public function syncValue($full_name)
+   {
+      list(
+         $last,
+         $first,
+         $middle
+      ) = explode(" ", $full_name);
+      $professor = $this->findOneBy([
+         'first_name' => $first,
+         'middle_name' => $middle,
+         'last_name' => $last
+      ]);
+      if (!is_null($professor)) {
+         return $professor;
+      }
+      $professor = new User();
+      $professor->setFirstName($first)
+                ->setLastName($last)
+                ->setMiddleName($middle);
+      $this->_em->persist($professor);
+      $this->_em->flush();
+      return $professor;
+   }
 }

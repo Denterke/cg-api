@@ -87,6 +87,6 @@ class School
 
    public function __toString()
    {
-     return $this->getAlias();
+     return $this->alias;
    }
 }

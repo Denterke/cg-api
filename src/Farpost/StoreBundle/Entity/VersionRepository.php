@@ -54,7 +54,7 @@ class VersionRepository extends EntityRepository
    {
       $result = [];
       $used = [-20 => 0];
-      for ($i = 2; $i <= 12; $i++) {
+      for ($i = 0; $i <= 12; $i++) {
          $used[$i] = 0;
       }
       foreach ($recs as &$rec) {

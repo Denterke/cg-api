@@ -32,36 +32,26 @@
       </table>
    </div>
 
-{#    <h2>Расписание</h2>
+   <h2>Расписание</h2>
    <div class="right_block">
    <div id="table-wrapper">
    <div id="table-scroll">
       <table>
          <tr class="head">
-            <td>Тип базы</td>
+            <td>Группа</td>
             <td>Дата обновления</td>
+            <td></td>
          </tr>
-         {% for i in 1..30 %}
-            <tr>
-               <td> {{ i }} </td>
-               <td> {{ i }} </td>
-            </tr>
-         {% endfor %}
-         {% for department in departments %}
+         {% for ssource in ssources %}
          <tr>
-            <td>{{ department.getSchool().getAlias() }}</td>
-            <td>{{ department.getStudyType().getAlias() }}</td>
-            <td>{{ department.getAlias() }}</td>
+            <td>{{ ssource.group }}</td>
+            <td>{{ ssource.vdt }}</td>
             <td class="buttons">
-            <button title="Редактировать" class="edit"
-            onClick="javascript:location.assign('{{ path('admin_edit', {'entity': 'departments', 'id': department.getId()}) }}')">
-            </button>
-            <button title="Удалить" class="delete"
-            onClick="javascript:location.assign('{{ path('admin_delete', {'entity': 'departments', 'id': department.getId()}) }}')">
-            </button>
-            </td>
          </tr>
          {% endfor %}
-      </table>
-   </div> #}
+   </table>
+      <div id="ssrc_btns">
+         <button title="Добавить" id="ssrc_btn_add" class="edit" onClick="javascript:location.assign('{{ path('admin_edit', {'entity': 'ssources', 'id': 0}) }}')"></button>
+      </div>
+   </div>
 {% endblock %}

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * ScheduleParts
  *
  * @ORM\Table(name="schedule_parts")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Farpost\StoreBundle\Entity\SchedulePartRepository")
  */
 class SchedulePart
 {

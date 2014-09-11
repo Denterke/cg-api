@@ -7,14 +7,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "web/app_dev.php",
-			"settings":
-			{
-				"buffer_size": 1182,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -130,11 +122,15 @@
 	},
 	"file_history":
 	[
+		"/home/kaduev/Coding/Web/fefuapp/app/config/config.yml",
+		"/home/kaduev/Coding/Web/fefuapp/web/config.php",
+		"/home/kaduev/Coding/Web/fefuapp/app/console",
+		"/home/kaduev/Coding/Web/fefuapp/composer.json",
+		"/home/kaduev/Coding/Web/fefuapp/web/app_dev.php",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/docs/en/tutorials/extra-lazy-associations.rst",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/sensio/framework-extra-bundle/Sensio/Bundle/FrameworkExtraBundle/.travis.yml",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/doc/extending.md",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/jdorn/sql-formatter/examples/examples.php",
-		"/home/kaduev/Coding/Web/fefuapp/web/app_dev.php",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/tests/bootstrap.php",
 		"/home/kaduev/Coding/Web/fefuapp/app/bootstrap.php.cache",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/swiftmailer/swiftmailer/tests/bootstrap.php",
@@ -162,7 +158,6 @@
 		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Query/AST/Functions/BitOrFunction.php",
 		"/home/kaduev/Coding/Web/fefuapp/app/AppKernel.php",
 		"/home/kaduev/Coding/Web/fefuapp/app/logs/dev.log",
-		"/home/kaduev/Coding/Web/fefuapp/composer.json",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/router_dev.php",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/CHANGELOG-2.2.md",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/monolog-bundle/Symfony/Bundle/MonologBundle/MonologBundle.php",
@@ -254,10 +249,7 @@
 		"/home/kaduev/Coding/Web/fefuapp/vendor/swiftmailer/swiftmailer/lib/classes/Swift/Plugins/Loggers/EchoLogger.php",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/src/Monolog/Handler/ErrorLogHandler.php",
 		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Tests/Firewall/LogoutListenerTest.php",
-		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Logout/LogoutSuccessHandlerInterface.php",
-		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Tests/DataCollector/LoggerDataCollectorTest.php",
-		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/monolog-bundle/Symfony/Bundle/MonologBundle/Tests/DependencyInjection/Compiler/LoggerChannelPassTest.php",
-		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/src/Monolog/Processor/PsrLogMessageProcessor.php"
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Logout/LogoutSuccessHandlerInterface.php"
 	],
 	"find":
 	{
@@ -310,141 +302,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "web/app_dev.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1182,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								928,
-								928
-							]
-						],
-						"settings":
-						{
-							"codeintel": true,
-							"codeintel_config":
-							{
-								"JavaScript":
-								{
-									"codeintel_max_recursive_dir_depth": 2,
-									"codeintel_scan_files_in_project": false,
-									"javascriptExtraPaths":
-									[
-									]
-								},
-								"PHP":
-								{
-									"codeintel_max_recursive_dir_depth": 5,
-									"codeintel_scan_files_in_project": false,
-									"phpExtraPaths":
-									[
-									]
-								},
-								"Python":
-								{
-									"env":
-									{
-									}
-								}
-							},
-							"codeintel_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_live": true,
-							"codeintel_live_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_max_recursive_dir_depth": 10,
-							"codeintel_scan_exclude_dir":
-							{
-								"JavaScript":
-								[
-									"/build/",
-									"/min/"
-								]
-							},
-							"codeintel_scan_files_in_project": true,
-							"codeintel_selected_catalogs":
-							[
-								"PyWin32",
-								"jQuery",
-								"Rails"
-							],
-							"codeintel_snippets": true,
-							"codeintel_syntax_map":
-							{
-								"Python Django": "Python"
-							},
-							"codeintel_tooltips": "popup",
-							"sublime_auto_complete": true,
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -498,6 +357,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"config.",
+				"app/config/config.yml"
+			],
 			[
 				"composer",
 				"composer.json"
@@ -573,7 +436,7 @@
 	{
 	},
 	"show_minimap": true,
-	"show_open_files": false,
+	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
 	"side_bar_width": 339.0,

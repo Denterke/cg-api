@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class GeoObjectRepository extends EntityRepository
 {
+   const AUDITORY_TYPE_ID = 6;
    private function _prepareQB()
    {
       $qb = $this->_em->createQueryBuilder();
@@ -72,4 +73,93 @@ class GeoObjectRepository extends EntityRepository
       $this->_finalize($recs);
       return $recs;
    }
+
+   public function synchronizeWith($items)
+   {
+      $em = $this->getEntityManager();
+      $go_repo = $em->getRepository('FarpostStoreBundle:GeoObject');
+      $fake_recs = $go_repo->findBy(['cataloged' => 0]);
+
+      foreach($fake_recs as &$fake_rec) {
+         $em->remove($fake_rec);
+         $em->flush();
+      }
+      $batch_size = 100;
+      $i = 0;
+      $qb = $this->_prepareQB();
+      foreach ($items as &$item) {
+         $i++;
+         $is_new = false;
+         try {
+            $twin = $go_repo->findOneBy(['id' => $item['id']]);
+            if (is_null($twin)) {
+               throw new \Doctrine\ORM\NoResultException();
+            }
+         }
+         catch (\Doctrine\ORM\NoResultException $e) {
+            $twin = new GeoObject();
+            $twin->setId($item['id']);
+            $is_new = true;
+         }
+         if ($item['type_id']) {
+            $go_type = $em->getReference(
+               'FarpostStoreBundle:GeoObjectType',
+               $item['type_id']
+            );
+            $twin->setGeoobjectType($go_type);
+         } else {
+            // echo "<p>In table GeoObjects: no 'type_id' for record with 'id' = $item[id]</p>";
+         }
+         if ($item['building_id']) {
+            $go_building = $em->getReference(
+               'FarpostStoreBundle:Building',
+               $item['building_id']
+            );
+            $twin->setBuilding($go_building);
+         } else {
+            // echo "<p>In table GeoObjects: no 'building_id' for record with 'id' = $item[id]</p>";
+         }
+         $twin->setAlias($item['alias'])
+              ->setLevel($item['level'])
+              ->setLon($item['lon'])
+              ->setLat($item['lat'])
+              ->setStatus($item['status'])
+              ->setCataloged(1);
+         if ($is_new) {
+            $em->persist($twin);
+         } else {
+            $em->merge($twin);
+         }
+         if (($i % $batch_size) === 0) {
+            $em->flush();
+            $this->clear();
+         }
+      }
+      $em->flush();
+      $this->clear();
+   }
+
+   public function syncValue($alias)
+   {
+      $geoobject = $this->findOneBy(['alias' => $alias]);
+      if (!is_null($geoobject)) {
+         return $geoobject;
+      }
+      $new_id = $this->_em->createQueryBuilder()->select('MAX(go.id)')
+                          ->from('FarpostStoreBundle:GeoObject', 'go')
+                          ->getQuery()
+                          ->getSingleResult();
+      echo json_encode($new_id);
+      if (is_null($new_id)) {
+         $new_id = 1;
+      } else {
+         $new_id = $new_id[1] + 10;
+      }
+      $geoobject = new GeoObject();
+      $geoobject->setId($new_id)->setAlias($alias)->setCataloged(0)->setStatus(1);
+      $this->_em->persist($geoobject);
+      $this->_em->flush();
+      return $geoobject;
+   }
+
 }

@@ -44,4 +44,17 @@ class DisciplineRepository extends EntityRepository
                   ->getQuery()
                   ->getArrayResult();
    }
+
+   public function syncValue($alias)
+   {
+      $discipline = $this->findOneBy(['alias' => $alias]);
+      if (!is_null($discipline)) {
+         return $discipline;
+      }
+      $discipline = new Discipline();
+      $discipline->setAlias($alias);
+      $this->_em->persist($discipline);
+      $this->_em->flush();
+      return $discipline;
+   }
 }

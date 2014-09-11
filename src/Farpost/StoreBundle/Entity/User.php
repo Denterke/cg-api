@@ -3,7 +3,7 @@
 namespace Farpost\StoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Users
  *
@@ -45,21 +45,21 @@ class User
    /**
     * @var string
     *
-    * @ORM\Column(name="pass_md5", type="string", length=255)
+    * @ORM\Column(name="pass_md5", type="string", length=255, nullable=true)
     */
    protected $pass_md5;
 
    /**
     * @var string
     *
-    * @ORM\Column(name="login", type="string", length=255, unique=true)
+    * @ORM\Column(name="login", type="string", length=255, nullable=true)
     */
    protected $login;
 
    /**
     * @var string
     *
-    * @ORM\Column(name="salt", type="string", length=255)
+    * @ORM\Column(name="salt", type="string", length=255, nullable=true)
     */
    protected $salt;
 

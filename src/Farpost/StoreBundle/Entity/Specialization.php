@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Specializations
  *
  * @ORM\Table(name="specializations")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Farpost\StoreBundle\Entity\SpecializationRepository")
  */
 class Specialization
 {

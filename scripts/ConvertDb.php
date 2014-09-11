@@ -23,38 +23,71 @@
       }
       $db_sqlite->exec("pragma synchronous = off;");
       $db_sqlite->query(
-                  'CREATE TABLE IF NOT EXISTS buildings ( ' .
-                     'id INTEGER PRIMARY KEY NOT NULL, ' .
-                     'number VARCHAR, ' .
-                     'alias VARCHAR, '.
-                     'lon DOUBLE, ' .
-                     'lat DOUBLE ' .
-                  ');'
+                  "CREATE TABLE IF NOT EXISTS buildings (
+                     id INTEGER PRIMARY KEY NOT NULL,
+                     number VARCHAR,
+                     alias VARCHAR,
+                     lon DOUBLE,
+                     lat DOUBLE
+                  );"
       );
       $db_sqlite->query(
-                  'CREATE TABLE IF NOT EXISTS object_types ( ' .
-                     'id INTEGER PRIMARY KEY NOT NULL, ' .
-                     'alias VARCHAR ' .
-                  ');'
+                  "CREATE TABLE IF NOT EXISTS object_types (
+                     id INTEGER PRIMARY KEY NOT NULL,
+                     alias VARCHAR,
+                     display INTEGER
+                  );"
       );
       $db_sqlite->query(
-                  'CREATE TABLE IF NOT EXISTS objects ( ' .
-                     'id INTEGER PRIMARY KEY NOT NULL, ' .
-                     'type_id INTEGER NOT NULL, ' .
-                     'building_id INTEGER NOT NULL, ' .
-                     'level INTEGER NOT NULL, ' .
-                     'alias VARCHAR, ' .
-                     'lat DOUBLE, ' .
-                     'lon DOUBLE, ' .
-                     'FOREIGN KEY(type_id) REFERENCES object_types(id), ' .
-                     'FOREIGN KEY(building_id) REFERENCES buildings(id) ' .
-                  ');'
+                  "CREATE TABLE IF NOT EXISTS node_types (
+                     id INTEGER PRIMARY KEY NOT NULL,
+                     alias VARCHAR
+                  );"
+      );
+      $db_sqlite->query(
+                  "CREATE TABLE IF NOT EXISTS objects (
+                     id INTEGER PRIMARY KEY NOT NULL,
+                     type_id INTEGER NOT NULL,
+                     building_id INTEGER NOT NULL,
+                     level INTEGER NOT NULL,
+                     alias VARCHAR,
+                     node_id INTEGER NOT NULL,
+                     lat DOUBLE,
+                     lon DOUBLE,
+                     FOREIGN KEY(type_id) REFERENCES object_types(id),
+                     FOREIGN KEY(building_id) REFERENCES buildings(id),
+                     FOREIGN KEY(node_id) REFERENES node_types(id)
+                  );"
+      );
+      $db_sqlite->query(
+                  "CREATE TABLE IF NOT EXISTS path_segments (
+                     id INTEGER PRIMARY KEY NOT NULL,
+                     level INTEGER,
+                     id_vertex_from INTEGER NOT NULL,
+                     id_vertex_to INTEGER NOT NULL,
+                     FOREIGN KEY(id_vertex_from) REFERENCES objects(id),
+                     FOREIGN KEY(id_vertex_to) REFERENCES objects(id)
+                  );"
+      );
+      $db_sqlite->query(
+                  "CREATE TABLE IF NOT EXISTS path_segment_points (
+                     id INTEGER PRIMARY KEY NOT NULL,
+                     path_id INTEGER NOT NULL,
+                     lon DOUBLE,
+                     lat DOUBLE,
+                     idx INTEGER,
+                     FOREIGN KEY(path_id) REFERENCES path_segments(id)
+                  );"
       );
 
+      $db_sqlite->query('DELETE FROM path_segments');
       $db_sqlite->query('DELETE FROM objects');
       $db_sqlite->query('DELETE FROM buildings');
       $db_sqlite->query('DELETE FROM object_types');
-      echo "buildings:\n";
+      $db_sqlite->query('DELETE FROM node_types');
+      $db_sqlite->query('DELETE FROM path_segment_points');
+
+      // echo "buildings:\n";
       $result = pg_query(
          $dbcon_bu,
          "SELECT
@@ -104,11 +137,15 @@
             );
          }
       }
-      //object_types
+      //********************************
+      //********************************
+      //**********OBJECT_TYPES**********
+      //********************************
+      //********************************
       $result = pg_query(
          $dbcon_bu,
          "SELECT
-            id, alias
+            id, alias, displayed
          FROM
             catalog.object_types;"
       );
@@ -118,14 +155,14 @@
       while ($row = pg_fetch_row($result)) {
          $db_sqlite->query(
             "INSERT INTO
-               object_types (id, alias)
+               object_types (id, alias, display)
             VALUES
-               ($row[0], '$row[1]')"
+               ($row[0], '$row[1]', $row[2])"
          );
          $subres = pg_query(
             $dbcon_base,
             "SELECT
-               id, alias
+               id, alias, displayed
             FROM
                geoobject_types
             WHERE id = $row[0];"
@@ -134,9 +171,9 @@
             $subres = pg_query(
                $dbcon_base,
                "INSERT INTO
-                  geoobject_types (id, alias)
+                  geoobject_types (id, alias, displayed)
                VALUES
-                  ($row[0], '$row[1]');"
+                  ($row[0], '$row[1]', $row[2]);"
             );
          } else {
             $subres = pg_query(
@@ -144,14 +181,70 @@
                "UPDATE
                   geoobject_types
                SET
+                  alias = '$row[1]', displayed = $row[2]
+               WHERE
+                  id = $row[0];"
+            );
+         }
+      }
+
+      //********************************
+      //********************************
+      //***********NODE_TYPES***********
+      //********************************
+      //********************************
+      $result = pg_query(
+         $dbcon_bu,
+         "SELECT
+            id, alias
+         FROM
+            catalog.node_types;"
+      );
+      if (!$result) {
+         die("selection failed\n");
+      }
+      while ($row = pg_fetch_row($result)) {
+         $db_sqlite->query(
+            "INSERT INTO
+               node_types (id, alias)
+            VALUES
+               ($row[0], '$row[1]')"
+         );
+         $subres = pg_query(
+            $dbcon_base,
+            "SELECT
+               id, alias
+            FROM
+               node_types
+            WHERE id = $row[0];"
+         );
+         if (pg_num_rows($subres) == 0) {
+            $subres = pg_query(
+               $dbcon_base,
+               "INSERT INTO
+                  node_types (id, alias)
+               VALUES
+                  ($row[0], '$row[1]');"
+            );
+         } else {
+            $subres = pg_query(
+               $dbcon_base,
+               "UPDATE
+                  node_types
+               SET
                   alias = '$row[1]'
                WHERE
                   id = $row[0];"
             );
          }
       }
+
       // exit;
-      //geoobjects
+      //********************************
+      //********************************
+      //***********GEO_OBJECTS**********
+      //********************************
+      //********************************
       $result = pg_query(
          $dbcon_base,
          "DELETE FROM
@@ -165,6 +258,14 @@
                go.cataloged = 0 AND
                go.geoobject_type_id = 6
          );"
+      );
+      $result = pg_query(
+         $dbcon_base,
+         "DELETE FROM PATH_SEGMENT_POINTS psp;"
+      );
+      $result = pg_query(
+         $dbcon_base,
+         "DELETE FROM PATH_SEGMENTS ps;"
       );
       $result = pg_query(
          $dbcon_base,
@@ -231,6 +332,112 @@
                   ($row[0], $row[1], $row[2], $row[3], '$row[4]', $row[5], $row[6], 1);";
          }
       }
+
+      //********************************
+      //********************************
+      //***********PATH_SEGMENTS********
+      //********************************
+      //********************************
+
+      $result = pg_query(
+         $dbcon_bu,
+         "SELECT
+            id, level, id_vertex_from, id_vertex_to
+         FROM
+            catalog.path_segments;"
+      );
+      if (!$result) {
+         die("selection failed\n");
+      }
+      while ($row = pg_fetch_row($result)) {
+         $db_sqlite->query(
+            "INSERT INTO
+               path_segments (id, level, id_vertex_from, id_vertex_to)
+            VALUES
+               ($row[0], $row[1], $row[2], $row[3])"
+         );
+         $subres = pg_query(
+            $dbcon_base,
+            "SELECT
+               id
+            FROM
+               path_segments
+            WHERE id = $row[0];"
+         );
+         if (pg_num_rows($subres) == 0) {
+            $subres = pg_query(
+               $dbcon_base,
+               "INSERT INTO
+                  path_segments (id, level, object_from_id, object_to_id)
+               VALUES
+                  ($row[0], $row[1], $row[2], $row[3]);"
+            );
+         } else {
+            $subres = pg_query(
+               $dbcon_base,
+               "UPDATE
+                  path_segments
+               SET
+                  level = $row[1], object_from_id = $row[2], object_to_id = $row[3]
+               WHERE
+                  id = $row[0];"
+            );
+         }
+      }
+
+      //********************************
+      //********************************
+      //*******PATH_SEGMENT_POINTS******
+      //********************************
+      //********************************
+
+      $result = pg_query(
+         $dbcon_bu,
+         "SELECT
+            id, path_id, lon, lat, idx
+         FROM
+            catalog.path_segment_points;"
+      );
+      if (!$result) {
+         die("selection failed\n");
+      }
+      while ($row = pg_fetch_row($result)) {
+         $db_sqlite->query(
+            "INSERT INTO
+               path_segment_points (id, path_id, lon, lat, idx)
+            VALUES
+               ($row[0], $row[1], $row[2], $row[3], $row[4])"
+         );
+         $subres = pg_query(
+            $dbcon_base,
+            "SELECT
+               id
+            FROM
+               path_segment_points
+            WHERE id = $row[0];"
+         );
+         if (pg_num_rows($subres) == 0) {
+            $subres = pg_query(
+               $dbcon_base,
+               "INSERT INTO
+                  path_segment_points (id, path_id, lon, lat, idx)
+               VALUES
+                  ($row[0], $row[1], $row[2], $row[3], $row[4]);"
+            );
+         } else {
+            $subres = pg_query(
+               $dbcon_base,
+               "UPDATE
+                  path_segment_points
+               SET
+                  path_id = $row[1], lon = $row[2], lat = $row[3], idx = $row[4]
+               WHERE
+                  id = $row[0];"
+            );
+         }
+      }
+
+
       pg_query($dbcon_base, $query);
       $db_sqlite->close();
       pg_close($dbcon_bu);

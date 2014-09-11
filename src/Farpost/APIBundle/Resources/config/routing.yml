@@ -42,4 +42,8 @@ farpost_api_getters_for_group:
    path:     /{name}.get.json
    defaults: { _controller: FarpostAPIBundle:Default:getForGroup }
 
+farpost_api_init_app:
+   path:     /init_app
+   defaults: { _controller: FarpostAPIBundle:Default:initApp }
+
 

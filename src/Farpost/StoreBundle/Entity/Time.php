@@ -28,93 +28,95 @@ class Time
    protected $alias;
 
    /**
-    * @var time
+    * @var \Time
     *
     * @ORM\Column(name="start_time", type="time")
     */
    protected $start_time;
 
    /**
-    * @var time
+    * @var \Time
     *
     * @ORM\Column(name="end_time", type="time")
     */
    protected $end_time;
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-   /**
-    * Get id
-    *
-    * @return integer
-    */
-   public function getId()
-   {
-      return $this->id;
-   }
+    /**
+     * Set alias
+     *
+     * @param string $alias
+     * @return Time
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
 
-   /**
-    * Set alias
-    *
-    * @param string $alias
-    * @return Time
-    */
-   public function setAlias($alias)
-   {
-      $this->alias = $alias;
-      return $this;
-   }
+        return $this;
+    }
 
-   /**
-    * Get alias
-    *
-    * @return string
-    */
-   public function getAlias()
-   {
-      return $this->alias;
-   }
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
 
-   /**
-    * Set start_time
-    *
-    * @param time $startTime
-    * @return Time
-    */
-   public function setStartTime(time $startTime)
-   {
-      $this->start_time = $startTime;
-      return $this;
-   }
+    /**
+     * Set start_time
+     *
+     * @param \DateTime $startTime
+     * @return Time
+     */
+    public function setStartTime($startTime)
+    {
+        $this->start_time = $startTime;
 
-   /**
-    * Get start_time
-    *
-    * @return time
-    */
-   public function getStartTime()
-   {
-      return $this->start_time;
-   }
+        return $this;
+    }
 
-   /**
-    * Set end_time
-    *
-    * @param time $endTime
-    * @return Time
-    */
-   public function setEndTime($endTime)
-   {
-      $this->end_time = $endTime;
-      return $this;
-   }
+    /**
+     * Get start_time
+     *
+     * @return \DateTime
+     */
+    public function getStartTime()
+    {
+        return $this->start_time;
+    }
 
-   /**
-    * Get end_time
-    *
-    * @return time
-    */
-   public function getEndTime()
-   {
-      return $this->end_time;
-   }
+    /**
+     * Set end_time
+     *
+     * @param \DateTime $endTime
+     * @return Time
+     */
+    public function setEndTime($endTime)
+    {
+        $this->end_time = $endTime;
+
+        return $this;
+    }
+
+    /**
+     * Get end_time
+     *
+     * @return \DateTime
+     */
+    public function getEndTime()
+    {
+        return $this->end_time;
+    }
 }

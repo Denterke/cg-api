@@ -25,7 +25,7 @@ class ScheduleRendered
      * @var integer,
      *
      * @ORM\ManyToOne(targetEntity="Schedule", inversedBy="schedule_rendered")
-     * @ORM\JoinColumn(name="schedule_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="schedule_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $schedule;
 

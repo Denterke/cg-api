@@ -5,32 +5,41 @@
       $qname = '\'' . $table_name . '\'';
       echo "creating function " . $foo_name . "\n";
       $trig_name = $table_name . '_trig_upd';
-      $foo = 'CREATE OR REPLACE FUNCTION ' . $foo_name . ' RETURNS trigger AS ' .
-         '$BODY$' .
-         'BEGIN ' .
-           'IF (TG_OP = \'INSERT\') THEN ' .
-              'INSERT INTO last_modified(table_name, record_id, last_modified, status) ' .
-                 'VALUES(' . $qname . ', NEW.id, NOW(), 0);' .
-              'RETURN NEW; ' .
-           'ELSIF (TG_OP = \'UPDATE\') THEN ' .
-              'UPDATE last_modified SET last_modified = NOW(), status = 1 WHERE ' .
-                 'table_name = ' . $qname . ' AND record_id = NEW.id; '.
-              'RETURN NEW; ' .
-           'ELSIF (TG_OP = \'DELETE\') THEN ' .
-              'UPDATE last_modified SET last_modified = NOW(), status = 2 WHERE ' .
-                 'table_name = ' . $qname . ' AND record_id = OLD.id; '.
-              'RETURN NEW; ' .
-           'END IF; ' .
-         'END; ' .
-         '$BODY$ LANGUAGE plpgsql';
+      $foo = "CREATE OR REPLACE FUNCTION  $foo_name RETURNS trigger AS
+         \$BODY\$
+         DECLARE
+               c INTEGER;
+         BEGIN
+            IF (TG_OP = 'INSERT') THEN
+               SELECT count(*) INTO c FROM last_modified
+                  WHERE table_name=$qname and record_id = NEW.id;
+               IF (c > 0) THEN
+                  UPDATE last_modified SET last_modified = NOW(), status = 1
+                     WHERE table_name = $qname AND record_id = NEW.id;
+               ELSIF (c = 0) THEN
+                  INSERT INTO last_modified(table_name, record_id, last_modified, status)
+                     VALUES($qname, NEW.id, NOW(), 1);
+               END IF;
+               RETURN NEW;
+            ELSIF (TG_OP = 'UPDATE') THEN
+               UPDATE last_modified SET last_modified = NOW(), status = 1 WHERE
+                  table_name = $qname AND record_id = NEW.id;
+               RETURN NEW;
+            ELSIF (TG_OP = 'DELETE') THEN
+               UPDATE last_modified SET last_modified = NOW(), status = 3 WHERE
+                  table_name = $qname AND record_id = OLD.id;
+               RETURN NEW;
+            END IF;
+         END;
+         \$BODY\$ LANGUAGE plpgsql";
       $result = pg_query($conn, $foo);
       if (!$result) {
          die("function creation failed\n");
       }
       echo "creating trigger " . $trig_name . "\n";
-      $trigger = 'DROP TRIGGER IF EXISTS ' . $trig_name . ' ON ' . $table_name . '; ' .
-                 'CREATE TRIGGER ' . $trig_name . ' AFTER INSERT OR UPDATE OR DELETE ' .
-                 'ON ' . $table_name . ' FOR EACH row EXECUTE PROCEDURE ' . $foo_name . ';';
+      $trigger = "DROP TRIGGER IF EXISTS $trig_name ON $table_name;
+                 CREATE TRIGGER $trig_name AFTER INSERT OR UPDATE OR DELETE
+                 ON $table_name FOR EACH row EXECUTE PROCEDURE $foo_name;";
       $result = pg_query($conn, $trigger);
       if (!$result) {
          die("trigger creation failed\n");
@@ -73,7 +82,7 @@
       //sys part
       //WARNING: ORDER IS IMPORTANT!
       $arrays = [
-         'schedule_rendered',
+         // 'schedule_rendered',
          'department_sets',
          'departments',
          'schools',

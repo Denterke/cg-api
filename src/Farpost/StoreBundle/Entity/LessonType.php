@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Lesson_types
  *
  * @ORM\Table(name="lesson_types")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Farpost\StoreBundle\Entity\LessonTypeRepository")
  */
 class LessonType
 {

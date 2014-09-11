@@ -40,7 +40,7 @@ class Schedule
     * @var GeoObject
     *
     * @ORM\ManyToOne(targetEntity="GeoObject")
-    * @ORM\JoinColumn(name="auditory_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="auditory_id", referencedColumnName="id", onDelete="CASCADE")
     */
    protected $auditory;
 
@@ -69,7 +69,7 @@ class Schedule
     * @var Semester
     *
     * @ORM\ManyToOne(targetEntity="Semester")
-    * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="semester_id", referencedColumnName="id", nullable=true)
     */
    protected $semester;
 
@@ -90,7 +90,7 @@ class Schedule
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {

@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * StudySets
  *
  * @ORM\Table(name="study_sets")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Farpost\StoreBundle\Entity\StudySetRepository")
  */
 class StudySet
 {

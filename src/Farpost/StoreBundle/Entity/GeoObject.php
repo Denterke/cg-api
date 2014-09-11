@@ -17,14 +17,13 @@ class GeoObject
     *
     * @ORM\Column(name="id", type="integer")
     * @ORM\Id
-    * @ORM\GeneratedValue(strategy="IDENTITY")
     */
    protected $id;
 
    /**
     * @var string
     *
-    * @ORM\Column(name="alias", type="string", length=255)
+    * @ORM\Column(name="alias", type="string", length=255, nullable=true)
     */
    protected $alias;
 
@@ -32,7 +31,7 @@ class GeoObject
     * @var GeoObjectType
     *
     * @ORM\ManyToOne(targetEntity="GeoObjectType")
-    * @ORM\JoinColumn(name="geoobject_type_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="geoobject_type_id", referencedColumnName="id", nullable=true)
     */
    protected $geoobject_type;
 
@@ -40,28 +39,28 @@ class GeoObject
     * @var Building
     *
     * @ORM\ManyToOne(targetEntity="Building")
-    * @ORM\JoinColumn(name="building_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="building_id", referencedColumnName="id", nullable=true)
     */
    protected $building;
 
    /**
     * @var integer
     *
-    * @ORM\Column(name="level", type="integer")
+    * @ORM\Column(name="level", type="integer", nullable=true)
     */
    protected $level;
 
    /**
     * @var float
     *
-    * @ORM\Column(name="lon", type="float")
+    * @ORM\Column(name="lon", type="float", nullable=true)
     */
    protected $lon;
 
    /**
     * @var float
     *
-    * @ORM\Column(name="lat", type="float")
+    * @ORM\Column(name="lat", type="float", nullable=true)
     */
    protected $lat;
 
@@ -72,10 +71,23 @@ class GeoObject
     */
    protected $cataloged;
 
+   /**
+    * @var integer
+    *
+    * @ORM\Column(name="status", type="integer")
+    */
+   protected $status;
+
+   public function setId($id)
+   {
+      $this->id = $id;
+      return $this;
+   }
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -98,7 +110,7 @@ class GeoObject
     /**
      * Get alias
      *
-     * @return string 
+     * @return string
      */
     public function getAlias()
     {
@@ -121,7 +133,7 @@ class GeoObject
     /**
      * Get level
      *
-     * @return integer 
+     * @return integer
      */
     public function getLevel()
     {
@@ -129,26 +141,26 @@ class GeoObject
     }
 
     /**
-     * Set lan
+     * Set lon
      *
-     * @param float $lan
+     * @param float $lon
      * @return GeoObject
      */
-    public function setLan($lan)
+    public function setLon($lon)
     {
-        $this->lan = $lan;
+        $this->lon = $lon;
 
         return $this;
     }
 
     /**
-     * Get lan
+     * Get lon
      *
-     * @return float 
+     * @return float
      */
-    public function getLan()
+    public function getLon()
     {
-        return $this->lan;
+        return $this->lon;
     }
 
     /**
@@ -167,7 +179,7 @@ class GeoObject
     /**
      * Get lat
      *
-     * @return float 
+     * @return float
      */
     public function getLat()
     {
@@ -190,11 +202,34 @@ class GeoObject
     /**
      * Get cataloged
      *
-     * @return integer 
+     * @return integer
      */
     public function getCataloged()
     {
         return $this->cataloged;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return GeoObject
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
@@ -213,7 +248,7 @@ class GeoObject
     /**
      * Get geoobject_type
      *
-     * @return \Farpost\StoreBundle\Entity\GeoObjectType 
+     * @return \Farpost\StoreBundle\Entity\GeoObjectType
      */
     public function getGeoobjectType()
     {
@@ -236,33 +271,10 @@ class GeoObject
     /**
      * Get building
      *
-     * @return \Farpost\StoreBundle\Entity\Building 
+     * @return \Farpost\StoreBundle\Entity\Building
      */
     public function getBuilding()
     {
         return $this->building;
-    }
-
-    /**
-     * Set lon
-     *
-     * @param float $lon
-     * @return GeoObject
-     */
-    public function setLon($lon)
-    {
-        $this->lon = $lon;
-
-        return $this;
-    }
-
-    /**
-     * Get lon
-     *
-     * @return float 
-     */
-    public function getLon()
-    {
-        return $this->lon;
     }
 }

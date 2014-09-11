@@ -18,7 +18,6 @@ class Building
     *
     * @ORM\Column(name="id", type="integer")
     * @ORM\Id
-    * @ORM\GeneratedValue(strategy="AUTO")
     */
    protected $id;
 
@@ -39,20 +38,26 @@ class Building
    /**
       * @var float
       *
-      * @ORM\Column(name="lon", type="float")
+      * @ORM\Column(name="lon", type="float", nullable=true)
     */
    protected $lon;
 
    /**
     * @var float
     *
-    * @ORM\Column(name="lat", type="float")
+    * @ORM\Column(name="lat", type="float", nullable=true)
     */
    protected $lat;
 
    public function __construct()
    {
       $this->building_types = new ArrayCollection();
+   }
+
+   public function setId($id)
+   {
+       $this->id = $id;
+       return $this;
    }
 
 

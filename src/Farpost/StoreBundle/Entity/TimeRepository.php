@@ -70,4 +70,13 @@ class TimeRepository extends EntityRepository
       $this->_finalize($recs);
       return $recs;
    }
+
+   public function syncValue($alias)
+   {
+      $time = $this->findOneBy(['alias' => $alias]);
+      if (is_null($time)) {
+         throw new \Exception('No such time available!');
+      }
+      return $time;
+   }
 }

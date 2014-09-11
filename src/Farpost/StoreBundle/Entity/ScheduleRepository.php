@@ -62,6 +62,10 @@ class ScheduleRepository extends EntityRepository
          ];
          $spd[$elem->getTime()->getAlias()] = $schedule_elem;
       }
+      if (!empty($spd)) {
+         $result[$this->_numToDOW($last_day)] = $spd;
+         $spd = [];
+      }
       return $result;
    }
 
@@ -148,5 +152,31 @@ class ScheduleRepository extends EntityRepository
                    ->getResult();
       $recs = $this->_finalizeNumsWeb($recs);
       return $recs;
+   }
+
+   public function doUpdate($period, $s_part, $auditory, $time, $l_type, $day, $group)
+   {
+      //1. Clear old schedule (schedule_part, schedule, schedule_rendered)
+      // $this->_em->createQueryBuilder()
+           // ->delete('FarpostStoreBundle:Group', 'g')
+           // ->where('g.id = :group_id')
+           // ->setParameter('group_id', $group->getId())->getQuery()->getResult();
+      //2. Add new schedule - template
+      $semester = $this->_em->getRepository('FarpostStoreBundle:Semester')
+                            ->findOneBy(['id' => 1]);
+      if (is_null($semester)) {
+         throw new \Exception('No actual semester found!');
+      }
+      $group_schedule = new Schedule();
+      $group_schedule->setPeriod($period)
+                     ->setSchedulePart($s_part)
+                     ->setAuditory($auditory)
+                     ->setTime($time)
+                     ->setLessonType($l_type)
+                     ->setDay($day)
+                     ->setSemester($semester);
+      $this->_em->persist($group_schedule);
+      $this->_em->flush();
+      return $group_schedule;
    }
 }

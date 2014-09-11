@@ -22,18 +22,22 @@
                {% for day in dset %}
                   {% if day != '' %}
                      <td class = "blue">
-                        <table class = "embeded-table">
-                           <tr>
-                              <td colspan = "2" class = "discipline"> {{ items[day][num]['Дисциплина'] }} </td>
-                           </tr>
-                           <tr>
-                              <td class = "little"> {{ items[day][num]['Тип занятия'] }} </td>
-                              <td class = "little"> {{ items[day][num]['Профессор'] }} </td>
-                           </tr>
-                           <tr>
-                              <td colspan = "2" class="little"> Аудитория: {{ items[day][num]['Аудитория'] }} </td>
-                           </tr>
-                        </table>
+                        {% if items is defined and items[day] is defined and items[day][num] is defined %}
+                           <table class = "embeded-table">
+                              <tr>
+                                 <td colspan = "2" class = "discipline">
+                                    {{ items[day][num]['Дисциплина'] }}
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td class = "little"> {{ items[day][num]['Тип занятия'] }} </td>
+                                 <td class = "little"> {{ items[day][num]['Профессор'] }} </td>
+                              </tr>
+                              <tr>
+                                 <td colspan = "2" class="little"> Аудитория: {{ items[day][num]['Аудитория'] }} </td>
+                              </tr>
+                           </table>
+                        {% endif %}
                      </td>
                   {% endif %}
                {% endfor %}

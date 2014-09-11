@@ -1,3 +1,7 @@
+farpost_back_up:
+    resource: "@FarpostBackUpBundle/Resources/config/routing.yml"
+    prefix:   /
+
 farpost_web:
     resource: "@FarpostWebBundle/Resources/config/routing.yml"
     prefix:   /web/

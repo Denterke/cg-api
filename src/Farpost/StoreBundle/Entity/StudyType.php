@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * StudyTypes
  *
  * @ORM\Table(name="study_types")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Farpost\StoreBundle\Entity\StudyTypeRepository")
  */
 class StudyType
 {
@@ -60,8 +60,8 @@ class StudyType
       return $this->alias;
    }
 
-  public function __toString()
-  {
-      return $this->getAlias();
-  }
+  // public function __toString()
+  // {
+      // return strval($this->id);
+  // }
 }

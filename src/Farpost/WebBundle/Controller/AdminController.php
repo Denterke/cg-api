@@ -3,6 +3,7 @@ namespace Farpost\WebBundle\Controller;
 
 use Farpost\StoreBundle\Entity\Version;
 use Farpost\StoreBundle\Entity\Document;
+use Farpost\StoreBundle\Entity\ScheduleSource;
 use Farpost\WebBundle\Form\SchoolType;
 use Farpost\WebBundle\Form\DepartmentType;
 use Farpost\WebBundle\Form\SpecializationType;
@@ -15,7 +16,10 @@ class AdminController extends Controller
 {
    private function _getRep($table)
    {
-      return $this->getDoctrine()->getRepository('FarpostStoreBundle:' . $this->get('entity_dispatcher')->tableToEntity($table));
+      return $this->getDoctrine()->getRepository(
+         'FarpostStoreBundle:' .
+         $this->get('entity_dispatcher')->tableToEntity($table)
+      );
    }
 
    private function _isValidForm(&$form, $request)
@@ -59,6 +63,9 @@ class AdminController extends Controller
          case 'versions':
             return $this->_versionAdd($request);
             break;
+         case 'ssources':
+            return $this->_ssourceAdd($request);
+            break;
          default:
             $this->redirect($this->generateUrl('admin_index'));
             break;
@@ -98,10 +105,12 @@ class AdminController extends Controller
       $form->handleRequest($request);
       if ($form->isValid()) {
          $em = $this->getDoctrine()->getManager();
-         $document->upload();
+         // $document->upload();
          $em->persist($document);
          $em->flush();
+         // echo $document->getAbsolutePath();
          $this->get('database_converter')->AddDb($document->getType(), $document->getAbsolutePath());
+         $this->get('schedule_manager')->refreshSchedule();
          return $this->redirect($this->generateUrl('admin_basemanagement'));
       }
       $dt = new \DateTime();
@@ -111,6 +120,33 @@ class AdminController extends Controller
                'Файл плана уровня ' . $request->query->get('id');
       return $this->render('FarpostWebBundle:Admin:versions_card.html.twig', [
          'version_form' => $form->createView(), 'type' => $promt]);
+   }
+
+   private function _ssourceAdd(Request $request)
+   {
+      $promt = "Файл расписания";
+      $document = new Document();
+      $document->setType(-21);
+      $form = $this->createFormBuilder($document)
+                   ->add('type', 'hidden')
+                   ->add('file')
+                   ->add('save', 'submit', ['label' => 'Сохранить'])
+                   ->getForm();
+      $form->handleRequest($request);
+      if ($form->isValid()) {
+         $em = $this->getDoctrine()->getManager();
+         $em->persist($document);
+         $em->flush();
+         // echo $
+         $this->get('schedule_manager')->convertSchedule(
+            $document->getAbsolutePath(),
+            $document->getVDatetime()
+         );
+         return $this->redirect($this->generateUrl('admin_basemanagement'));
+      }
+      return $this->render('FarpostWebBundle:Admin:versions_card.html.twig', [
+         'version_form' => $form->createView(), 'type' => $promt]);
+
    }
 
    public function departmentsAction(Request $request)
@@ -149,7 +185,8 @@ class AdminController extends Controller
    public function basemanagmentAction(Request $request)
    {
       return $this->render('FarpostWebBundle:Admin:basemanagement.html.twig', [
-         'versions' => $this->_getRep('versions')->getForWeb()
+         'versions' => $this->_getRep('versions')->getForWeb(),
+         'ssources' => $this->_getRep('ssources')->getForWeb()
       ]);
    }
 }

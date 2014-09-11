@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Farpost\StoreBundle\Entity;
+use Farpost\StoreBundle\Entity\Time;
+use Farpost\StoreBundle\Entity\Semester;
 use Doctrine\ORM\Query\Expr\Join;
 
 class DefaultController extends Controller
@@ -142,11 +144,12 @@ class DefaultController extends Controller
       $group = $request->query->getInt('group', 0);
       $result = [];
       $entities = [
-         'Auditory' => 'auditories',
+         'GeoObject' => 'auditories',
          'User' => 'professors',
          'Time' => 'times',
          'Discipline' => 'disciplines',
          'ScheduleRendered' => 'schedules'
+         // 'Building' => 'buildings'
       ];
       foreach($entities as $en_name => $table_name) {
          $elem = $this->getDoctrine()->getManager()
@@ -211,5 +214,67 @@ class DefaultController extends Controller
          $response->setStatusCode(200)->setContent(json_encode($result, JSON_UNESCAPED_UNICODE));
       }
       return $response;
+   }
+
+   public function initAppAction()
+   {
+      $times = [
+         [
+            "alias" => "1 пара",
+            "start_time" => "08:30:00",
+            "end_time"   => "10:00:00"
+         ],
+         [
+            "alias" => "2 пара",
+            "start_time" => "10:10:00",
+            "end_time"   => "11:40:00"
+         ],
+         [
+            "alias" => "3 пара",
+            "start_time" => "11:50:00",
+            "end_time"   => "13:20:00"
+         ],
+         [
+            "alias" => "4 пара",
+            "start_time" => "13:30:00",
+            "end_time"   => "15:00:00"
+         ],
+         [
+            "alias" => "5 пара",
+            "start_time" => "15:10:00",
+            "end_time"   => "16:40:00"
+         ]
+      ];
+      $em = $this->getDoctrine()->getManager('default');
+      foreach($times as &$time_t) {
+         $time = $em->getRepository('FarpostStoreBundle:Time')
+                    ->findOneBy(['alias' => $time_t['alias']]);
+         if (is_null($time)) {
+            $time = new Time();
+            $start_time = new \DateTime();
+            $start_time->setTimestamp(strtotime($time_t['start_time']));
+            $end_time = new \DateTime();
+            $end_time->setTimestamp(strtotime($time_t['end_time']));
+
+            $time->setAlias($time_t['alias'])
+                 ->setStartTime($start_time)
+                 ->setEndTime($end_time);
+            $em->persist($time);
+            $em->flush();
+         }
+      }
+      $semester = $em->getRepository('FarpostStoreBundle:Semester')
+                     ->findOneBy(['id' => 1]);
+      if (is_null($semester)) {
+         $semester = new Semester();
+         $start_time = new \DateTime();
+         $start_time->setTimestamp(strtotime('01.09.2014'));
+         $end_time = new \DateTime();
+         $end_time->setTimestamp(strtotime('01.01.2015'));
+         $semester->setTimeStart($start_time)->setTimeEnd($end_time)->setAlias('Test semester');
+         $em->persist($semester);
+         $em->flush();
+      }
+      return $this->_createResponse()->setStatusCode(200)->setContent("all right");
    }
 }

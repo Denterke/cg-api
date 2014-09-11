@@ -32,7 +32,7 @@ class Discipline
     * @var DisciplineSection
     *
     * @ORM\ManyToOne(targetEntity="DisciplineSection")
-    * @ORM\JoinColumn(name="discipline_section_id", referencedColumnName="id")
+    * @ORM\JoinColumn(name="discipline_section_id", referencedColumnName="id", nullable=true)
     */
    protected $discipline_section;
 

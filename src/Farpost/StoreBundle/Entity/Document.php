@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="documents")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Document
 {
@@ -41,14 +42,92 @@ class Document
     */
    private $file;
 
+
+   private $temp;
+
    /**
     * Sets file.
     *
     * @param UploadedFile $file
-    */
+   */
    public function setFile(UploadedFile $file = null)
    {
       $this->file = $file;
+      // check if we have an old image path
+      if (is_file($this->getAbsolutePath())) {
+         // store the old name to delete after the update
+         $this->temp = $this->getAbsolutePath();
+      } else {
+         $this->path = 'initial';
+      }
+   }
+
+   /**
+    * @ORM\PrePersist()
+    * @ORM\PreUpdate()
+    */
+   public function preUpload()
+   {
+      if (null !== $this->getFile()) {
+         $this->path = $this->getFile()->guessExtension();
+      }
+      $dt = new \DateTime();
+      $this->v_datetime = $dt->getTimestamp();
+   }
+
+   /**
+    * @ORM\PostPersist()
+    * @ORM\PostUpdate()
+    */
+   public function upload()
+   {
+      echo $this->id;
+      if (null === $this->getFile()) {
+         return;
+      }
+
+      // check if we have an old image
+      if (isset($this->temp)) {
+         // delete the old image
+         unlink($this->temp);
+         // clear the temp image path
+         $this->temp = null;
+      }
+
+      // you must throw an exception here if the file cannot be moved
+      // so that the entity is not persisted to the database
+      // which the UploadedFile move() method does
+      $this->getFile()->move(
+         $this->getUploadRootDir(),
+         "bases_" . $this->id . '.' . $this->getFile()->guessExtension()
+      );
+
+      $this->setFile(null);
+   }
+
+   /**
+    * @ORM\PreRemove()
+    */
+   public function storeFilenameForRemove()
+   {
+      $this->temp = $this->getAbsolutePath();
+   }
+
+   /**
+    * @ORM\PostRemove()
+    */
+   public function removeUpload()
+   {
+      if (isset($this->temp)) {
+         unlink($this->temp);
+      }
+   }
+
+   public function getAbsolutePath()
+   {
+      return null === $this->path
+         ? null
+         : $this->getUploadRootDir().'/'. "bases_" . $this->id.'.'.$this->path;
    }
 
    /**
@@ -59,13 +138,6 @@ class Document
    public function getFile()
    {
       return $this->file;
-   }
-
-   public function getAbsolutePath()
-   {
-      return null === $this->path
-         ? null
-         : $this->getUploadRootDir().'/'.$this->path;
    }
 
    public function getWebPath()
@@ -144,32 +216,32 @@ class Document
     {
         return $this->type;
     }
-    public function upload()
-    {
-        // the file property can be empty if the field is not required
-        if (null === $this->getFile()) {
-            return;
-        }
+    // public function upload()
+    // {
+    //     // the file property can be empty if the field is not required
+    //     if (null === $this->getFile()) {
+    //         return;
+    //     }
 
-        // use the original file name here but you should
-        // sanitize it at least to avoid any security issues
+    //     // use the original file name here but you should
+    //     // sanitize it at least to avoid any security issues
 
-        // move takes the target directory and then the
-        // target filename to move to
-        $this->getFile()->move(
-            $this->getUploadRootDir(),
-            $this->getFile()->getClientOriginalName()
-        );
+    //     // move takes the target directory and then the
+    //     // target filename to move to
+    //     $this->getFile()->move(
+    //         $this->getUploadRootDir(),
+    //         $this->getFile()->getClientOriginalName()
+    //     );
 
-        // set the path property to the filename where you've saved the file
-        $this->path = $this->getFile()->getClientOriginalName();
+    //     // set the path property to the filename where you've saved the file
+    //     $this->path = $this->getFile()->getClientOriginalName();
 
-        // clean up the file property as you won't need it anymore
-        $this->file = null;
+    //     // clean up the file property as you won't need it anymore
+    //     $this->file = null;
 
-        $dt = new \DateTime();
-        $this->v_datetime = $dt->getTimestamp();
-    }
+    //     $dt = new \DateTime();
+    //     $this->v_datetime = $dt->getTimestamp();
+    // }
 
     /**
      * Set v_datetime
@@ -187,7 +259,7 @@ class Document
     /**
      * Get v_datetime
      *
-     * @return integer 
+     * @return integer
      */
     public function getVDatetime()
     {
