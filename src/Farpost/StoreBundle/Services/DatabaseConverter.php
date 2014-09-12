@@ -39,7 +39,9 @@ class DatabaseConverter
 
       $dbname_bu = "back_up_catalog";
       echo "<p>$infile</p>";
-      system("pg_restore --clean --dbname='" . $dbname_bu . "' " . $infile);
+      $pg_restore_log = '';
+      system("pg_restore --clean --dbname='" . $dbname_bu . "' " . $infile, $pg_restore_log);
+      echo "<p>pg_restore log: $pg_restore_log</p>";
 
       //create sqlite file
       try {
