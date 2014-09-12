@@ -74,23 +74,23 @@ class DefaultController extends Controller
    public function getGroupsAction()
    {
       $response = $this->_createResponse();
-      parse_str($_SERVER['QUERY_STRING']);
-      if (!isset($study_type) || !isset($school)) {
-         return $response;
-      }
+      // parse_str($_SERVER['QUERY_STRING']);
+      // if (!isset($study_type) || !isset($school)) {
+      //    return $response;
+      // }
       $em = $this->getDoctrine()->getEntityManager();
       $qb = $em->getRepository('FarpostStoreBundle:Group')
-               ->createQueryBuilder('g')
-               ->innerJoin('FarpostStoreBundle:StudySet', 'ss', Join::WITH, 'g.study_set = ss.id')
-               ->join('ss.departments', 'departments')
-               ->innerJoin('FarpostStoreBundle:School', 's', Join::WITH, 'departments.school = s.id')
-               ->innerJoin('FarpostStoreBundle:StudyType', 'st', Join::WITH, 'departments.study_type = st.id')
-               ->where('st.id = :st_id')
-               ->andwhere('s.id = :s_id')
-               ->setParameters([
-                 'st_id' => $study_type,
-                 's_id'  => $school
-              ]);
+               ->createQueryBuilder('g');
+              //  ->innerJoin('FarpostStoreBundle:StudySet', 'ss', Join::WITH, 'g.study_set = ss.id')
+              //  ->join('ss.departments', 'departments')
+              //  ->innerJoin('FarpostStoreBundle:School', 's', Join::WITH, 'departments.school = s.id')
+              //  ->innerJoin('FarpostStoreBundle:StudyType', 'st', Join::WITH, 'departments.study_type = st.id')
+              //  ->where('st.id = :st_id')
+              //  ->andwhere('s.id = :s_id')
+              //  ->setParameters([
+              //    'st_id' => $study_type,
+              //    's_id'  => $school
+              // ]);
       $result = $qb->getQuery()->getArrayResult();
       $response->setContent(json_encode(
                               ['groups' => $result]

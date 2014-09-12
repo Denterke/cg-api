@@ -13,3 +13,5 @@
 /back-end/
 *php~
 *~
+/composer.lock
+/catalog_backup/*

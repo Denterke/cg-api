@@ -16,10 +16,10 @@ class ScheduleController extends Controller
       $items = $this->getDoctrine()->getManager()
                     ->getRepository('FarpostStoreBundle:Schedule')
                     // ->getForGroupWeb($request->query->getInt('group', 0));
-                    ->getForGroupWeb(2);
+                    ->getForGroupWeb(1);
       $nums = $this->getDoctrine()->getManager()
                    ->getRepository('FarpostStoreBundle:Schedule')
-                   ->getNumsForGroupWeb(2);
+                   ->getNumsForGroupWeb(1);
       $dows = [
          ['', 'Понедельник', 'Вторник'],
          ['', 'Среда', 'Четверг'],

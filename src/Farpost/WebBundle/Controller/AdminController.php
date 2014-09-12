@@ -184,6 +184,7 @@ class AdminController extends Controller
 
    public function basemanagmentAction(Request $request)
    {
+      // phpinfo();
       return $this->render('FarpostWebBundle:Admin:basemanagement.html.twig', [
          'versions' => $this->_getRep('versions')->getForWeb(),
          'ssources' => $this->_getRep('ssources')->getForWeb()
