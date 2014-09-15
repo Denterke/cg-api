@@ -42,7 +42,7 @@ class DatabaseConverter
       echo "<p>$infile</p>";
       $pg_err_num = 0;
       // system("psql -c -d $dbname_bu -c 'CREATE SCHEMA IF NOT EXISTS catalog;'");
-      system("pg_restore --host=localhost -U $owner -w -c -O -d $dbname_bu $infile", $pg_err_num);
+      system("pg_restore --host=localhost -U $owner -W -c -O -d $dbname_bu $infile", $pg_err_num);
       if ($pg_err_num) {
          echo $pg_err_num;
          throw new \Exception("pg_restore failed!");

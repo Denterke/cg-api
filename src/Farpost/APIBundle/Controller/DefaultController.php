@@ -79,8 +79,9 @@ class DefaultController extends Controller
       //    return $response;
       // }
       $em = $this->getDoctrine()->getEntityManager();
-      $qb = $em->getRepository('FarpostStoreBundle:Group')
-               ->createQueryBuilder('g');
+      $result = $em->getRepository('FarpostStoreBundle:Group')
+               ->getList();
+               // ->createQueryBuilder('g');
               //  ->innerJoin('FarpostStoreBundle:StudySet', 'ss', Join::WITH, 'g.study_set = ss.id')
               //  ->join('ss.departments', 'departments')
               //  ->innerJoin('FarpostStoreBundle:School', 's', Join::WITH, 'departments.school = s.id')
@@ -91,7 +92,7 @@ class DefaultController extends Controller
               //    'st_id' => $study_type,
               //    's_id'  => $school
               // ]);
-      $result = $qb->getQuery()->getArrayResult();
+      // $result = $qb->getQuery()->getArrayResult();
       $response->setContent(json_encode(
                               ['groups' => $result]
                               // JSON_UNESCAPED_UNICODE

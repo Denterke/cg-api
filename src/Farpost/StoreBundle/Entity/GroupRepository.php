@@ -18,12 +18,25 @@ class GroupRepository extends EntityRepository
       return $qb;
    }
 
-   // public function getList()
-   // {
-      // return $this->_prepareQB()
-                  // ->getQuery()
-                  // ->getArrayResult();
-   // }
+   private function _finalizeList(&$recs)
+   {
+      $result = [];
+      foreach($recs as &$rec) {
+         $elem = [
+            'id' => $rec->getId(),
+            'alias' => $rec->getAlias(),
+            'school_id' => $rec->getStudySet()->getDepartments()[0]->getSchool()->getId()
+         ];
+         array_push($result, $elem);
+      }
+      return $result;
+   }
+
+   public function getList()
+   {
+      $recs = $this->_prepareQB()->getQuery()->getResult();
+      return $this->_finalizeList($recs);
+   }
 
    public function syncValue($alias, $study_set)
    {
