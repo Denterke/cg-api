@@ -23,6 +23,6 @@ farpost_store:
     prefix:   /
 
 farpost_bases:
-    path:     /static/{filename}
+    path:     /update/{filename}
     defaults: { _controller: FarpostAPIBundle:Default:getFile }
 
