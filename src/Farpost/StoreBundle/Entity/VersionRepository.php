@@ -30,7 +30,7 @@ class VersionRepository extends EntityRepository
       $plans = [];
       foreach($recs as &$rec) {
          $dt = date('Ymd', $rec['v_datetime']);
-         $path = 'http://' . $hostname . '/static/' . $rec['base'];
+         $path = 'http://' . $hostname . '/update/' . $rec['base'];
          $level = $rec['type'];
          $elem = [
             'version' => $dt,

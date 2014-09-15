@@ -43,12 +43,7 @@ class DatabaseConverter
       $pg_err_num = 0;
       $pg_log_file = __DIR__ . '/../../../../web/uploads/documents/tmp_log.txt';
       // system("psql -c -d $dbname_bu -c 'CREATE SCHEMA IF NOT EXISTS catalog;'");
-      system('set PGPASSWORD=Xt4Mc5hm$v', $pg_err_num);
-      if ($pg_err_num) {
-         echo $pg_err_num;
-         throw new \Exception("set pgpass error");
-      }
-      system("pg_restore --host=localhost -U $owner -W -c -O -d $dbname_bu $infile > $pg_log_file 2>&1", $pg_err_num);
+      system("pg_restore --host=localhost -U $owner -c -O -d $dbname_bu $infile > $pg_log_file 2>&1", $pg_err_num);
       $pg_log = file_get_contents($pg_log_file); 
       if ($pg_err_num) {
          echo $pg_err_num;

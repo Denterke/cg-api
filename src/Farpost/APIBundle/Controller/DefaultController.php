@@ -183,20 +183,21 @@ class DefaultController extends Controller
    public function getFileAction($filename)
    {
       $response = new Response('Not found', 404);
-      if (!ctype_alnum($filename) || !preg_match('/^(?:[a-z0-9_-]|\.(?!\.))+$/iD', $filename)) {
-         return $response;
-      }
-      $filepath = $this->get('kernel')->getRootDir() . 'web/static/' . $filename;
+      // if (!ctype_alnum($filename)) {
+         // return $response;
+      // }
+      $filepath = $this->getRequest()->server->get('DOCUMENT_ROOT') . '/static/' . $filename;
       if (!file_exists($filepath)) {
          return $response;
       }
+      // return $response;
       $response = new Response();
       $response->headers->set('Cache-Control', 'private');
       $response->headers->set('Content-Type', mime_content_type($filepath));
       $response->headers->set('Content-Disposition', 'attachment; filename="' . $filepath . '";');
       $response->headers->set('Content-length', filesize($filepath));
       $response->sendHeaders();
-      $response->setContent(file_get_contents($filename));
+      $response->setContent(file_get_contents($filepath));
       return $response;
    }
 
