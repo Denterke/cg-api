@@ -38,12 +38,14 @@ class DatabaseConverter
       $em_ba = $this->doctrine->getManager('default');
 
       $dbname_bu = "back_up_catalog";
+      $owner = "back_up_catalog";
       echo "<p>$infile</p>";
-      system('psql -c -d $dbname_bu -c "CREATE SCHEMA IF NOT EXISTS catalog;"');
-      system("pg_restore --clean --dbname='$dbname_bu' $infile", $pg_err_num);
+      $pg_err_num = 0;
+      // system("psql -c -d $dbname_bu -c 'CREATE SCHEMA IF NOT EXISTS catalog;'");
+      system("pg_restore --host=localhost -U $owner -w -c -O -d $dbname_bu $infile", $pg_err_num);
       if ($pg_err_num) {
          echo $pg_err_num;
-         // throw new \Exception("pg_restore failed!");
+         throw new \Exception("pg_restore failed!");
       }
 
 
