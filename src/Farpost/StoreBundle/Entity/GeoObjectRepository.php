@@ -32,6 +32,26 @@ class GeoObjectRepository extends EntityRepository
       return $recs;
    }
 
+   private function _finalizeForGroup(&$recs)
+   {
+      $result = [];
+      foreach($recs as &$rec) {
+         $elem = [
+            'id' => $rec->getId(),
+            'type_id' => is_null($rec->getGeoObjectType()) ? null : $rec->getGeoObjectType()->getId(),
+            'building_id' => is_null($rec->getBuilding()) ? null : $rec->getBuilding()->getId(),
+            'alias' => $rec->getAlias(),
+            'lat' => $rec->getLat(),
+            'lon' => $rec->getLon(),
+            'cataloged' => $rec->getCataloged(),
+            'status' => $rec->getStatus(),
+            'level' => $rec->getLevel()
+         ];
+         array_push($result, $elem);
+      }
+      return $result;
+   }
+
    private function _finalize(&$recs)
    {
       $recs = array_map(function ($v) {
@@ -50,9 +70,8 @@ class GeoObjectRepository extends EntityRepository
                    ->where('g.id = :group_id')
                    ->setParameter('group_id', $group_id)
                    ->getQuery()
-                   ->setHint(\Doctrine\ORM\Query::HINT_INCLUDE_META_COLUMNS, true)
-                   ->getArrayResult();
-      return $this->_finalize($recs);
+                   ->getResult();
+      return $this->_finalizeForGroup($recs);
    }
 
    public function getUpdate($last_time, $group_id)

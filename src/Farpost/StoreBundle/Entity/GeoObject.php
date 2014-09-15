@@ -33,7 +33,7 @@ class GeoObject
     * @ORM\ManyToOne(targetEntity="GeoObjectType")
     * @ORM\JoinColumn(name="geoobject_type_id", referencedColumnName="id", nullable=true)
     */
-   protected $geoobject_type;
+   protected $geoobject_type = null;
 
    /**
     * @var Building
@@ -41,28 +41,28 @@ class GeoObject
     * @ORM\ManyToOne(targetEntity="Building")
     * @ORM\JoinColumn(name="building_id", referencedColumnName="id", nullable=true)
     */
-   protected $building;
+   protected $building = null;
 
    /**
     * @var integer
     *
     * @ORM\Column(name="level", type="integer", nullable=true)
     */
-   protected $level;
+   protected $level = null;
 
    /**
     * @var float
     *
     * @ORM\Column(name="lon", type="float", nullable=true)
     */
-   protected $lon;
+   protected $lon = null;
 
    /**
     * @var float
     *
     * @ORM\Column(name="lat", type="float", nullable=true)
     */
-   protected $lat;
+   protected $lat = null;
 
    /**
     * @var integer
