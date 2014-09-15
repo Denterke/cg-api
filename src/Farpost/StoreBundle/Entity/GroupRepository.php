@@ -24,8 +24,8 @@ class GroupRepository extends EntityRepository
       foreach($recs as &$rec) {
          $elem = [
             'id' => $rec->getId(),
-            'alias' => $rec->getAlias(),
-            'school_id' => $rec->getStudySet()->getDepartments()[0]->getSchool()->getId()
+            'alias' => $rec->getAlias()
+            // 'school_id' => $rec->getStudySet()->getDepartments()[0]->getSchool()->getId()
          ];
          array_push($result, $elem);
       }
