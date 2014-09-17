@@ -22,21 +22,21 @@ class ScheduleRenderedRepository extends EntityRepository
       return $qb;
    }
 
-   private function _finalizeUpdate(&$recs)
+   private function _finalizeUpdate(&$recs, $hack = false, $group_id = 0)
    {
       $result = [];
       foreach ($recs as &$elem) {
-         $schedule_template = $elem['0']->getSchedule();
+         $schedule_template = $hack ? null : $elem['0']->getSchedule();
          $schedule_elem = [
-            "group_id"       => $schedule_template->getSchedulePart()->getGroup()->getId(),
-            "lesson_type_id" => $schedule_template->getLessonType()->getId(),
-            "discipline_id"  => $schedule_template->getSchedulePart()->getDiscipline()->getId(),
-            "time_id"        => $schedule_template->getTime()->getId(),
-            "auditory_id"    => $schedule_template->getAuditory()->getId(),
-            "professor_id"   => $schedule_template->getSchedulePart()->getProfessor()->getId(),
-            "date"           => $elem['0']->getExecDate()->getTimestamp(),
-            "id"             => $elem['0']->getId(),
-            "status"         => $elem['status']
+            "group_id"       => $hack ? $group_id : $schedule_template->getSchedulePart()->getGroup()->getId(),
+            "lesson_type_id" => $hack ? 0 : $schedule_template->getLessonType()->getId(),
+            "discipline_id"  => $hack ? 0 : $schedule_template->getSchedulePart()->getDiscipline()->getId(),
+            "time_id"        => $hack ? 0 :$schedule_template->getTime()->getId(),
+            "auditory_id"    => $hack ? 0 :$schedule_template->getAuditory()->getId(),
+            "professor_id"   => $hack ? 0 :$schedule_template->getSchedulePart()->getProfessor()->getId(),
+            "date"           => $hack ? 0 :$elem['0']->getExecDate()->getTimestamp(),
+            "id"             => $hack ? $elem->getRecordId() :$elem['0']->getId(),
+            "status"         => $hack ? 3 :$elem['status']
          ];
          array_push($result, $schedule_elem);
       }
@@ -80,7 +80,7 @@ class ScheduleRenderedRepository extends EntityRepository
    {
       $recs = $this->_prepareQB()
                   ->select('sr, lm.status')
-                  ->innerJoin('FarpostStoreBundle:LastModified', 'lm', Join::WITH, 'lm.record_id = s.id')
+                  ->innerJoin('FarpostStoreBundle:LastModified', 'lm', Join::WITH, 'lm.record_id = sr.id')
                   ->where('lm.table_name = :table_name')
                   ->andWhere('lm.last_modified > :time')
                   ->andWhere('g.id = :group_id')
@@ -90,7 +90,22 @@ class ScheduleRenderedRepository extends EntityRepository
                   ->setParameter('group_id', $group_id)
                   ->getQuery()
                   ->getResult();
+      // echo $recs->getDQL();
       $recs = $this->_finalizeUpdate($recs);
-      return $recs;
+      $recs2 = $this->_em->createQueryBuilder()
+                    ->select('lm')
+                    ->from('FarpostStoreBundle:LastModified', 'lm')
+                    ->where('lm.table_name = :table_name')
+                    ->andWhere('lm.status = 3')
+                    ->andWhere('lm.last_modified > :time')
+                    ->andWhere('lm.group_id = :group_id')
+                    ->setParameter('table_name', 'schedule_rendered')
+                    ->setParameter('time', $last_time)
+                    ->setParameter('group_id', $group_id)
+                    ->getQuery()
+                    ->getResult();
+      $recs2 = $this->_finalizeUpdate($recs2, true, $group_id);
+
+      return array_merge($recs, $recs2);
    }
 }

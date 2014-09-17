@@ -51,6 +51,13 @@ class LastModified
     protected $status;
 
     /**
+     * @var Group
+     *
+     * @ORM\Column(name="group_id", type="integer", nullable=true)
+     */
+    protected $group_id;
+
+    /**
      * Get id
      *
      * @return integer
@@ -150,5 +157,28 @@ class LastModified
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set group_id
+     *
+     * @param integer $groupId
+     * @return LastModified
+     */
+    public function setGroupId($groupId)
+    {
+        $this->group_id = $groupId;
+
+        return $this;
+    }
+
+    /**
+     * Get group_id
+     *
+     * @return integer 
+     */
+    public function getGroupId()
+    {
+        return $this->group_id;
     }
 }
