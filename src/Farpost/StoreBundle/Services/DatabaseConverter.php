@@ -43,7 +43,7 @@ class DatabaseConverter
       $pg_err_num = 0;
       $pg_log_file = __DIR__ . '/../../../../web/uploads/documents/tmp_log.txt';
       // system("/usr/bin/psql -c -d $dbname_bu -c 'CREATE SCHEMA IF NOT EXISTS catalog;'");
-      system("/usr/bin/pg_restore --host=localhost -U $owner -c -O -d $dbname_bu $infile > $pg_log_file 2>&1", $pg_err_num);
+      system("/usr/bin/pg_restore --host=localhost -U $owner -c -O -d $dbname_bu --schema=catalog $infile > $pg_log_file 2>&1", $pg_err_num);
       $pg_log = file_get_contents($pg_log_file); 
       if ($pg_err_num) {
          echo $pg_err_num;
