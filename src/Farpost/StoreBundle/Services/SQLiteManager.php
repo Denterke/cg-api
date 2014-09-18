@@ -107,7 +107,8 @@ class SQLiteManager {
                $this->ToField('alias', 'VARCHAR', false, true, ''),
                $this->ToField('node_id', 'INTEGER', false, true, 'node_types'),
                $this->ToField('lat', 'DOUBLE', false, true, ''),
-               $this->ToField('lon', 'DOUBLE', false, true, '')
+               $this->ToField('lon', 'DOUBLE', false, true, ''),
+               $this->ToField('unialias', 'VARCHAR', false, true, '')
             ]
          ],
          [
@@ -169,6 +170,7 @@ class SQLiteManager {
       if ($table['table'] == 'objects') {
          $record['type_id'] = $record['type_id'] ? $record['type_id'] : 0;
          $record['node_id'] = $record['node_id'] ? $record['node_id'] : 2;
+         $record['unialias'] = $record['alias'];
       }
       foreach($table['fields'] as &$field) {
          // echo "<p>" . json_encode($record) . "</p>";
