@@ -157,15 +157,15 @@ class DefaultController extends Controller
                       ->getRepository('FarpostStoreBundle:' . $en_name)
                       ->getUpdate($dt, $group);
          if (empty($elem)) continue;
-         array_push(
-            $result,
-            [$table_name => $elem]
-         );
+         // array_push(
+            $result[$table_name] = $elem;
+            // [$table_name => $elem]
+         // );
       }
       $current_time = new \DateTime();
-      array_push($result, ['timestamp' => $current_time->getTimestamp()]);
+      $result['timestamp'] = $current_time->getTimestamp();
       $result = json_encode($result);
-      $result = substr($result, 1, strlen($result) - 2);
+      // $result = substr($result, 1, strlen($result) - 2);
       return $response->setStatusCode(200)->setContent($result);
    }
 
@@ -245,6 +245,16 @@ class DefaultController extends Controller
             "alias" => "5 пара",
             "start_time" => "15:10:00",
             "end_time"   => "16:40:00"
+         ],
+         [
+            "alias" => "6 пара",
+            "start_time" => "16:50:00",
+            "end_time"   => "18:20:00",
+         ],
+         [
+            "alias" => "7 пара",
+            "start_time" => "18:30:00",
+            "end_time"   => "20:00:00"
          ]
       ];
       $em = $this->getDoctrine()->getManager('default');
