@@ -13,6 +13,12 @@ services:
     database_converter:
         class: Farpost\StoreBundle\Services\DatabaseConverter
         arguments: [ @doctrine, "@sqlite_manager", "@entity_dispatcher" ]
+    # update_listener:
+        # class: Farpost\StoreBundle\EventListener\UpdateListener
+        # tags:
+            # - { name: doctrine.event_listener, event: postPersist, connection: default, method: postPersist }
+            # - { name: doctrine.event_listener, event: preRemove,   connection: default, method: preRemove }
+            # - { name: doctrine.event_listener, event: postUpdate,  connection: default, method: postUpdate }
 
 framework:
     #esi:             ~
@@ -22,7 +28,8 @@ framework:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
     form:            ~
-    csrf_protection: ~
+    csrf_protection: 
+        enabled: false
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
@@ -76,6 +83,7 @@ doctrine:
                 password: "Xt4Mc5hm$v"
 
         #ahjihaR1eeQu
+        #Xt4Mc5hm$v
         #charset:  "UTF-8"
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: "%kernel.root_dir%/data/data.db3"

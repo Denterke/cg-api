@@ -47,7 +47,7 @@ class UserRepository extends EntityRepository
 
    public function syncValue($full_name)
    {
-      echo $full_name;
+      // echo $full_name;
       list(
          $last,
          $first,
