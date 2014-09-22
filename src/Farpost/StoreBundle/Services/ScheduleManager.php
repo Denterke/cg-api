@@ -120,6 +120,9 @@ class ScheduleManager
       $group = $this->syncGroupInfo($group_info);
       while (!feof($ss_file)) {
          $schedule_template = fgets($ss_file);
+         if (rtrim($schedule_template) == '') {
+            break;
+         }
          try {
             list(
                $_l_num,

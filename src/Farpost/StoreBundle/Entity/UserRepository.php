@@ -48,11 +48,15 @@ class UserRepository extends EntityRepository
    public function syncValue($full_name)
    {
       // echo $full_name;
-      list(
-         $last,
-         $first,
-         $middle
-      ) = explode(" ", $full_name);
+      if (rtrim($full_name) == '') {
+         $last = $first = $middle = "MISHA RAK";
+      } else {
+         list(
+            $last,
+            $first,
+            $middle
+         ) = explode(" ", $full_name);
+      }
       $professor = $this->findOneBy([
          'first_name' => $first,
          'middle_name' => $middle,
