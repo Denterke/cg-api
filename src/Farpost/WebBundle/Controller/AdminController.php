@@ -111,9 +111,9 @@ class AdminController extends Controller
          // echo $document->getAbsolutePath();
          $this->get('database_converter')->AddDb($document->getType(), $document->getAbsolutePath());
          $this->get('schedule_manager')->refreshSchedule();
-         print_r($_POST);
-         exit;
-         // return $this->redirect($this->generateUrl('admin_basemanagement'));
+         // print_r($_POST);
+         // exit;
+         return $this->redirect($this->generateUrl('admin_basemanagement'));
       }
       $dt = new \DateTime();
       echo $dt->getTimestamp();
@@ -144,11 +144,11 @@ class AdminController extends Controller
             $document->getAbsolutePath(),
             $document->getVDatetime()
          );
-         echo json_encode($_REQUEST);
-         echo json_encode($_FILES);
+         // echo json_encode($_REQUEST);
          // echo json_encode($_FILES);
-         exit;
-         // return $this->redirect($this->generateUrl('admin_basemanagement'));
+         // echo json_encode($_FILES);
+         // exit;
+         return $this->redirect($this->generateUrl('admin_basemanagement'));
       }
       return $this->render('FarpostWebBundle:Admin:versions_card.html.twig', [
          'version_form' => $form->createView(), 'type' => $promt]);

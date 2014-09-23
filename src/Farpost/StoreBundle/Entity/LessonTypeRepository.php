@@ -56,7 +56,7 @@ class LessonTypeRepository extends EntityRepository
          $stmt->execute();
          $ids = $stmt->fetchAll();
          for ($i = 0; $i < count($ids); $i++) {
-            $fakes[$resRefs[$i]] = $ids[$i];
+            $fakes[$resRefs[$i]] = $ids[$i]['id'];
          }
       }
    }
