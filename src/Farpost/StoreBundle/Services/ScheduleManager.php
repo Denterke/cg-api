@@ -20,8 +20,11 @@ class ScheduleManager
       $this->doctrine = $doctrine;
    }
 
-   public function generateSchedule(Schedule $schedule)
+   public function generateSchedule($sId)
    {
+      $schedule = $this->doctrine->getManager('default')
+                       ->getRepository('FarpostStoreBundle:Schedule')
+                       ->findOneById($sId);      
       $schedule_rendered = $schedule->getScheduleRendered();
       $current_time = clone $schedule->getSemester()->getTimeStart();
       $dow = $schedule->getDay();
@@ -38,6 +41,8 @@ class ScheduleManager
       }
       $em = $this->doctrine->getManager('default');
       $idx = 0;
+      $lc = 0;
+      $batchCnt = 100;
       while ($current_time <= $end_time) {
          $qb = $em->createQueryBuilder();
          if ($idx < $schedule_rendered->count()) {
@@ -60,9 +65,16 @@ class ScheduleManager
          $schedule_elem->setExecDate($current_time)
                        ->setSchedule($schedule);
          $em->persist($schedule_elem);
-         $em->flush();
+         // $lc++;
+         // if ($lc % $batchCnt == 0) {
+            // echo "$lc a";
+            // $em->flush();
+            // $em->clear();
+         // }
          $current_time = $current_time->add(new \DateInterval('P' . $period . 'D'));
       }
+      $em->flush();
+      // $em->clear();
    }
 
    private function syncGroupInfo($group_info)
@@ -118,6 +130,22 @@ class ScheduleManager
       $group_info = fgets($ss_file);
       $str_num = 1;
       $group = $this->syncGroupInfo($group_info);
+      $gId = $group->getId();
+      $templates = [];
+      $fake = [
+         'geo' => [],
+         'time' => [],
+         'ltype' => [],
+         'disc' => [],
+         'sp'   => [],
+         'user' => []
+
+      ];
+      $insStr = 
+         "INSERT INTO
+            schedule
+            (schedule_part_id, auditory_id, time_id, lesson_type_id, semester_id, period, day)
+          VALUES ";
       while (!feof($ss_file)) {
          $schedule_template = fgets($ss_file);
          if (rtrim($schedule_template) == '') {
@@ -137,33 +165,92 @@ class ScheduleManager
          catch(\Exception $e) {
             throw new \Exception("Can not split schedule template string #$str_num: " . $e->getMessage());
          }
-         $str_num++;
-         $i = 0;
-
-         $entities = [
-            'Time' => $_l_num,
-            'Discipline' => $_discipline,
-            'LessonType' => $_l_type,
-            'User' => $_professor,
-            'GeoObject' => $_geoobject
-         ];
-         foreach($entities as $en_name => &$entity) {
-            $entity = $em->getRepository('FarpostStoreBundle:' . $en_name)
-                         ->syncValue($entity);
+         $_professor = rtrim($_professor);
+         $discIdx = array_search($_discipline, $fake['disc']);
+         if ($discIdx === false) {
+            $discIdx = array_push($fake['disc'], $_discipline) - 1;
          }
-         $schedule_part = $em->getRepository('FarpostStoreBundle:SchedulePart')
-                             ->syncValue($entities['User'], $entities['Discipline'], $group);
-         $schedule = $em->getRepository('FarpostStoreBundle:Schedule')->doUpdate(
-            $period,
-            $schedule_part,
-            $entities['GeoObject'],
-            $entities['Time'],
-            $entities['LessonType'],
-            $day,
-            $group
+         if ($_professor) {
+            $userIdx = array_search($_professor, $fake['user']);
+            if ($userIdx === false) {
+               $userIdx = array_push($fake['user'], $_professor) - 1;
+            }
+         }
+         $_sp = ['user' => $userIdx, 'disc' => $discIdx, 'group' => $gId];
+         $spIdx = array_search($_sp, $fake['sp']);
+         if ($spIdx === false) {
+            $spIdx = array_push($fake['sp'], $_sp) - 1;
+         }
+         $geoIdx = array_search($_geoobject, $fake['geo']);
+         if ($geoIdx === false) {
+            $geoIdx = array_push($fake['geo'], $_geoobject) - 1;
+         }
+         $ltIdx = array_search($_l_type, $fake['ltype']);
+         if ($ltIdx === false) {
+            $ltIdx = array_push($fake['ltype'], $_l_type) - 1;
+         }
+         $timeIdx = array_search($_l_num, $fake['time']);
+         if ($timeIdx === false) {
+            $timeIdx = array_push($fake['time'], $_l_num) - 1;
+         }
+         if ($day == '' || $period == '') {
+            throw new \Exception("day or period is null");
+         }
+         array_push(
+            $templates,
+            [
+               'day'    => $day,
+               'period' => $period,
+               'geo' => $geoIdx,
+               'sp'     => $spIdx,
+               'ltype'  => $ltIdx,
+               'time'   => $timeIdx
+            ]
          );
-         $this->generateSchedule($schedule);
       }
+      $entities = [
+         'geo'   => 'GeoObject',
+         'time'  => 'Time', 
+         'ltype' => 'LessonType',
+         'disc'  => 'Discipline',
+         'user'  => 'User'
+      ];
+      foreach($entities as $key => $entity) {
+         $em->getRepository('FarpostStoreBundle:' . $entity)->realizeFake($fake[$key]);
+      }
+      foreach($fake['sp'] as &$sp) {
+         $sp['user'] = $fake['user'][$sp['user']];
+         $sp['disc'] = $fake['disc'][$sp['disc']];
+      }
+      $em->getRepository('FarpostStoreBundle:SchedulePart')
+         ->realizeFake($fake['sp'], $group->getId());
+      $firstIns = true;
+      
+      foreach($templates as &$t) {
+         $insStr .= $firstIns ? ' ' : ', ';
+         $firstIns = false;
+         try {
+         $insStr .= "({$fake['sp'][$t['sp']]}, {$fake['geo'][$t['geo']]}, " .
+                      "{$fake['time'][$t['time']]}, {$fake['ltype'][$t['ltype']]}, " . 
+                      "1, {$t['period']}, {$t['day']})";
+         } catch (\Exception $e) {
+            print_r($fake);
+            echo "<p>.........................</p>";
+            print_r($t);
+            throw $e;
+         }
+      }
+      if (!$firstIns) {
+         $insStr .= " returning id";
+         $pdo = $em->getConnection();
+         $stmt = $pdo->prepare($insStr);
+         $stmt->execute();
+         $ids = $stmt->fetchAll();
+         for ($i = 0; $i < count($ids); $i++) {
+            $this->generateSchedule($ids[$i]);
+         }
+      }
+
       if ($createSS) {
          $ssource = new ScheduleSource();
          $ssource->setVDatetime($vdatetime)

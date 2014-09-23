@@ -41,4 +41,56 @@ class SchedulePartRepository extends EntityRepository
       }
       return $schedule_part;
    }
+
+   public function realizeFake(&$fakes)
+   {
+      // print_r($fakes);
+      // exit;
+      $pdo = $this->_em->getConnection();
+      $stmt = $pdo->prepare("SELECT * FROM schedule_parts;");
+      $objs = [];
+      while ($row = $stmt->fetch()) {
+         $objs[
+            "{$row['professor_id']} {$row['group_id']} {$row['discipline_id']}"
+         ] = $row;
+      }
+      $keys = array_keys($objs);
+      $insStr = 
+         "INSERT INTO
+            schedule_parts
+            (professor_id, group_id, discipline_id)
+          VALUES";
+      $firstIns = true;
+      $resRefs = [];
+      for ($i = 0; $i < count($fakes); $i++) {
+         $fake_key = "{fakes[$i]['user']} {fakes[$i]['group']} {fakes[$i]['disc']}";
+         $objIdx = array_search($fake_key, $keys);
+         if ($objIdx === false) {
+            $insStr .= $firstIns ? ' ' : ', ';
+            $firstIns = false;
+            try {
+               $insStr .= "('{$fakes[$i]['user']}', '{$fakes[$i]['group']}', '{$fakes[$i]['disc']}')";
+            } catch (\Exception $e) {
+               print_r($fakes[$i]);
+               throw $e;
+            }
+            array_push($resRefs, $i);
+         } else {
+            $fakes[$i] = $objs[$fakes[$i]]['id'];
+         }
+      }
+      if (!$firstIns) {
+         $insStr .= " returning id";
+         // echo $insStr;
+         // exit;
+         $stmt = $pdo->prepare($insStr);
+         $stmt->execute();
+         $ids = $stmt->fetchAll();
+         // print_r($ids);
+         // exit;
+         for ($i = 0; $i < count($ids); $i++) {
+            $fakes[$resRefs[$i]] = $ids[$i]['id'];
+         }
+      }
+   }
 }

@@ -3,7 +3,8 @@
 namespace Farpost\StoreBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
-
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\DBAL\Cache\QueryCacheProfile;
 /*
  * GeoObjectRepository
  */
@@ -93,69 +94,135 @@ class GeoObjectRepository extends EntityRepository
       return $recs;
    }
 
+   public function realizeFake(&$fakes)
+   {
+      $pdo = $this->_em->getConnection();
+      $stmt = $pdo->prepare("SELECT id, alias FROM geoobjects;");
+      $stmt->execute();
+      $objs = [];
+      while ($row = $stmt->fetch()) {
+         $objs[$row['alias']] = $row;
+      }
+      // print_r($objs);
+      $stmt = $pdo->prepare("SELECT max(id) FROM geoobjects;");
+      $stmt->execute();
+      $curId = $stmt->fetchAll();
+      $curId = $curId[0]['max'];
+      $curId = $curId ? $curId + 1: 1;
+      $keys = array_keys($objs);
+      $insStr = 
+         "INSERT INTO
+            geoobjects
+            (id, alias, cataloged, status)
+          VALUES";
+      $firstIns = true;
+      $resRefs = [];
+      for ($i = 0; $i < count($fakes); $i++) {
+         $objIdx = array_search($fakes[$i], $keys);
+         if ($objIdx === false) {
+            $insStr .= $firstIns ? ' ' : ', ';
+            $firstIns = false;
+            $insStr .= "($curId, '{$fakes[$i]}', 0, 1)";
+            array_push($resRefs, $i);
+            $curId++;
+         } else {
+            $fakes[$i] = $objs[$fakes[$i]]['id'];
+         }
+      }
+      if (!$firstIns) {
+         $insStr .= " returning id";
+         // echo $insStr;
+         // exit;
+         $stmt = $pdo->prepare($insStr);
+         $stmt->execute();
+         $ids = $stmt->fetchAll();
+         // print_r($ids);
+         // exit;
+         for ($i = 0; $i < count($ids); $i++) {
+            $fakes[$resRefs[$i]] = $ids[$i]['id'];
+         }
+      }
+   }
+
    public function synchronizeWith($items)
    {
-      $em = $this->getEntityManager();
-      $go_repo = $em->getRepository('FarpostStoreBundle:GeoObject');
-      $fake_recs = $go_repo->findBy(['cataloged' => 0]);
+      // exit;
+      echo "IN SYNC\n";
+      $pdo = $this->_em->getConnection();
+      $stmt = $pdo->prepare(
+         "DELETE FROM
+            geoobjects
+          WHERE
+            cataloged = 0"
+      );
+      $stmt->execute();
+      $stmt = $pdo->prepare(
+         "SELECT
+            id, geoobject_type_id as type_id, building_id, alias, level, lon, lat, status
+          FROM
+            geoobjects
+         "
+      );
+      $stmt->execute();
+      $objs = [];
+      while ($row = $stmt->fetch()) {
+         $objs[$row['id']] = $row;
+      }
+      $ids = array_keys($objs);
+      $insStr = 
+         "INSERT INTO
+            geoobjects (id, geoobject_type_id, building_id, alias, level, lon, lat, cataloged, status)
+          VALUES ";
+      $updStr = "";
+      $firstIns = true;
 
-      foreach($fake_recs as &$fake_rec) {
-         $em->remove($fake_rec);
-         $em->flush();
-      }
-      $batch_size = 100;
-      $i = 0;
-      $qb = $this->_prepareQB();
       foreach ($items as &$item) {
-         $i++;
-         $is_new = false;
-         try {
-            $twin = $go_repo->findOneBy(['id' => $item['id']]);
-            if (is_null($twin)) {
-               throw new \Doctrine\ORM\NoResultException();
-            }
-         }
-         catch (\Doctrine\ORM\NoResultException $e) {
-            $twin = new GeoObject();
-            $twin->setId($item['id']);
-            $is_new = true;
-         }
-         if ($item['type_id']) {
-            $go_type = $em->getReference(
-               'FarpostStoreBundle:GeoObjectType',
-               $item['type_id']
-            );
-            $twin->setGeoobjectType($go_type);
+         unset($item['node_id']);
+         $idx = array_search($item['id'], $ids);
+         $item['type_id'] = $item['type_id'] ?:'null';
+         $item['building_id'] = $item['building_id'] ?: 'null';
+         $item['level'] = $item['level'] ?: 'null';
+         $item['lon'] = $item['lon'] ?: 'null';
+         $item['lat'] = $item['lat'] ?: 'null';
+         if ($idx === false) {
+            $insStr .= $firstIns ? '' : ', ';
+            $firstIns = false;
+            $insStr .= "({$item['id']}, {$item['type_id']}, {$item['building_id']}, " .
+                       "'{$item['alias']}', {$item['level']}, {$item['lon']}, {$item['lat']}, " .
+                       "1, {$item['status']})";
+         } else if (empty(array_diff_assoc($item, $objs[$ids[$idx]]))) {
+            // echo "they are equal:";
+            // print_r($item);
+            // echo "obj";
+            // print_r($objs[$ids[$idx]]);
+            continue;
          } else {
-            // echo "<p>In table GeoObjects: no 'type_id' for record with 'id' = $item[id]</p>";
-         }
-         if ($item['building_id']) {
-            $go_building = $em->getReference(
-               'FarpostStoreBundle:Building',
-               $item['building_id']
-            );
-            $twin->setBuilding($go_building);
-         } else {
-            // echo "<p>In table GeoObjects: no 'building_id' for record with 'id' = $item[id]</p>";
-         }
-         $twin->setAlias($item['alias'])
-              ->setLevel($item['level'])
-              ->setLon($item['lon'])
-              ->setLat($item['lat'])
-              ->setStatus($item['status'])
-              ->setCataloged(1);
-         if ($is_new) {
-            $em->persist($twin);
-         } else {
-            $em->merge($twin);
-         }
-         if (($i % $batch_size) === 0) {
-            $em->flush();
-            $this->clear();
+            // print_r($item);
+            // print_r($objs[$ids[$idx]]);
+            // exit;
+            $updStr = 
+               "UPDATE 
+                  GEOOBJECTS
+               SET
+                  geoobject_type_id = {$item['type_id']},
+                  building_id = {$item['building_id']},
+                  alias = '{$item['alias']}',
+                  level = {$item['level']},
+                  lon = {$item['lon']},
+                  lat = {$item['lat']},
+                  cataloged = 1,
+                  status = {$item['status']}
+               WHERE
+                  id = {$item['id']};
+               ";
+               $stmt = $pdo->prepare($updStr);
+               $stmt->execute();
          }
       }
-      $em->flush();
-      $this->clear();
+      if (!$firstIns) {
+         $stmt = $pdo->prepare($insStr);
+         $stmt->execute();
+      } 
    }
 
    public function syncValue($alias)

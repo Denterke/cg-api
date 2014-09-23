@@ -79,4 +79,25 @@ class TimeRepository extends EntityRepository
       }
       return $time;
    }
+
+   public function realizeFake(&$fakes)
+   {
+      $pdo = $this->_em->getConnection();
+      $stmt = $pdo->prepare("SELECT id, alias FROM times;");
+      $stmt->execute();
+      $objs = [];
+      while ($row = $stmt->fetch()) {
+         $objs[$row['alias']] = $row;
+      }
+      $keys = array_keys($objs);
+      $firstIns = true;
+      for ($i = 0; $i < count($fakes); $i++) {
+         $objIdx = array_search($fakes[$i], $keys);
+         if ($objIdx === false) {
+            throw new \Exception("No such time found!");
+         } else {
+            $fakes[$i] = $objs[$fakes[$i]]['id'];
+         }
+      }
+   }
 }

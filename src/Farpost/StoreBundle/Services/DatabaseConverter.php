@@ -64,7 +64,6 @@ class DatabaseConverter
          $this->SoftExit($e->message);
       }
       echo "i create sqlite file!";
-
       foreach($tables as &$table) {
          echo "<p>now table name is $table[table]</p>";
          $bu_items = $em_bu->getRepository(

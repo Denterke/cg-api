@@ -73,4 +73,53 @@ class UserRepository extends EntityRepository
       $this->_em->flush();
       return $professor;
    }
+
+   public function realizeFake(&$fakes)
+   {
+      $pdo = $this->_em->getConnection();
+      $stmt = $pdo->prepare("SELECT id, first_name, last_name, middle_name FROM users;");
+      $stmt->execute();
+      $objs = [];
+      while ($row = $stmt->fetch()) {
+         $uniname = $row['last_name'] . " " . $row['first_name'] . " " . $row['middle_name'];
+         $objs[$uniname] = $row;
+      }
+      $keys = array_keys($objs);
+      $insStr = 
+         "INSERT INTO
+            users
+            (first_name, last_name, middle_name)
+          VALUES";
+      $firstIns = true;
+      $resRefs = [];
+      for ($i = 0; $i < count($fakes); $i++) {
+         $objIdx = array_search($fakes[$i], $keys);
+         if ($objIdx === false) {
+            $insStr .= $firstIns ? ' ' : ', ';
+            $firstIns = false;
+            if (!rtrim($fakes[$i])) {
+               $last = $middle = $first = 'no';
+            } else {
+               list(
+                  $last, 
+                  $first,
+                  $middle
+               ) = explode(' ', rtrim($fakes[$i]));
+            }
+            $insStr .= "('$first', '$last', '$middle')";
+            array_push($resRefs, $i);
+         } else {
+            $fakes[$i] = $objs[$fakes[$i]]['id'];
+         }
+      }
+      if (!$firstIns) {
+         $insStr .= " returning id";
+         $stmt = $pdo->prepare($insStr);
+         $stmt->execute();
+         $ids = $stmt->fetchAll();
+         for ($i = 0; $i < count($ids); $i++) {
+            $fakes[$resRefs[$i]] = $ids[$i]['id'];
+         }
+      }
+   }
 }

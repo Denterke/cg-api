@@ -57,4 +57,43 @@ class DisciplineRepository extends EntityRepository
       $this->_em->flush();
       return $discipline;
    }
+
+   public function realizeFake(&$fakes)
+   {
+      $pdo = $this->_em->getConnection();
+      $stmt = $pdo->prepare("SELECT id, alias FROM disciplines;");
+      $stmt->execute();
+      $objs = [];
+      while ($row = $stmt->fetch()) {
+         $objs[$row['alias']] = $row;
+      }
+      $keys = array_keys($objs);
+      $insStr = 
+         "INSERT INTO
+            disciplines
+            (alias)
+          VALUES";
+      $firstIns = true;
+      $resRefs = [];
+      for ($i = 0; $i < count($fakes); $i++) {
+         $objIdx = array_search($fakes[$i], $keys);
+         if ($objIdx === false) {
+            $insStr .= $firstIns ? ' ' : ', ';
+            $firstIns = false;
+            $insStr .= "('{$fakes[$i]}')";
+            array_push($resRefs, $i);
+         } else {
+            $fakes[$i] = $objs[$fakes[$i]]['id'];
+         }
+      }
+      if (!$firstIns) {
+         $insStr .= " returning id";
+         $stmt = $pdo->prepare($insStr);
+         $stmt->execute();
+         $ids = $stmt->fetchAll();
+         for ($i = 0; $i < count($ids); $i++) {
+            $fakes[$resRefs[$i]] = $ids[$i]['id'];
+         }
+      }
+   }
 }
