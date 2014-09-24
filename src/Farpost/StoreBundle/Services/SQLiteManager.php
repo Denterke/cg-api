@@ -170,7 +170,7 @@ class SQLiteManager {
       if ($table['table'] == 'objects') {
          $record['type_id'] = $record['type_id'] ? $record['type_id'] : 0;
          $record['node_id'] = $record['node_id'] ? $record['node_id'] : 2;
-         $record['unialias'] = $record['alias'];
+         $record['unialias'] = mb_strtolower($record['alias'], 'UTF-8');
       }
       foreach($table['fields'] as &$field) {
          // echo "<p>" . json_encode($record) . "</p>";
