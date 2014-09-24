@@ -20,17 +20,14 @@ class ScheduleManager
       $this->doctrine = $doctrine;
    }
 
-   public function generateSchedule($sId)
+   public function generateSchedule($schedule)
    {
-      $schedule = $this->doctrine->getManager('default')
-                       ->getRepository('FarpostStoreBundle:Schedule')
-                       ->findOneById($sId);      
-      $schedule_rendered = $schedule->getScheduleRendered();
-      $current_time = clone $schedule->getSemester()->getTimeStart();
-      $dow = $schedule->getDay();
+      $pdo = $this->doctrine->getConnection();
+      $current_time = \DateTime::createFromFormat('Y-m-d', $schedule['time_start']);
+      $dow = $schedule['day'];
       $current_dow = date("N", $current_time->getTimestamp());
-      $period = $schedule->getPeriod();
-      $end_time = $schedule->getSemester()->getTimeEnd();
+      $period = $schedule['period'];
+      $end_time = \DateTime::createFromFormat('Y-m-d', $schedule['time_end']);
       if ($dow < $current_dow) {
          $dow += $period;
          $current_time = $current_time->add(new \DateInterval('P' . $period . 'D'));
@@ -39,42 +36,22 @@ class ScheduleManager
          $current_dow++;
          $current_time = $current_time->add(new \DateInterval('P' . 1 . 'D'));
       }
-      $em = $this->doctrine->getManager('default');
-      $idx = 0;
-      $lc = 0;
-      $batchCnt = 100;
+      $firstIns = true;
+      $insStr = 
+         "INSERT INTO
+            schedule_rendered (schedule_id, exec_date)
+          VALUES ";
       while ($current_time <= $end_time) {
-         $qb = $em->createQueryBuilder();
-         if ($idx < $schedule_rendered->count()) {
-            $result = $qb->update('FarpostStoreBundle:ScheduleRendered', 'sr')
-                         ->set('sr.exec_date', ':time')
-                         ->where('sr.id = :id')
-                         ->setParameter('id', $schedule_rendered[$idx]->getId())
-                         ->setParameter('time', $current_time)
-                         ->getQuery()
-                         ->execute();
-            if (!$result) {
-               die("WHAT THE FUCK IS GOING ON????! I CANNT DO UPDATE!!!!");
-            }
-            $current_time = $current_time->add(new \DateInterval('P' . $period . 'D'));
-            $idx++;
-            $em->flush();
-            continue;
-         }
-         $schedule_elem = new ScheduleRendered();
-         $schedule_elem->setExecDate($current_time)
-                       ->setSchedule($schedule);
-         $em->persist($schedule_elem);
-         // $lc++;
-         // if ($lc % $batchCnt == 0) {
-            // echo "$lc a";
-            // $em->flush();
-            // $em->clear();
-         // }
+         $strTime = $current_time->format('Y-m-d');
+         $insStr .= $firstIns ? ' ' : ', ';
+         $firstIns = false;
+         $insStr .= "({$schedule['id']}, '$strTime')";
          $current_time = $current_time->add(new \DateInterval('P' . $period . 'D'));
       }
-      $em->flush();
-      // $em->clear();
+      if (!$firstIns) {
+         $stmt = $pdo->prepare($insStr);
+         $stmt->execute();
+      }
    }
 
    private function syncGroupInfo($group_info)
@@ -246,8 +223,26 @@ class ScheduleManager
          $stmt = $pdo->prepare($insStr);
          $stmt->execute();
          $ids = $stmt->fetchAll();
-         for ($i = 0; $i < count($ids); $i++) {
-            $this->generateSchedule($ids[$i]);
+         $stmt = $pdo->prepare(
+         "SELECT 
+            s.id, sm.time_start, sm.time_end, s.period, s.day
+          FROM
+               schedule s 
+            INNER JOIN 
+               semesters sm
+            ON
+               s.semester_id = sm.id
+            INNER JOIN
+               schedule_parts sp
+            ON
+               s.schedule_part_id = sp.id
+          WHERE
+            sp.group_id = {$group->getId()};"
+         );
+         $stmt->execute();
+         $temps = $stmt->fetchAll();
+         foreach($temps as &$temp) {
+            $this->generateSchedule($temp);
          }
       }
 
