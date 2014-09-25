@@ -97,7 +97,13 @@ class GeoObjectRepository extends EntityRepository
    public function realizeFake(&$fakes)
    {
       $pdo = $this->_em->getConnection();
-      $stmt = $pdo->prepare("SELECT id, alias FROM geoobjects;");
+      $stmt = $pdo->prepare(
+         "SELECT
+            id, alias
+          FROM
+            geoobjects
+          WHERE
+            geoobject_type_id = " . self::AUDITORY_TYPE_ID);
       $stmt->execute();
       $objs = [];
       while ($row = $stmt->fetch()) {
@@ -113,7 +119,7 @@ class GeoObjectRepository extends EntityRepository
       $insStr = 
          "INSERT INTO
             geoobjects
-            (id, alias, cataloged, status)
+            (id, alias, cataloged, status, geoobject_type_id)
           VALUES";
       $firstIns = true;
       $resRefs = [];
@@ -122,7 +128,7 @@ class GeoObjectRepository extends EntityRepository
          if ($objIdx === false) {
             $insStr .= $firstIns ? ' ' : ', ';
             $firstIns = false;
-            $insStr .= "($curId, '{$fakes[$i]}', 0, 1)";
+            $insStr .= "($curId, '{$fakes[$i]}', 0, 1, " . self::AUDITORY_TYPE_ID . ")";
             array_push($resRefs, $i);
             $curId++;
          } else {
@@ -179,11 +185,14 @@ class GeoObjectRepository extends EntityRepository
       foreach ($items as &$item) {
          unset($item['node_id']);
          $idx = array_search($item['id'], $ids);
-         $item['type_id'] = $item['type_id'] ?:'null';
+         $item['type_id']     = $item['type_id']     ?: 'null';
          $item['building_id'] = $item['building_id'] ?: 'null';
-         $item['level'] = $item['level'] ?: 'null';
-         $item['lon'] = $item['lon'] ?: 'null';
-         $item['lat'] = $item['lat'] ?: 'null';
+         $item['level']       = $item['level']       ?: 'null';
+         $item['lon']         = $item['lon']         ?: 'null';
+         $item['lat']         = $item['lat']         ?: 'null';
+         if ($item['type_id'] == self::AUDITORY_TYPE_ID && rtrim($item['alias']) == '') {
+            $item['type_id'] = 0;
+         }
          if ($idx === false) {
             $insStr .= $firstIns ? '' : ', ';
             $firstIns = false;
