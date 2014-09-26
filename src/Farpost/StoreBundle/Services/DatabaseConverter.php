@@ -135,7 +135,7 @@ class DatabaseConverter
       }
       $dt = new \DateTime();
       $timestamp = date('dmY_Gis', $dt->getTimestamp());
-      $new_name = ($level == -59 ? "map_" : "plan_{$level}_") . $timestamp;
+      $new_name = ($level == -59 ? "map_" : "plan_{$level}_") . $timestamp . '.mbtiles';
       $timestamp = $dt->getTimestamp();
       $path = dirname(__FILE__) . '/../../../../web/static/';
       if (!copy($dbname, $path . $new_name)) {

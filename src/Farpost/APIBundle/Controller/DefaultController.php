@@ -172,11 +172,11 @@ class DefaultController extends Controller
    public function getBaseUpdatesAction()
    {
       $response = $this->_createResponse();
-      $result = $this->getDoctrine()->getManager()
+      $result = [
+        'update' =>  $this->getDoctrine()->getManager()
                      ->getRepository('FarpostStoreBundle:Version')
-                     ->getBases($this->getRequest()->getHost());
-
-
+                     ->getBases($this->getRequest()->getHost())
+         ];
       return $response->setStatusCode(200)->setContent(json_encode($result));
    }
 
