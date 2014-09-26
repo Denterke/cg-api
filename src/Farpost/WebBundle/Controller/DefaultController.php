@@ -8,6 +8,6 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('FarpostWebBundle:Admin:login.html.twig');
+    	return $this->render("FarpostWebBundle:Default:index.html.twig");
     }
 }

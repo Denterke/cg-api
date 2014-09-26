@@ -11,9 +11,14 @@ security:
             memory:
                 users:
                     user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+                    notanadmin: { password: 16ytu91ito, roles: [ 'ROLE_ADMIN' ] }
 
     firewalls:
+        secured_area:
+            pattern: ^/admin
+            anonymous: ~
+            http_basic:
+                realm: "Secured admin area"
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -35,4 +40,5 @@ security:
             #    realm: "Secured Demo Area"
 
     access_control:
+        - {path: ^/admin, roles: 'ROLE_ADMIN'}
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
