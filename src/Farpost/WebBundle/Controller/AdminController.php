@@ -117,9 +117,11 @@ class AdminController extends Controller
       }
       $dt = new \DateTime();
       echo $dt->getTimestamp();
-      $promt = $request->query->get('id') == -20 ?
-               'Файл каталога организаций' :
-               'Файл плана уровня ' . $request->query->get('id');
+      $promt = $request->query->get('id') == -20 
+               ? 'Файл каталога организаций' 
+               : $request->query->get('id') == -59
+                  ? 'Файл карты ДВФУ'
+                  :'Файл плана уровня ' . $request->query->get('id');
       return $this->render('FarpostWebBundle:Admin:versions_card.html.twig', [
          'version_form' => $form->createView(), 'type' => $promt]);
    }

@@ -42,6 +42,8 @@ class Version
     * @ORM\Column(name="type", type="integer")
     */
    protected $type;
+   //-59 - map
+   //-58 - zip_plans
    //-20 - catalog
    //1 - level 1
    //2 - level 2 ...
@@ -59,6 +61,11 @@ class Version
    public function setId($id)
    {
       $this->id = $id;
+   }
+
+   public function isPlan()
+   {
+        return $this->type >= 0;
    }
 
 

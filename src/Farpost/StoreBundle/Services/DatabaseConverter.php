@@ -16,6 +16,24 @@ class DatabaseConverter
       exit;
    }
 
+   private function zipifyLast($timestamp, $em)
+   {
+      $files = $em->getRepository('FarpostStoreBundle:Version')->getFileNames();
+      $filename = "plans_zip_{$timestamp}.zip";
+      $filepath = STATIC_DIR . "/$filename";
+      $zip = new \ZipArchive();
+      if ($zip->open($filepath, \ZipArchive::CREATE) !== TRUE) {
+         throw new Exception('Возникли проблемы при загрузке файлов.');
+      }
+      $idx = 0;
+      foreach ($files as $file) {
+         $idx++;
+         $zip->addFile($file, $idx . '.mbtiles');
+      }
+      $zip->close();
+      return $filename;
+   }
+
    public function __construct($doctrine, $sqlite_manager, $entity_dispatcher)
    {
       $this->doctrine = $doctrine;
@@ -25,10 +43,16 @@ class DatabaseConverter
 
    public function AddDb($type, $dbname)
    {
-      if ($type == -20) {
-         $this->ConvertDb($dbname);
-      } else {
-         $this->AddPlan($dbname, $type);
+      switch ($type) {
+         case -20:
+            $this->ConvertDb($dbname);
+            break;
+         // case -59:
+            // $this->AddMap($dbname);
+            // break;
+         default:
+            $this->AddPlan($dbname, $type);
+            break;
       }
    }
 
@@ -111,7 +135,7 @@ class DatabaseConverter
       }
       $dt = new \DateTime();
       $timestamp = date('dmY_Gis', $dt->getTimestamp());
-      $new_name = "plan_" . $level . "_" . $timestamp;
+      $new_name = ($level == -59 ? "map_" : "plan_{$level}_") . $timestamp;
       $timestamp = $dt->getTimestamp();
       $path = dirname(__FILE__) . '/../../../../web/static/';
       if (!copy($dbname, $path . $new_name)) {
@@ -121,8 +145,12 @@ class DatabaseConverter
       $version = new Version();
       $version->setVDateTime($timestamp)->setBase($new_name)->setType($level);
       $em->persist($version);
+      $em->flush();      
+      $zipName = $this->zipifyLast($timestamp, $em);
+      $version = new Version();
+      $version->setVDateTime($timestamp)->setBase($zipName)->setType(-58);
+      $em->persist($version);
       $em->flush();
    }
-
 
 }

@@ -2,6 +2,9 @@
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
+define ('WEB_DIR', __DIR__);
+define ('STATIC_DIR', WEB_DIRECTORY . '/static');
+
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 
 // Use APC for autoloading to improve performance.
