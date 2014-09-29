@@ -15,5 +15,3 @@
 *~
 /composer.lock
 /catalog_backup/*
-!/web/static/.fake
-!/web/uploads/documents/.fake

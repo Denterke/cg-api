@@ -2,6 +2,7 @@
 namespace Farpost\StoreBundle\Services;
 
 class SQLiteManager {
+   const AUDITORY_TYPE_ID = 6;
 
    public function CreateDb()
    {
@@ -207,6 +208,9 @@ class SQLiteManager {
       if ($table['table'] == 'objects') {
          $record['type_id'] = $record['type_id'] ? $record['type_id'] : 0;
          $record['node_id'] = $record['node_id'] ? $record['node_id'] : 2;
+         if ($record['type_id'] == self::AUDITORY_TYPE_ID && rtrim($record['alias']) == '') {
+            $record['type_id'] = 0;
+         }   
          $record['unialias'] = mb_strtolower($record['alias'], 'UTF-8');
       }
       foreach($record as $field => $value) {
