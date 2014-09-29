@@ -145,11 +145,45 @@ class SQLiteManager {
       }
    }
 
+   private function getInsertSQL($table)
+   {
+      $promtSQL = "INSERT INTO $table[table]";
+      $fieldsSQL = "";
+      $valsSQL = "";
+      $first = true;
+      foreach ($table['fields'] as &$field) {
+         $fieldsSQL .= $first ? "" : ", ";
+         $fieldsSQL .= $field['name'];
+         $valsSQL .= $first ? "" : ", ";
+         $valsSQL .= ":" . $field['name'];
+         $first = false;
+      }
+      return "$promtSQL ($fieldsSQL) VALUES ($valsSQL);";
+   }
+
+   private function beginTransaction($db)
+   {
+      return $db->exec('BEGIN TRANSACTION');
+   }
+
+   private function commit($db)
+   {
+      return $db->exec('COMMIT');
+   }
 
    public function GroupInsert($table, $items, $db)
    {
       // echo "<p>Table name = $table[table]</p>";
       // echo "<p>Items count = " . count($items) . "</p>";
+      // $dt = new \Datetime();
+      // error_log("gi_start" . $dt->getTimestamp());
+      if (!$this->beginTransaction($db)) {
+         return false;
+      }
+      // echo $this->getInsertSQL($table);
+      // exit;
+      $stmt = $db->prepare($this->getInsertSQL($table));
+
       foreach($items as &$item) {
          // echo "<p>Items before insert in table $table[table]</p>";
          // $results = $db->query("select * from $table[table]");
@@ -157,49 +191,62 @@ class SQLiteManager {
             // echo "<p>" . json_encode($row) . "</p>";
          // }
          // echo "<p>Inserted_Item_id = $item[id]</p>";
-         $this->Insert($table, $item, $db);
+         $this->Insert($table, $item, $stmt, $db);
+         $stmt->execute();
+         // $stmt->clear();
       }
+      $this->commit($db);
+      // $dt = new \Datetime();
+      // error_log("gi_end" . $dt->getTimestamp());
+      // exit;
+      // $db->
    }
 
-   private function Insert($table, $record, $db)
+   private function Insert($table, $record, &$stmt, $db)
    {
-      $promtSql = "INSERT INTO $table[table]";
-      $first = true;
-      $valSql = "";
-      $fieldSql = "";
       if ($table['table'] == 'objects') {
          $record['type_id'] = $record['type_id'] ? $record['type_id'] : 0;
          $record['node_id'] = $record['node_id'] ? $record['node_id'] : 2;
          $record['unialias'] = mb_strtolower($record['alias'], 'UTF-8');
       }
-      foreach($table['fields'] as &$field) {
-         // echo "<p>" . json_encode($record) . "</p>";
-         $name = $field['name'];
-         $val = array_key_exists($name, $record) ? $record[$name] : '';
-         $nullable = $field['nullable'];
-         $is_varchar = $field['type'] == 'VARCHAR';
-         if ('' === $val && !$nullable) {
-            throw new \Exception(
-               "In table $table[table] column $name could not be NULL\nFields:" . json_encode($record));
-         }
-         if ($val !== '' && $val !== null) {
-            if ($first) {
-               $first = false;
-            } else {
-               $valSql .= ", ";
-               $fieldSql .= ", ";
-            }
-            $valSql .= $is_varchar ? "'$val'" : $val;
-            $fieldSql .= $name;
-         }
+      foreach($record as $field => $value) {
+         $stmt->bindValue(":" . $field, $value);
       }
-      $resultSql = "$promtSql ($fieldSql) VALUES ($valSql);";
-      try {
-         $db->query($resultSql);
-      }
-      catch (\Exception $e) {
-         throw new \Exception("{$e->getMessage()}\n$resultSql");
-      }
+
+
+      // $promtSql = "INSERT INTO $table[table]";
+      // $first = true;
+      // $valSql = "";
+      // $fieldSql = "";
+
+      // foreach($table['fields'] as &$field) {
+      //    // echo "<p>" . json_encode($record) . "</p>";
+      //    $name = $field['name'];
+      //    $val = array_key_exists($name, $record) ? $record[$name] : '';
+      //    $nullable = $field['nullable'];
+      //    $is_varchar = $field['type'] == 'VARCHAR';
+      //    if ('' === $val && !$nullable) {
+      //       throw new \Exception(
+      //          "In table $table[table] column $name could not be NULL\nFields:" . json_encode($record));
+      //    }
+      //    if ($val !== '' && $val !== null) {
+      //       if ($first) {
+      //          $first = false;
+      //       } else {
+      //          $valSql .= ", ";
+      //          $fieldSql .= ", ";
+      //       }
+      //       $valSql .= $is_varchar ? "'$val'" : $val;
+      //       $fieldSql .= $name;
+      //    }
+      // }
+      // $resultSql = "$promtSql ($fieldSql) VALUES ($valSql);";
+      // // try {
+      //    // $db->query($resultSql);
+      // // }
+      // // catch (\Exception $e) {
+      //    // throw new \Exception("{$e->getMessage()}\n$resultSql");
+      // // }
    }
 
 }

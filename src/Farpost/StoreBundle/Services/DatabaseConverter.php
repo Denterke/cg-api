@@ -58,6 +58,8 @@ class DatabaseConverter
 
    private function ConvertDb($infile) {
       // echo $infile;
+      // $dt = new \Datetime();
+      // error_log("cdb start " . $dt->getTimestamp());
       $em_bu = $this->doctrine->getManager('back_up');
       $em_ba = $this->doctrine->getManager('default');
 
@@ -126,6 +128,8 @@ class DatabaseConverter
       $version->setVDateTime($timestamp)->setBase($db_sqlite_name)->setType(-20);
       $em_ba->persist($version);
       $em_ba->flush();
+      // $dt = new \Datetime();
+      // error_log("cdb end " . $dt->getTimestamp());
    }
 
    function AddPlan($dbname, $level)

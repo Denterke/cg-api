@@ -94,6 +94,12 @@ class GeoObjectRepository extends EntityRepository
       return $recs;
    }
 
+   // private function writeTime($str)
+   // {
+      // $dt = new \Datetime();
+      // error_log("$str:" . $dt->getTimestamp());
+   // }
+
    public function realizeFake(&$fakes)
    {
       $pdo = $this->_em->getConnection();
@@ -116,6 +122,7 @@ class GeoObjectRepository extends EntityRepository
       $curId = $curId[0]['max'];
       $curId = $curId ? $curId + 1: 1;
       $keys = array_keys($objs);
+      // $this->writeTime("before insert");
       $insStr = 
          "INSERT INTO
             geoobjects
@@ -135,6 +142,7 @@ class GeoObjectRepository extends EntityRepository
             $fakes[$i] = $objs[$fakes[$i]]['id'];
          }
       }
+      // $this->writeTime("after loop");
       if (!$firstIns) {
          $insStr .= " returning id";
          // echo $insStr;
@@ -150,9 +158,20 @@ class GeoObjectRepository extends EntityRepository
       }
    }
 
+   private function normalize(&$item)
+   {
+      $item['type_id']     = $item['type_id']     ?: 0;
+      $item['building_id'] = $item['building_id'] ?: 'null';
+      $item['level']       = $item['level']       ?: 'null';
+      $item['lon']         = $item['lon']         ?: 'null';
+      $item['lat']         = $item['lat']         ?: 'null';
+      if ($item['type_id'] == self::AUDITORY_TYPE_ID && rtrim($item['alias']) == '') {
+         $item['type_id'] = 0;
+      }      
+   }
+
    public function synchronizeWith($items)
    {
-      // exit;
       echo "IN SYNC\n";
       $pdo = $this->_em->getConnection();
       $stmt = $pdo->prepare(
@@ -181,17 +200,14 @@ class GeoObjectRepository extends EntityRepository
           VALUES ";
       $updStr = "";
       $firstIns = true;
+      // $this->writeTime("before loop");
 
       foreach ($items as &$item) {
          unset($item['node_id']);
          $idx = array_search($item['id'], $ids);
-         $item['type_id']     = $item['type_id']     ?: 'null';
-         $item['building_id'] = $item['building_id'] ?: 'null';
-         $item['level']       = $item['level']       ?: 'null';
-         $item['lon']         = $item['lon']         ?: 'null';
-         $item['lat']         = $item['lat']         ?: 'null';
-         if ($item['type_id'] == self::AUDITORY_TYPE_ID && rtrim($item['alias']) == '') {
-            $item['type_id'] = 0;
+         $this->normalize($item);
+         if ($idx !== false) {
+            $this->normalize($objs[$ids[$idx]]);
          }
          if ($idx === false) {
             $insStr .= $firstIns ? '' : ', ';
@@ -200,10 +216,6 @@ class GeoObjectRepository extends EntityRepository
                        "'{$item['alias']}', {$item['level']}, {$item['lon']}, {$item['lat']}, " .
                        "1, {$item['status']})";
          } else if (empty(array_diff_assoc($item, $objs[$ids[$idx]]))) {
-            // echo "they are equal:";
-            // print_r($item);
-            // echo "obj";
-            // print_r($objs[$ids[$idx]]);
             continue;
          } else {
             // print_r($item);
@@ -228,9 +240,12 @@ class GeoObjectRepository extends EntityRepository
                $stmt->execute();
          }
       }
+      // $this->writeTime("after loop");
       if (!$firstIns) {
+         // $this->writeTime("before insert2");
          $stmt = $pdo->prepare($insStr);
          $stmt->execute();
+         // $this->writeTime("after insert");
       } 
    }
 
