@@ -1,9 +1,9 @@
 #!/bin/bash
-#app/console doctrine:database:drop --force;
-#app/console doctrine:database:create;
-#app/console doctrine:generate:entities --no-backup Farpost;
-#app/console doctrine:schema:update --force --em=default;
-#app/console cache:warmup --env=prod --no-debug
-#rm -f web/static/*
-#rm -f web/uploads/documents/*
-#php scripts/FillDb.php
+app/console doctrine:database:drop --force;
+app/console doctrine:database:create;
+app/console doctrine:generate:entities --no-backup Farpost;
+app/console doctrine:schema:update --force --em=default;
+app/console cache:warmup --env=prod --no-debug
+rm -f web/static/*
+rm -f web/uploads/documents/*
+php scripts/FillDb.php

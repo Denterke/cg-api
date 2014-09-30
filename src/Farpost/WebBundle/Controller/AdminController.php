@@ -110,7 +110,9 @@ class AdminController extends Controller
          $em->flush();
          // echo $document->getAbsolutePath();
          $this->get('database_converter')->AddDb($document->getType(), $document->getAbsolutePath());
-         $this->get('schedule_manager')->refreshSchedule();
+         if ($document->getType() == -20) {
+            $this->get('schedule_manager')->refreshSchedule();
+         }
          // print_r($_POST);
          // exit;
          return $this->redirect($this->generateUrl('admin_basemanagement'));
