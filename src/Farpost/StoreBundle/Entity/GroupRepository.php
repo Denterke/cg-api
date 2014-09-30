@@ -24,7 +24,8 @@ class GroupRepository extends EntityRepository
       foreach($recs as &$rec) {
          $elem = [
             'id' => $rec->getId(),
-            'alias' => $rec->getAlias()
+            'alias' => $rec->getAlias(),
+            'department' => $rec->getStudySet()->getDepartments()[0]->getAlias()
             // 'school_id' => $rec->getStudySet()->getDepartments()[0]->getSchool()->getId()
          ];
          array_push($result, $elem);
@@ -32,9 +33,19 @@ class GroupRepository extends EntityRepository
       return $result;
    }
 
-   public function getList()
+   public function getList($t)
    {
-      $recs = $this->_prepareQB()->getQuery()->getResult();
+      $dt = new \Datetime();
+      $dt->setTimestamp($t);
+      $recs = $this->_prepareQB()
+                   ->innerJoin('FarpostStoreBundle:LastModified', 'l', Join::WITH, 'g.id = l.record_id')
+                   ->where('l.table_name = :table_name')
+                   ->andWhere('l.last_modified >= :time')
+                   ->andWhere('l.status = 1')
+                   ->setParameter('table_name', 'groups')
+                   ->setParameter('time', $dt)
+                   ->getQuery()
+                   ->getResult();
       return $this->_finalizeList($recs);
    }
 

@@ -73,14 +73,16 @@ class DefaultController extends Controller
 
    public function getGroupsAction()
    {
+      $request = Request::createFromGlobals();
       $response = $this->_createResponse();
       // parse_str($_SERVER['QUERY_STRING']);
       // if (!isset($study_type) || !isset($school)) {
       //    return $response;
       // }
       $em = $this->getDoctrine()->getEntityManager();
+      $t = $request->query->has('t') ? $request->query->get('t') : 1;
       $result = $em->getRepository('FarpostStoreBundle:Group')
-               ->getList();
+               ->getList($t);
                // ->createQueryBuilder('g');
               //  ->innerJoin('FarpostStoreBundle:StudySet', 'ss', Join::WITH, 'g.study_set = ss.id')
               //  ->join('ss.departments', 'departments')
@@ -93,8 +95,12 @@ class DefaultController extends Controller
               //    's_id'  => $school
               // ]);
       // $result = $qb->getQuery()->getArrayResult();
+      $dt = new \Datetime();
       $response->setContent(json_encode(
-                              ['groups' => $result]
+                              [
+                                 'groups' => $result,
+                                 'timestamp' => $dt->getTimestamp()
+                              ]
                               // JSON_UNESCAPED_UNICODE
                            ))
                ->setStatusCode(200);

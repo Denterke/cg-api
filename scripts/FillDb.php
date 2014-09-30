@@ -60,7 +60,7 @@
          // 'discipline_sections',
          // 'roles',
          'users',
-         // 'groups',
+         'groups',
          // 'study_sets',
          // 'courses',
          // 'specializations',
