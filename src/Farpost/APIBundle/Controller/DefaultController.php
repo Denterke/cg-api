@@ -261,6 +261,11 @@ class DefaultController extends Controller
             "alias" => "7 пара",
             "start_time" => "18:30:00",
             "end_time"   => "20:00:00"
+         ],
+         [
+            "alias" => "8 пара",
+            "start_time" => "20:10:00",
+            "end_time"   => "21:40:00"
          ]
       ];
       $em = $this->getDoctrine()->getManager('default');

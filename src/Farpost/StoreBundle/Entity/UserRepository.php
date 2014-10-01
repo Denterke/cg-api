@@ -100,11 +100,15 @@ class UserRepository extends EntityRepository
             if (!rtrim($fakes[$i])) {
                $last = $middle = $first = 'no';
             } else {
-               list(
-                  $last, 
-                  $first,
-                  $middle
-               ) = explode(' ', rtrim($fakes[$i]));
+               try {
+                  list(
+                     $last, 
+                     $first,
+                     $middle
+                  ) = explode(' ', rtrim($fakes[$i]));
+               } catch (\Exception $e) {
+                  $last = $middle = $first = 'no';
+               }
             }
             $insStr .= "('$first', '$last', '$middle')";
             array_push($resRefs, $i);

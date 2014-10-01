@@ -53,7 +53,7 @@ class ScheduleRenderedRepository extends EntityRepository
             "lesson_type_id" => $schedule_template->getLessonType()->getId(),
             "discipline_id"  => $schedule_template->getSchedulePart()->getDiscipline()->getId(),
             "time_id"        => $schedule_template->getTime()->getId(),
-            "auditory_id"    => $schedule_template->getAuditory()->getId(),
+            "auditory_id"    => $schedule_template->getAuditory() ? $schedule_template->getAuditory()->getId() : null,
             "professor_id"   => $schedule_template->getSchedulePart()->getProfessor()->getId(),
             "date"           => $elem->getExecDate()->getTimestamp(),
             "id"             => $elem->getId(),

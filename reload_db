@@ -7,5 +7,5 @@ app/console cache:warmup --env=prod --no-debug;
 rm -f web/static/*;
 rm -f web/uploads/documents/*;
 rm -f web/uploads/tmp/*;
-rm -f wen/uploads/schedules/*;
+rm -f web/uploads/schedules/*;
 php scripts/FillDb.php;

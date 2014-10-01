@@ -130,6 +130,10 @@ class GeoObjectRepository extends EntityRepository
       $firstIns = true;
       $resRefs = [];
       for ($i = 0; $i < count($fakes); $i++) {
+         if (!trim($fakes[$i])) {
+            $fakes[$i] = 'null';
+            continue;
+         }
          $objIdx = array_search($fakes[$i], $keys);
          if ($objIdx === false) {
             $insStr .= $firstIns ? ' ' : ', ';
