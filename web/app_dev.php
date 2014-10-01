@@ -5,6 +5,8 @@ use Symfony\Component\Debug\Debug;
 
 define ('WEB_DIRECTORY', __DIR__);
 define ('STATIC_DIR', WEB_DIRECTORY . '/static');
+define ('TEMP_DIR', WEB_DIRECTORY . '/uploads/tmp');
+define ('SSOURCE_DIR', WEB_DIRECTORY . '/uploads/schedules');
 
 // If you don't want to setup permissions the proper way, just uncomment the following PHP line
 // read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information

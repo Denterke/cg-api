@@ -22,6 +22,17 @@ class AdminController extends Controller
       );
    }
 
+   private function _clearTmp()
+   {
+      $tmpFiles = scandir(TEMP_DIR);
+      foreach($tmpFiles as $tmpFile) {
+         if ($tmpFile[0] == '.') {
+            continue;
+         }
+         unlink(TEMP_DIR . '/' . $tmpFile);
+      }
+   }
+
    private function _isValidForm(&$form, $request)
    {
       return $form->handleRequest($request)->isValid();
@@ -104,35 +115,44 @@ class AdminController extends Controller
                    ->getForm();
       $form->handleRequest($request);
       if ($form->isValid()) {
-         $em = $this->getDoctrine()->getManager();
+         $em_v = $this->getDoctrine()->getManager();
          // $document->upload();
-         $em->persist($document);
-         $em->flush();
+         $em_v->persist($document);
+         $em_v->flush();
+         $em_v->remove($document);
          // echo $document->getAbsolutePath();
          $this->get('database_converter')->AddDb($document->getType(), $document->getAbsolutePath());
          if ($document->getType() == -20) {
             $this->get('schedule_manager')->refreshSchedule();
          }
+         $em_v->flush();
          // print_r($_POST);
          // exit;
+         // $em->refresh($document)
+         
          return $this->redirect($this->generateUrl('admin_basemanagement'));
       }
       $dt = new \DateTime();
-      echo $dt->getTimestamp();
+      // echo $dt->getTimestamp();
       $promt = $request->query->get('id') == -20 
-               ? 'Файл каталога организаций' 
-               : $request->query->get('id') == -59
+               ? 'Файл каталога организаций'
+               : ($request->query->get('id') == -59
                   ? 'Файл карты ДВФУ'
-                  :'Файл плана уровня ' . $request->query->get('id');
+                  :'Файл плана уровня ' . $request->query->get('id'));
+      // echo $request->query->get('id');
       return $this->render('FarpostWebBundle:Admin:versions_card.html.twig', [
          'version_form' => $form->createView(), 'type' => $promt]);
    }
 
    private function _ssourceAdd(Request $request)
    {
-      $promt = "Файл расписания";
+      if ($request->query->get('id') == -1) {
+         $promt = "Архив с расписанием";
+      } else {
+         $promt = "Файл расписания";
+      }
       $document = new Document();
-      $document->setType(-21);
+      $document->setType($request->query->get('id') ? -21 : -22);
       $form = $this->createFormBuilder($document)
                    ->add('type', 'hidden')
                    ->add('file')
@@ -143,17 +163,45 @@ class AdminController extends Controller
          $em = $this->getDoctrine()->getManager();
          $em->persist($document);
          $em->flush();
+         $em->remove($document);
+         if ($document->getType() == -21) {
+            try {
+               $zip = new \ZipArchive();
+               if ($zip->open($document->getAbsolutePath()) === TRUE) {
+                  $this->_clearTmp();
+                  $zip->extractTo(TEMP_DIR);
+                  $zip->close();
+                  // exit;
+                  $tmpFiles = scandir(TEMP_DIR);
+                  foreach($tmpFiles as $tmpFile) {
+                     if ($tmpFile[0] == '.') {
+                        continue;
+                     }
+                     $this->get('schedule_manager')->convertSchedule(
+                        TEMP_DIR . '/' . $tmpFile,
+                        $document->getVDatetime()
+                     );
+                     unlink(TEMP_DIR . '/' . $tmpFile);
+                  }
+               }
+            } catch (\Exception $e) {
+               throw $e;
+            }
+         } else {         
          // echo $
-         $this->get('schedule_manager')->convertSchedule(
-            $document->getAbsolutePath(),
-            $document->getVDatetime()
-         );
+            $this->get('schedule_manager')->convertSchedule(
+               $document->getAbsolutePath(),
+               $document->getVDatetime()
+            );
+         }
          // echo json_encode($_REQUEST);
          // echo json_encode($_FILES);
          // echo json_encode($_FILES);
          // exit;
+         $em->flush();
          return $this->redirect($this->generateUrl('admin_basemanagement'));
       }
+
       return $this->render('FarpostWebBundle:Admin:versions_card.html.twig', [
          'version_form' => $form->createView(), 'type' => $promt]);
 

@@ -107,9 +107,8 @@ class GeoObjectRepository extends EntityRepository
          "SELECT
             id, alias
           FROM
-            geoobjects
-          WHERE
-            geoobject_type_id = " . self::AUDITORY_TYPE_ID);
+            geoobjects"
+      );
       $stmt->execute();
       $objs = [];
       while ($row = $stmt->fetch()) {

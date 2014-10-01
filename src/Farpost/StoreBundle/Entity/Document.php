@@ -118,6 +118,7 @@ class Document
     */
    public function removeUpload()
    {
+      echo "here";
       if (isset($this->temp)) {
          unlink($this->temp);
       }

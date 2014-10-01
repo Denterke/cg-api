@@ -4,6 +4,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 define ('WEB_DIRECTORY', __DIR__);
 define ('STATIC_DIR', WEB_DIRECTORY . '/static');
+define ('TEMP_DIR', WEB_DIRECTORY . '/uploads/tmp');
+define ('SSOURCE_DIR', WEB_DIRECTORY . '/uploads/schedules');
 
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 

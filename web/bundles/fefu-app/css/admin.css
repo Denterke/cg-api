@@ -46,8 +46,15 @@ aside {
    min-height: 200px;
 }
 
+div.left_block {
+   float: left;
+   width: 40%;
+   margin-right: 100px;
+}
+
 div.right_block {
-   display: inline-block;
+   float:right;
+   width: 40%;
 }
 
 div.edit {
@@ -209,7 +216,7 @@ table tr.head td {
    font-weight: bold;
 }
 
-.delete, .edit, .look {
+.delete, .edit, .look, .editzip {
    width: 25px;
    height: 25px;
    cursor: pointer;
@@ -224,12 +231,17 @@ table tr.head td {
    border: 1px #56aed4 solid;
 }
 
+.editzip {
+   background: #56aed4 url("/bundles/fefu-app/images/editzip.png");
+   background-size: 100%;
+   border: 1px #56aed4 solid;
+}
 .delete {
    background: #ff3a31 url("/bundles/fefu-app/images/delete.png") center center no-repeat;
    border: 1px #ff3a31 solid;
 }
 
-.edit:hover {
+.edit:hover, .editzip:hover {
    background-color: #1C546C;
 }
 
@@ -251,4 +263,8 @@ table tr.head td {
 
 #top_div_h1 {
    margin-bottom: 20px;
+}
+
+#container {
+  width: 100%;
 }

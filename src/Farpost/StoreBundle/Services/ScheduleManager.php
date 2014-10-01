@@ -70,7 +70,7 @@ class ScheduleManager
          // $group_str_refs = explode(";", $group_info);
       }
       catch (\Exception $e) {
-         throw new \Exception("Can not split group info string: " . $e->getMessage());
+         throw new \Exception("Can not split group info string:\n$group_info\n " . $e->getMessage());
       }
       // $group_refs = [];
       // for ($i = 0; $i < count($group_info_entities); $i++) {
@@ -106,6 +106,7 @@ class ScheduleManager
       }
       $group_info = fgets($ss_file);
       $str_num = 1;
+      // echo $path;
       $group = $this->syncGroupInfo($group_info);
       $gId = $group->getId();
       $templates = [];
@@ -250,7 +251,8 @@ class ScheduleManager
          $ssource = new ScheduleSource();
          $ssource->setVDatetime($vdatetime)
                  ->setBase($path)
-                 ->setGroup($group);
+                 ->setGroup($group)
+                 ->cpFile();
          $em->persist($ssource);
          $em->flush();
       }

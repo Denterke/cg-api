@@ -88,6 +88,15 @@ class ScheduleSource
         return $this;
     }
 
+    public function cpFile()
+    {
+        $newName = $this->group->getId() . '_' . $this->v_datetime;
+        if (!copy($this->base, SSOURCE_DIR . "/$newName")) {
+            throw new \Exception("Can not copy file {$this->base} to {$newName}");
+        }
+        $this->base = SSOURCE_DIR . "/$newName";
+    }
+
     /**
      * Get base
      *
