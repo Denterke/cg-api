@@ -1,5 +1,9 @@
 {% extends 'FarpostWebBundle:Admin:base.html.twig' %}
-
+{% block head %}
+   {{ parent() }}
+   <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/ajax2.js') }}"></script>
+   <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/ajax.form.js') }}"></script>
+{% endblock %}
 {% block title %}{{ parent() }} - Управление базами{% endblock %}
 
 {% block body %}

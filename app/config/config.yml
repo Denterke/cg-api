@@ -9,10 +9,13 @@ services:
         class: Farpost\StoreBundle\Services\SQLiteManager
     schedule_manager:
         class: Farpost\StoreBundle\Services\ScheduleManager
-        arguments: [ @doctrine ]
+        arguments: [ @doctrine, "@session" ]
     database_converter:
         class: Farpost\StoreBundle\Services\DatabaseConverter
         arguments: [ @doctrine, "@sqlite_manager", "@entity_dispatcher" ]
+    sql_booster:
+        class: Farpost\StoreBundle\Services\sql_booster
+        arguments: [ @doctrine ]
     # update_listener:
         # class: Farpost\StoreBundle\EventListener\UpdateListener
         # tags:
@@ -72,15 +75,15 @@ doctrine:
                 host:     "localhost"
                 port:     "5432"
                 dbname:   "backend"
-                user:     "backend"
-                password: "ahjihaR1eeQu"
+                user:     "postgres"
+                password: "16ytu91ito"
             back_up:
                 driver:   "pdo_pgsql"
                 host:     "localhost"
                 port:     "5432"
                 dbname:   "back_up_catalog"
-                user:     "back_up_catalog"
-                password: "Xt4Mc5hm$v"
+                user:     "postgres"
+                password: "16ytu91ito"
 
         #ahjihaR1eeQu
         #Xt4Mc5hm$v
@@ -102,6 +105,10 @@ doctrine:
                 connection: back_up
                 mappings:
                     FarpostBackUpBundle: ~
+            documents:
+                connection: default
+                mappings:
+                    FarpostStoreBundle: ~
 
 
 # Swiftmailer Configuration

@@ -11,6 +11,7 @@ use Farpost\WebBundle\Form\SpecializationViewType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Farpost\StoreBundle\Daemons\Astarot;
 
 class AdminController extends Controller
 {
@@ -116,24 +117,17 @@ class AdminController extends Controller
       $form->handleRequest($request);
       if ($form->isValid()) {
          $em_v = $this->getDoctrine()->getManager();
-         // $document->upload();
          $em_v->persist($document);
          $em_v->flush();
          $em_v->remove($document);
-         // echo $document->getAbsolutePath();
          $this->get('database_converter')->AddDb($document->getType(), $document->getAbsolutePath());
          if ($document->getType() == -20) {
             $this->get('schedule_manager')->refreshSchedule();
          }
          $em_v->flush();
-         // print_r($_POST);
-         // exit;
-         // $em->refresh($document)
-         
          return $this->redirect($this->generateUrl('admin_basemanagement'));
       }
       $dt = new \DateTime();
-      // echo $dt->getTimestamp();
       $promt = $request->query->get('id') == -20 
                ? 'Файл каталога организаций'
                : ($request->query->get('id') == -59
@@ -201,7 +195,6 @@ class AdminController extends Controller
          $em->flush();
          return $this->redirect($this->generateUrl('admin_basemanagement'));
       }
-
       return $this->render('FarpostWebBundle:Admin:versions_card.html.twig', [
          'version_form' => $form->createView(), 'type' => $promt]);
 
@@ -242,10 +235,21 @@ class AdminController extends Controller
 
    public function basemanagmentAction(Request $request)
    {
-      // phpinfo();
       return $this->render('FarpostWebBundle:Admin:basemanagement.html.twig', [
          'versions' => $this->_getRep('versions')->getForWeb(),
          'ssources' => $this->_getRep('ssources')->getForWeb()
       ]);
+   }
+
+   public function scheduleLogAction()
+   {
+      if (Astarot::isRunning()) {
+         $result = json_encode(Astarot::getState());
+      } else {
+         $result = "Schedule render daemon not running";
+      }
+      // echo $result;
+      // exit;
+      return new Response($result, 200, ['Content-Type' => 'application/json']);
    }
 }

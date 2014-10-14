@@ -1,0 +1,4 @@
+ajax_ssconvert:
+   path:     /ssconvert
+   defaults: { _controller: FarpostWebBundle:Ajax:ssConvert }
+   

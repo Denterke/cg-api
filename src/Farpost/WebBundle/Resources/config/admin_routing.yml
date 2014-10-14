@@ -33,3 +33,7 @@ admin_specializations:
 admin_basemanagement:
    path:     /base_management
    defaults: { _controller: FarpostWebBundle:Admin:basemanagment }
+
+admin_astarotlog:
+   path:     /schedule_log
+   defaults: { _controller: FarpostWebBundle:Admin:scheduleLog }

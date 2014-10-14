@@ -27,6 +27,7 @@ class SchoolRepository extends EntityRepository
 
    public function syncValue($alias)
    {
+      
       $school = $this->findOneBy(['alias' => $alias]);
       if (!is_null($school)) {
          return $school;

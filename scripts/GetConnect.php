@@ -6,13 +6,13 @@
    }
 
    function getConnection($dbname = "") {
-      echo "Let's create some connection....\n";
+      // echo "Let's create some connection....\n";
       $path = dirname(__FILE__);
       $symfConfig = fopen($path . '/../app/config/config.yml', 'r');
       if (!$symfConfig) {
          die("Problem with paths!\n");
       }
-      echo "Symfony config found!\n";
+      // echo "Symfony config found!\n";
       $str = fgets($symfConfig);
       while (fgets($symfConfig) != "doctrine:\n") { }
       $paramCount = 0;
@@ -38,12 +38,12 @@
             }
          }
       }
-      echo "Your's connection string:\n".$connection_string . "\n";
+      // echo "Your's connection string:\n".$connection_string . "\n";
       $dbcon = pg_connect($connection_string);
       if (!$dbcon) {
          die('Connection failed!');
       } else {
-         echo "Connection succeed!\n";
+         // echo "Connection succeed!\n";
       }
       // pg_close($dbcon);
       return [$dbcon, $params];

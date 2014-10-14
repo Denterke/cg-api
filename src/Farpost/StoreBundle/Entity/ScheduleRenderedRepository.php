@@ -42,7 +42,7 @@ class ScheduleRenderedRepository extends EntityRepository
       }
       return $result;
    }
-
+   
    private function _finalize(&$recs)
    {
       $result = [];

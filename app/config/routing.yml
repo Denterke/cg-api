@@ -2,6 +2,10 @@ farpost_admin:
     resource: "@FarpostWebBundle/Resources/config/admin_routing.yml"
     prefix:   /admin/
 
+farpost_ajax:
+    resource: "@FarpostWebBundle/Resources/config/ajax_routing.yml"
+    prefix:   /ajax/
+
 farpost_api:
     resource: "@FarpostAPIBundle/Resources/config/routing.yml"
     prefix:   /method/

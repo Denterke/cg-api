@@ -10,10 +10,24 @@ use Farpost\StoreBundle\Entity\Course;
 use Farpost\StoreBundle\Entity\Department;
 use Farpost\StoreBundle\Entity\Specialization;
 use Farpost\StoreBundle\Entity\Document;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class ScheduleManager
 {
    private $doctrine;
+   private $session;
+
+   private function startAstarot() {
+      error_log("Astarot has been started!");
+      $process = new Process('php app/console astarot');
+      $process->run();
+   }
+
+   private function logWrite($str) {
+      $dt = new \DateTime;
+      error_log($dt->format('H:i:s:u') . ">>$str");
+   }
 
    public function __construct($doctrine)
    {
@@ -36,22 +50,12 @@ class ScheduleManager
          $current_dow++;
          $current_time = $current_time->add(new \DateInterval('P' . 1 . 'D'));
       }
-      $firstIns = true;
-      $insStr = 
-         "INSERT INTO
-            schedule_rendered (schedule_id, exec_date)
-          VALUES ";
-      while ($current_time <= $end_time) {
-         $strTime = $current_time->format('Y-m-d');
-         $insStr .= $firstIns ? ' ' : ', ';
-         $firstIns = false;
-         $insStr .= "({$schedule['id']}, '$strTime')";
-         $current_time = $current_time->add(new \DateInterval('P' . $period . 'D'));
-      }
-      if (!$firstIns) {
-         $stmt = $pdo->prepare($insStr);
-         $stmt->execute();
-      }
+      $stmt = $pdo->prepare('SELECT * FROM renderSchedule(:s_id, :period, :start_time, :end_time);');
+      $stmt->bindValue(':s_id', $schedule['id'], \PDO::PARAM_INT);
+      $stmt->bindValue(':period', "$period day", \PDO::PARAM_STR);
+      $stmt->bindValue(':start_time', $current_time->format('Y-m-d'), \PDO::PARAM_STR);
+      $stmt->bindValue(':end_time', $end_time->format('Y-m-d'). \PDO::PARAM_STR);
+      $stmt->execute();
    }
 
    private function syncGroupInfo($group_info)
@@ -72,32 +76,21 @@ class ScheduleManager
       catch (\Exception $e) {
          throw new \Exception("Can not split group info string:\n$group_info\n " . $e->getMessage());
       }
-      // $group_refs = [];
-      // for ($i = 0; $i < count($group_info_entities); $i++) {
-         // $entity_name = 'FarpostStoreBundle:' . $group_info_entities[$i];
-         // $group_refs_str[$entity_name] = $em->getRepository($entity_name)
-                                            // ->syncValue($group_refs_str[$i]);
-      // }
-      $school = $em->getRepository('FarpostStoreBundle:School')
-                   ->syncValue($_school);
-      $study_type = $em->getRepository('FarpostStoreBundle:StudyType')
-                   ->syncValue($_study_type);
-      $specialization = $em->getRepository('FarpostStoreBundle:Specialization')
-                   ->syncValue($_spec);
-      $course = $em->getRepository('FarpostStoreBundle:Course')
-                   ->syncValue($_course);
-      $department = $em->getRepository('FarpostStoreBundle:Department')
-                   ->syncValue($_department, $school, $study_type);
-      $study_set = $em->getRepository('FarpostStoreBundle:StudySet')
-                   ->syncValue($specialization, $course, $department);
-      $group = $em->getRepository('FarpostStoreBundle:Group')
-                   ->syncValue($_group, $study_set);
-      return $group;
+      $stmt = $em->getConnection()->prepare('SELECT * FROM groupInfoSync(:school, :st, :spec, :course, :dep, :group)');
+      $stmt->bindValue(':school', $_school, \PDO::PARAM_STR);
+      $stmt->bindValue(':st', $_study_type, \PDO::PARAM_STR);
+      $stmt->bindValue(':spec', $_spec, \PDO::PARAM_STR);
+      $stmt->bindValue(':course', $_course, \PDO::PARAM_STR);
+      $stmt->bindValue(':dep', $_department, \PDO::PARAM_STR);
+      $stmt->bindValue(':group', $_group, \PDO::PARAM_STR);
+      $stmt->execute();
+      $groupId = $stmt->fetch()['groupinfosync'];
+      return $groupId;
    }
 
    public function convertSchedule($path, $vdatetime, $createSS = true)
    {
-      error_log("in coverter i am");
+      // $this->logWrite("convertSchedule start");
       $em = $this->doctrine->getManager('default');
       $group_info_entities = ['School', 'Group', 'StudyType', 'Course', 'Department', 'Specialization'];
       $ss_file = fopen($path, 'r');
@@ -107,8 +100,9 @@ class ScheduleManager
       $group_info = fgets($ss_file);
       $str_num = 1;
       // echo $path;
-      $group = $this->syncGroupInfo($group_info);
-      $gId = $group->getId();
+      // $this->logWrite('convertSchedule before group sync');
+      $gId = $this->syncGroupInfo($group_info);
+      // $this->logWrite('convertSchedule after group sync');
       $templates = [];
       $fake = [
          'geo' => [],
@@ -122,7 +116,7 @@ class ScheduleManager
       $insStr = 
          "INSERT INTO
             schedule
-            (schedule_part_id, auditory_id, time_id, lesson_type_id, semester_id, period, day)
+            (schedule_part_id, auditory_id, time_id, lesson_type_id, semester_id, period, day, status)
           VALUES ";
       while (!feof($ss_file)) {
          $schedule_template = fgets($ss_file);
@@ -193,6 +187,7 @@ class ScheduleManager
          'disc'  => 'Discipline',
          'user'  => 'User'
       ];
+      // $this->logWrite('scheduleConverter before realizing');
       foreach($entities as $key => $entity) {
          $em->getRepository('FarpostStoreBundle:' . $entity)->realizeFake($fake[$key]);
       }
@@ -201,16 +196,16 @@ class ScheduleManager
          $sp['disc'] = $fake['disc'][$sp['disc']];
       }
       $em->getRepository('FarpostStoreBundle:SchedulePart')
-         ->realizeFake($fake['sp'], $group->getId());
+         ->realizeFake($fake['sp'], $gId);
       $firstIns = true;
-      
+      // $this->logWrite('scheduleConverter before insert');
       foreach($templates as &$t) {
          $insStr .= $firstIns ? ' ' : ', ';
          $firstIns = false;
          try {
          $insStr .= "({$fake['sp'][$t['sp']]}, {$fake['geo'][$t['geo']]}, " .
                       "{$fake['time'][$t['time']]}, {$fake['ltype'][$t['ltype']]}, " . 
-                      "1, {$t['period']}, {$t['day']})";
+                      "1, {$t['period']}, {$t['day']}, 0)";
          } catch (\Exception $e) {
             print_r($fake);
             echo "<p>.........................</p>";
@@ -224,34 +219,37 @@ class ScheduleManager
          $stmt = $pdo->prepare($insStr);
          $stmt->execute();
          $ids = $stmt->fetchAll();
-         $stmt = $pdo->prepare(
-         "SELECT 
-            s.id, sm.time_start, sm.time_end, s.period, s.day
-          FROM
-               schedule s 
-            INNER JOIN 
-               semesters sm
-            ON
-               s.semester_id = sm.id
-            INNER JOIN
-               schedule_parts sp
-            ON
-               s.schedule_part_id = sp.id
-          WHERE
-            sp.group_id = {$group->getId()};"
-         );
-         $stmt->execute();
-         $temps = $stmt->fetchAll();
-         foreach($temps as &$temp) {
-            $this->generateSchedule($temp);
-         }
+         // $stmt = $pdo->prepare(
+         // "SELECT 
+         //    s.id, sm.time_start, sm.time_end, s.period, s.day
+         //  FROM
+         //       schedule s 
+         //    INNER JOIN 
+         //       semesters sm
+         //    ON
+         //       s.semester_id = sm.id
+         //    INNER JOIN
+         //       schedule_parts sp
+         //    ON
+         //       s.schedule_part_id = sp.id
+         //  WHERE
+         //    sp.group_id = {$gId};"
+         // );
+         // $stmt->execute();
+         // $temps = $stmt->fetchAll();
+         // $this->logWrite('scheduleConverter before generation');
+         // foreach($temps as &$temp) {
+         //    $this->generateSchedule($temp);
+         // }
+         // $this->logWrite('scheduleConverter after generation');
+         $this->startAstarot();
       }
 
       if ($createSS) {
          $ssource = new ScheduleSource();
          $ssource->setVDatetime($vdatetime)
                  ->setBase($path)
-                 ->setGroup($group)
+                 ->setGroup($em->getRepository('FarpostStoreBundle:Group')->findOneById($gId))
                  ->cpFile();
          $em->persist($ssource);
          $em->flush();
@@ -260,18 +258,32 @@ class ScheduleManager
 
    public function refreshSchedule()
    {
-      echo "refreshSchedule here";
+      // $this->logWrite("refreshSchedule start");
       $schedule_templates = $this->doctrine->getManager('default')
          ->getRepository('FarpostStoreBundle:ScheduleSource', 'ssrc')
          ->getLastRecords();
-      echo json_encode($schedule_templates);
+      // $this->logWrite("lastRecords got");
+      // echo json_encode($schedule_templates);
+      // $this->session->set('ss_count', count($schedule_templates));
+      // $this->session->set('ss_curr', 0);
+      // echo "testtest";
+      // flush();
+      // $i = 0;
       foreach($schedule_templates as &$s_template) {
-         echo "here!";
+         // echo "here!";
+         // echo $i;
+         // $i++;
+         // flush();
+         // $this->logWrite($s_template->getGroup()->getAlias() . ' start');
          $this->convertSchedule(
             $s_template->getBase(),
             $s_template->getVDatetime(),
             false
          );
+         // $this->logWrite($s_template->getGroup()->getAlias() . ' end');
+         // $this->session->set('ss_curr', $this->session->get('ss_curr') + 1);
+         // exit;
       }
+      $this->startAstarot();
    }
 }

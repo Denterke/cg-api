@@ -79,6 +79,12 @@ class Schedule
     */
    protected $day;
 
+   /**
+    * @var integer
+    * @ORM\Column(name="status", type="integer")
+    */
+   protected $status; //status for rendering
+
     /**
      * Constructor
      */
@@ -289,5 +295,28 @@ class Schedule
     public function getSemester()
     {
         return $this->semester;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return Schedule
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }
