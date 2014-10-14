@@ -37,3 +37,7 @@ admin_basemanagement:
 admin_astarotlog:
    path:     /schedule_log
    defaults: { _controller: FarpostWebBundle:Admin:scheduleLog }
+
+admin_astarotstart:
+   path:     /astarot_start
+   defaults: { _controller: FarpostWebBundle:Admin:astarotStart }

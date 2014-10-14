@@ -188,6 +188,7 @@ class AdminController extends Controller
                $document->getVDatetime()
             );
          }
+         $this->get('schedule_manager')->startAstarot();
          // echo json_encode($_REQUEST);
          // echo json_encode($_FILES);
          // echo json_encode($_FILES);
@@ -251,5 +252,11 @@ class AdminController extends Controller
       // echo $result;
       // exit;
       return new Response($result, 200, ['Content-Type' => 'application/json']);
+   }
+
+   public function astarotStartAction()
+   {
+      $this->get('schedule_manager')->startAstarot();
+      return new Response('Astarot summoned!', 200, ['Content-Type' => 'application/json']);
    }
 }

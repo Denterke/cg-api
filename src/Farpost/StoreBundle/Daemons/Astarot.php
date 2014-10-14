@@ -16,8 +16,10 @@ class Astarot extends ContainerAwareCommand
     public $cur;
     private $pdo;
     private $ids;
-    private $stmt;
-    const REC_PER_ITERATION = 10;
+    private $doStmt;
+    private $cntStmt;
+    private $recs;
+    const REC_PER_ITERATION = 50;
     static private $v = [
         'run' => 1,
         'cur' => 2,
@@ -98,7 +100,53 @@ class Astarot extends ContainerAwareCommand
 
     public function updateSchedule()
     {
-        $result = pg_execute($this->pdo, 'renderFoo', []);
+        $i = 0;
+        $insStr = 'INSERT INTO schedule_rendered (exec_date, schedule_id)';
+        $valStr = '';
+        $ids = '';
+        while ($i < self::REC_PER_ITERATION && $i < count($this->recs) && $this->cur < count($this->recs)) {
+            $schedule = $this->recs[$this->cur];
+            $i++;
+            $this->cur++;
+            $current_time = \DateTime::createFromFormat('Y-m-d', $schedule['st']);
+            // $current_time = new \DateTime();
+            $dow = $schedule['day'];
+            $current_dow = date("N", $current_time->getTimestamp());
+            $period = $schedule['period'];
+            $end_time = \DateTime::createFromFormat('Y-m-d', $schedule['et']);
+            if ($dow < $current_dow) {
+               $dow += $period;
+               $current_time = $current_time->add(new \DateInterval('P' . $period . 'D'));
+            }
+            while ($dow != $current_dow) {
+               $current_dow++;
+               $current_time = $current_time->add(new \DateInterval('P' . 1 . 'D'));
+            }
+            while ($current_time <= $end_time) {
+                if ($valStr !== '') {
+                    $valStr .= ', ';
+                }
+                $valStr .= "('" . $current_time->format('Y-m-d') . "', $schedule[id])";
+                $current_time = $current_time->add(new \DateInterval('P' . $period . 'D'));
+            }
+            if ($ids !== '') {
+                $ids .= ', ';
+            } 
+            $ids .= $schedule['id'];           
+            // array_shift($this->recs);
+        }
+        if ($valStr === '') {
+            return;
+        }
+        $result = pg_query(
+            $this->pdo,
+            "$insStr VALUES $valStr"
+        );
+        echo "ids: $ids\n";
+        $result = pg_query(
+            $this->pdo,
+            "UPDATE schedule SET status = 1 WHERE id IN ($ids)"
+        );
     }
 
 
@@ -117,8 +165,13 @@ class Astarot extends ContainerAwareCommand
     private function updCnt()
     {
         if ($this->pdo) {
-            $result = pg_execute($this->pdo, 'select_cnt', []);
-            $this->cnt = pg_fetch_all($result)[0]['count'];
+            $result = pg_execute($this->pdo, 'select_all', []);
+            $this->recs = pg_fetch_all($result);
+            if ($this->recs === false) {
+                $this->cnt = 0;
+            } else {
+                $this->cnt = count($this->recs);
+            }
         } else {
             $this->cnt = -1;
         }
@@ -135,13 +188,13 @@ class Astarot extends ContainerAwareCommand
         }
         $this->cntStmt = pg_prepare(
             $this->pdo,
-            'select_cnt',
-            'SELECT count(*) FROM schedule WHERE status = 0;'
-        );
-        $this->doStmt = pg_prepare(
-            $this->pdo,
-            'renderFoo',
-            "SELECT * FROM renderAllSchedule(" . self::REC_PER_ITERATION . ");"
+            'select_all',
+            "SELECT 
+                s.id as id, sm.time_start as st, sm.time_end as et, s.period as period, s.day as day
+            FROM
+                semesters sm INNER JOIN schedule s ON sm.id = s.semester_id
+            WHERE
+                s.status = 0;"
         );
         $this->updCnt();
     }
@@ -154,8 +207,9 @@ class Astarot extends ContainerAwareCommand
 
     public function nextStep()
     {
+        // echo "before {$this->cur} : {$this->cnt} : " . count($this->recs) . "\n";
         $this->updateSchedule();
-        $this->cur += self::REC_PER_ITERATION;
+        // echo "after {$this->cur} : {$this->cnt} : " . count($this->recs) . "\n";
         $this->checkResetFlag();
         $this->writeToMem();
     }
@@ -178,6 +232,9 @@ class Astarot extends ContainerAwareCommand
         if (shm_has_var($this->shmId, self::$v['run'])) {
             shm_put_var($this->shmId, self::$v['run'], 0);
         }
+        $this->cur = 0;
+        $this->cnt = 0;
+        $this->writeToMem();
         echo "I'll wait you in da Hell, mortal!\n";
     }
 }        

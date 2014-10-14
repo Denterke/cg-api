@@ -10,7 +10,9 @@ use Farpost\StoreBundle\Entity\Course;
 use Farpost\StoreBundle\Entity\Department;
 use Farpost\StoreBundle\Entity\Specialization;
 use Farpost\StoreBundle\Entity\Document;
-use Symfony\Component\Process\Exception\ProcessFailedException;
+// use Symfony\Component\Console\Input\ArrayInput;
+// use Symfony\Component\Console\Output\NullOutput;
+// use Farpost\StoreBundle\Command\AstarotCommand;
 use Symfony\Component\Process\Process;
 
 class ScheduleManager
@@ -18,13 +20,15 @@ class ScheduleManager
    private $doctrine;
    private $session;
 
-   private function startAstarot() {
-      error_log("Astarot has been started!");
-      $process = new Process('php app/console astarot');
-      $process->run();
+   public function startAstarot()
+   {
+      exec(WEB_DIRECTORY . "/../app/console astarot > /dev/null 2>&1 &");
+      // $process = new Process("php " . );
+      // $process->start();
    }
 
-   private function logWrite($str) {
+   private function logWrite($str)
+   {
       $dt = new \DateTime;
       error_log($dt->format('H:i:s:u') . ">>$str");
    }
@@ -90,7 +94,7 @@ class ScheduleManager
 
    public function convertSchedule($path, $vdatetime, $createSS = true)
    {
-      // $this->logWrite("convertSchedule start");
+      $this->logWrite('converter, step: 1');
       $em = $this->doctrine->getManager('default');
       $group_info_entities = ['School', 'Group', 'StudyType', 'Course', 'Department', 'Specialization'];
       $ss_file = fopen($path, 'r');
@@ -99,10 +103,9 @@ class ScheduleManager
       }
       $group_info = fgets($ss_file);
       $str_num = 1;
-      // echo $path;
-      // $this->logWrite('convertSchedule before group sync');
+      $this->logWrite('converter, step: 2');
       $gId = $this->syncGroupInfo($group_info);
-      // $this->logWrite('convertSchedule after group sync');
+      $this->logWrite('converter, step: 3');
       $templates = [];
       $fake = [
          'geo' => [],
@@ -118,6 +121,7 @@ class ScheduleManager
             schedule
             (schedule_part_id, auditory_id, time_id, lesson_type_id, semester_id, period, day, status)
           VALUES ";
+      $this->logWrite('converter, step: 4');
       while (!feof($ss_file)) {
          $schedule_template = fgets($ss_file);
          if (rtrim($schedule_template) == '') {
@@ -187,18 +191,20 @@ class ScheduleManager
          'disc'  => 'Discipline',
          'user'  => 'User'
       ];
-      // $this->logWrite('scheduleConverter before realizing');
+      $this->logWrite('converter, step: 6');
       foreach($entities as $key => $entity) {
          $em->getRepository('FarpostStoreBundle:' . $entity)->realizeFake($fake[$key]);
       }
+      $this->logWrite('converter, step: 7');
       foreach($fake['sp'] as &$sp) {
          $sp['user'] = $fake['user'][$sp['user']];
          $sp['disc'] = $fake['disc'][$sp['disc']];
       }
       $em->getRepository('FarpostStoreBundle:SchedulePart')
          ->realizeFake($fake['sp'], $gId);
+      $this->logWrite('converter, step: 8');
       $firstIns = true;
-      // $this->logWrite('scheduleConverter before insert');
+      $this->logWrite('converter, step: 9');
       foreach($templates as &$t) {
          $insStr .= $firstIns ? ' ' : ', ';
          $firstIns = false;
@@ -213,38 +219,16 @@ class ScheduleManager
             throw $e;
          }
       }
+      $this->logWrite('converter, step: 10');
       if (!$firstIns) {
          $insStr .= " returning id";
          $pdo = $em->getConnection();
          $stmt = $pdo->prepare($insStr);
+         $this->logWrite('converter, step: 11');
          $stmt->execute();
          $ids = $stmt->fetchAll();
-         // $stmt = $pdo->prepare(
-         // "SELECT 
-         //    s.id, sm.time_start, sm.time_end, s.period, s.day
-         //  FROM
-         //       schedule s 
-         //    INNER JOIN 
-         //       semesters sm
-         //    ON
-         //       s.semester_id = sm.id
-         //    INNER JOIN
-         //       schedule_parts sp
-         //    ON
-         //       s.schedule_part_id = sp.id
-         //  WHERE
-         //    sp.group_id = {$gId};"
-         // );
-         // $stmt->execute();
-         // $temps = $stmt->fetchAll();
-         // $this->logWrite('scheduleConverter before generation');
-         // foreach($temps as &$temp) {
-         //    $this->generateSchedule($temp);
-         // }
-         // $this->logWrite('scheduleConverter after generation');
-         $this->startAstarot();
+         $this->logWrite('converter, step: 12');
       }
-
       if ($createSS) {
          $ssource = new ScheduleSource();
          $ssource->setVDatetime($vdatetime)
@@ -258,31 +242,15 @@ class ScheduleManager
 
    public function refreshSchedule()
    {
-      // $this->logWrite("refreshSchedule start");
       $schedule_templates = $this->doctrine->getManager('default')
          ->getRepository('FarpostStoreBundle:ScheduleSource', 'ssrc')
          ->getLastRecords();
-      // $this->logWrite("lastRecords got");
-      // echo json_encode($schedule_templates);
-      // $this->session->set('ss_count', count($schedule_templates));
-      // $this->session->set('ss_curr', 0);
-      // echo "testtest";
-      // flush();
-      // $i = 0;
       foreach($schedule_templates as &$s_template) {
-         // echo "here!";
-         // echo $i;
-         // $i++;
-         // flush();
-         // $this->logWrite($s_template->getGroup()->getAlias() . ' start');
          $this->convertSchedule(
             $s_template->getBase(),
             $s_template->getVDatetime(),
             false
          );
-         // $this->logWrite($s_template->getGroup()->getAlias() . ' end');
-         // $this->session->set('ss_curr', $this->session->get('ss_curr') + 1);
-         // exit;
       }
       $this->startAstarot();
    }

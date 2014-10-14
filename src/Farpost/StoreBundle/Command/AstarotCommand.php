@@ -32,13 +32,15 @@ class AstarotCommand extends ContainerAwareCommand
                 Astarot::writePid($pid);
             }
         } else {
+            error_log("IN ASTAROT ITERATION");
             $this->astarot = new Astarot();            
             $this->astarot->init();
             while(!$this->astarot->finish()) 
             {
-                $output->writeln("ITERATION");
+                // $output->writeln("ITERATION");/
                 $this->astarot->nextStep();
             }
+            Astarot::writePid(-1);
         }
     }
 

@@ -111,26 +111,20 @@
                      RETURN g_id;
                   END IF;
                   DELETE FROM
-                     schedule_rendered sr
+                     schedule s
                   WHERE
-                     sr.id 
+                     s.id 
                   IN
                      (SELECT
-                        sr2.id
+                        s2.id
                       FROM
-                        schedule_rendered sr2
-                      INNER JOIN
-                        schedule s
-                      ON 
-                        sr2.schedule_id = s.id
+                        schedule s2
                       INNER JOIN
                         schedule_parts sp
                       ON
-                        s.schedule_part_id = sp.id
+                        s2.schedule_part_id = sp.id
                       WHERE
                         sp.group_id = g_id
-                      AND
-                        sr2.exec_date >= NOW()
                      );
                   RETURN g_id;
                END;
