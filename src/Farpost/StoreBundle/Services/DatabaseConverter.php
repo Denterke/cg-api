@@ -64,7 +64,7 @@ class DatabaseConverter
       $em_ba = $this->doctrine->getManager('default');
 
       $dbname_bu = "back_up_catalog";
-      $owner = "16ytu91ito";   
+      $owner = "back_up_catalog";   
       echo "<p>$infile</p>";
       $pg_err_num = 0;
       $pg_log_file = __DIR__ . '/../../../../web/uploads/documents/tmp_log.txt';
