@@ -225,6 +225,7 @@ class AdminController extends Controller {
 	}
 
 	public function scheduleLogAction() {
+		Astarot::memcacheInit();
 		if (Astarot::isRunning()) {
 			$result = json_encode(Astarot::getState());
 		} else {

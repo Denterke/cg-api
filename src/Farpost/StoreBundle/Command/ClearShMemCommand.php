@@ -21,23 +21,23 @@ class ClearShMemCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $var = [
-            'run' => [1, 0],
-            'cur' => [2, 0],
-            'cnt' => [3, 0],
-            'pid' => [4, -1],
-            'res' => [5, 0]
+            'run' => 0,
+            'cur' => 0,
+            'cnt' => 0,
+            'pid' => -1,
+            'res' => 0
         ];
-        $astarotMemId = shm_attach(Astarot::GetFTok());
+        $memcache = new \Memcache;
+        $memcache->connect('localhost') or die('Can not connect memcache server');
         foreach($var as $key => $val) {
-            if (shm_has_var($astarotMemId, $val[0])) {
-                echo "Variable $key = " . shm_get_var($astarotMemId, $val[0]) . "\n";
-            } else {
-                echo "Variable $key does not exist\n";
-            }
+            $memVal = $memcache->get($key);
+            echo "Variable $key = $memVal";
             if ($input->getOption('clear')) {
-                shm_put_var($astarotMemId, $val[0], $val[1]);
-                echo "cleared with value: $val[1]\n";
+                $memcache->set($key, $val);
+                echo " => $val";
             }
+            echo "\n";
         }
+        $memcache->close() or die('Can not close connection');
     }
 }

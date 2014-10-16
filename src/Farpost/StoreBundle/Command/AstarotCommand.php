@@ -20,6 +20,7 @@ class AstarotCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        Astarot::memcacheInit();
         if (Astarot::isRunning()) {
             Astarot::restart();
             return;

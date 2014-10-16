@@ -10,8 +10,6 @@ require(__DIR__ . '/../../../../scripts/GetConnect.php');
 class Astarot extends ContainerAwareCommand
 {
     public $stop;
-    public $id;
-    public $shmId;
     public $cnt;
     public $cur;
     private $pdo;
@@ -20,13 +18,7 @@ class Astarot extends ContainerAwareCommand
     private $cntStmt;
     private $recs;
     const REC_PER_ITERATION = 50;
-    static private $v = [
-        'run' => 1,
-        'cur' => 2,
-        'cnt' => 3,
-        'pid' => 4,
-        'res' => 5
-    ];
+    static public $memcache;
 
     static public function getFTok()
     {
@@ -35,52 +27,59 @@ class Astarot extends ContainerAwareCommand
 
     static public function getPid()
     {
-        $shmId = shm_attach(self::getFTok());
-        if (shm_has_var($shmId, self::$v['pid'])) {
-            $pid = shm_get_var($shmId, self::$v['pid']);
-            return $pid > 0 ? $pid : false;
+        self::memcacheConnect();
+        $pid = self::get('pid');
+        self::memcacheClose();
+        return $pid;
+    }
+
+    static public function memcacheInit()
+    {
+        if (!self::$memcache) {
+            self::$memcache = new \Memcache; 
         }
-        return false;
     }
 
     static public function getState()
     {
-        $shmId = shm_attach(self::getFTok());
-        if (shm_has_var($shmId, self::$v['cnt']) && shm_has_var($shmId, self::$v['cur'])) {
-            return [
-                'count' => shm_get_var($shmId, self::$v['cnt']),
-                'current' => shm_get_var($shmId, self::$v['cur'])
+        self::memcacheConnect();
+        if (self::get('cnt') !== false && self::get('cur') !==false) {
+            $res = [
+                'count'   => self::get('cnt'),
+                'current' => self::get('cur')
             ];
+            self::memcacheClose();
+            return $res;
         } else {
+            self::memcacheClose();
             return false;
         }
     }
 
     static private function setResetFlag()
     {
-        $shmId = shm_attach(self::getFTok());
-        shm_put_var($shmId, self::$v['res'], 1);
-
+        self::memcacheConnect();
+        self::set('res', true);
+        self::memcacheClose();
     }
 
     static public function writePid($pid)
     {
-        $shmId = shm_attach(self::getFTok());
-        shm_put_var($shmId, self::$v['pid'], $pid);
+        self::memcacheConnect();
+        self::set('pid', $pid);
+        self::memcacheClose();
     }
 
     static public function isRunning()
     {
-        $shmId = shm_attach(self::getFTok());
-        if (shm_has_var($shmId, self::$v['run'])) {
-            return shm_get_var($shmId, self::$v['run']);
-        }
-        return false;
+        self::memcacheConnect();
+        $run = self::get('run');
+        self::memcacheClose();
+        return $run;
     }
 
     static public function restart()
     {
-        $shmId = shm_attach(self::getFTok());
         if (self::isRunning()) {
             self::setResetFlag();
         }
@@ -88,14 +87,36 @@ class Astarot extends ContainerAwareCommand
 
     private function checkResetFlag()
     {
-        if (shm_has_var($this->shmId, self::$v['res'])) {
-            if (shm_get_var($this->shmId, self::$v['res'])) {
-                shm_put_var($this->shmId, self::$v['res'], 0);
-                pg_close($this->pdo);
-                echo "I'll do it again, mortal!";
-                $this->init();
-            }
+        self::memcacheConnect();
+        if (self::get('res')) {
+            self::set('res', false);
+            self::memcacheClose();
+            pg_close($this->pdo);
+            echo "I'll do it again, mortal!";
+            $this->init();
+            return;
         }
+        $this->memcacheClose();
+    }
+
+    static public function memcacheConnect()
+    {
+        self::$memcache->connect('localhost') or die('Can not connect memcache server');
+    }
+
+    static public function memcacheClose()
+    {
+        self::$memcache->close() or die ('Can not close memcache connection');
+    }
+
+    static public function get($key)
+    {
+        return self::$memcache->get($key);
+    }
+
+    static public function set($key, $val)
+    {
+        self::$memcache->set($key, $val);
     }
 
     public function updateSchedule()
@@ -150,16 +171,17 @@ class Astarot extends ContainerAwareCommand
     }
 
 
+
     public function __construct()
     {
-        $this->id = ftok(__FILE__, 'A');
-        $this->shmId = shm_attach($this->id);
-        if (shm_has_var($this->shmId, self::$v['run'])) {
-            if (shm_get_var($this->shmId, self::$v['run'])) {
-                die("You have already summon me, mortal!\n");
-            }
+        self::memcacheConnect();
+        $run = self::get('run');
+        if ($run) {
+            $this->memcacheClose();
+            die("You have already summon me, mortal!\n");
         }
-        shm_put_var($this->shmId, self::$v['run'], 1);            
+        self::set('run', true);
+        self::memcacheClose();
     }
 
     private function updCnt()
@@ -201,15 +223,15 @@ class Astarot extends ContainerAwareCommand
 
     private function writeToMem()
     {
-        shm_put_var($this->shmId, self::$v['cur'], $this->cur);
-        shm_put_var($this->shmId, self::$v['cnt'], $this->cnt);
+        self::memcacheConnect();
+        self::set('cur', $this->cur);
+        self::set('cnt', $this->cnt);
+        self::memcacheClose();
     }
 
     public function nextStep()
     {
-        // echo "before {$this->cur} : {$this->cnt} : " . count($this->recs) . "\n";
         $this->updateSchedule();
-        // echo "after {$this->cur} : {$this->cnt} : " . count($this->recs) . "\n";
         $this->checkResetFlag();
         $this->writeToMem();
     }
@@ -229,9 +251,11 @@ class Astarot extends ContainerAwareCommand
     public function stop()
     {
         $this->stop = true;
-        if (shm_has_var($this->shmId, self::$v['run'])) {
-            shm_put_var($this->shmId, self::$v['run'], 0);
+        self::memcacheConnect();
+        if (self::get('run')) {
+            self::set('run', false);
         }
+        self::memcacheClose();
         $this->cur = 0;
         $this->cnt = 0;
         $this->writeToMem();
