@@ -225,12 +225,18 @@ class AdminController extends Controller {
 	}
 
 	public function scheduleLogAction() {
-		Astarot::memcacheInit();
-		if (Astarot::isRunning()) {
-			$result = json_encode(Astarot::getState());
+		$path = WEB_DIRECTORY . "/astarot_log.txt";
+		if (file_exists($path)) {
+			$result = file_get_contents($path);
 		} else {
-			$result = "Schedule render daemon not running";
+			$result = "file does not exist";
 		}
+		// Astarot::memcacheInit();
+		// if (Astarot::isRunning()) {
+			// $result = json_encode(Astarot::getState());
+		// } else {
+			// $result = "Schedule render daemon not running";
+		// }
 		// echo $result;
 		// exit;
 		return new Response($result, 200, ['Content-Type' => 'application/json']);
