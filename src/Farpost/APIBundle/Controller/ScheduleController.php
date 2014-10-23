@@ -91,4 +91,33 @@ class ScheduleController extends Controller
                ->setStatusCode(200);
       return $response;
    }
+
+   public function getFullScheduleAction(Request $request)
+   {
+      $response = $this->_createResponse();
+      if (!$request->query->has('group')) {
+         return $response;
+      }
+      $gId = $request->query->getInt('group', 0);
+      $entities = [
+         'professors'  => 'User',
+         'disciplines' => 'Discipline',
+         'auditories'  => 'GeoObject',
+         'times'       => 'Time'
+      ];
+      $result = [];
+      $em = $this->getDoctrine()->getManager();
+      foreach($entities as $name => $entity) {
+         $result[$name] = $em->getRepository("FarpostStoreBundle:$entity")
+                             ->getForGroup($gId);
+      }
+      $result['lessons'] = $em->getRepository('FarpostStoreBundle:LessonType')
+                              ->createQueryBuilder('a')
+                              ->getQuery()
+                              ->getArrayResult();
+      $result['schedule'] = $em->getRepository('FarpostStoreBundle:ScheduleRendered')
+                               ->getForGroup($gId);
+      return $response->setStatusCode(200)
+                      ->setContent(json_encode(['full_schedule' => $result]));
+   }
 }

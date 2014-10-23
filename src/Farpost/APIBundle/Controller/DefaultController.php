@@ -75,26 +75,10 @@ class DefaultController extends Controller
    {
       $request = Request::createFromGlobals();
       $response = $this->_createResponse();
-      // parse_str($_SERVER['QUERY_STRING']);
-      // if (!isset($study_type) || !isset($school)) {
-      //    return $response;
-      // }
       $em = $this->getDoctrine()->getEntityManager();
       $t = $request->query->has('t') ? $request->query->get('t') : 1;
       $result = $em->getRepository('FarpostStoreBundle:Group')
                ->getList($t);
-               // ->createQueryBuilder('g');
-              //  ->innerJoin('FarpostStoreBundle:StudySet', 'ss', Join::WITH, 'g.study_set = ss.id')
-              //  ->join('ss.departments', 'departments')
-              //  ->innerJoin('FarpostStoreBundle:School', 's', Join::WITH, 'departments.school = s.id')
-              //  ->innerJoin('FarpostStoreBundle:StudyType', 'st', Join::WITH, 'departments.study_type = st.id')
-              //  ->where('st.id = :st_id')
-              //  ->andwhere('s.id = :s_id')
-              //  ->setParameters([
-              //    'st_id' => $study_type,
-              //    's_id'  => $school
-              // ]);
-      // $result = $qb->getQuery()->getArrayResult();
       $dt = new \Datetime();
       $response->setContent(json_encode(
                               [
@@ -117,7 +101,9 @@ class DefaultController extends Controller
          'professors'  => 'User',
          'disciplines' => 'Discipline'
       ];
-      if (!$request->query->has('group') || empty($entities[$name])) return $response;
+      if (!$request->query->has('group') || empty($entities[$name])) {
+         return $response;
+      }
       $en_name = $entities[$name];
       $result = $this->getDoctrine()->getManager()->getRepository('FarpostStoreBundle:' . $en_name)
                      ->getForGroup($request->query->getInt('group', 0));
@@ -127,8 +113,9 @@ class DefaultController extends Controller
    public function getTypesAction($name)
    {
       $response = $this->_createResponse();
-      if (!in_array($name, ['lesson', 'study', 'building']))
+      if (!in_array($name, ['lesson', 'study', 'building'])) {
          return $response;
+      }
       $items = $this->getDoctrine()
                     ->getEntityManager()
                     ->getRepository('FarpostStoreBundle:' . ucfirst($name) . 'Type')
@@ -146,7 +133,9 @@ class DefaultController extends Controller
       $request = Request::createFromGlobals();
       $response = $this->_createResponse();
       $dt = new \DateTime();
-      if (!$request->query->has('group') || !$request->query->has('t')) return $response;
+      if (!$request->query->has('group') || !$request->query->has('t')) {
+         return $response;
+      }
       $dt->setTimestamp($request->query->getInt('t', 0));
       $group = $request->query->getInt('group', 0);
       $result = [];
@@ -156,22 +145,18 @@ class DefaultController extends Controller
          'Time' => 'times',
          'Discipline' => 'disciplines',
          'ScheduleRendered' => 'schedules'
-         // 'Building' => 'buildings'
       ];
       foreach($entities as $en_name => $table_name) {
          $elem = $this->getDoctrine()->getManager()
                       ->getRepository('FarpostStoreBundle:' . $en_name)
                       ->getUpdate($dt, $group);
-         if (empty($elem)) continue;
-         // array_push(
-            $result[$table_name] = $elem;
-            // [$table_name => $elem]
-         // );
+         if (empty($elem))
+            continue;
+         $result[$table_name] = $elem;
       }
       $current_time = new \DateTime();
       $result['timestamp'] = $current_time->getTimestamp();
       $result = json_encode($result);
-      // $result = substr($result, 1, strlen($result) - 2);
       return $response->setStatusCode(200)->setContent($result);
    }
 
@@ -189,14 +174,10 @@ class DefaultController extends Controller
    public function getFileAction($filename)
    {
       $response = new Response('Not found', 404);
-      // if (!ctype_alnum($filename)) {
-         // return $response;
-      // }
       $filepath = $this->getRequest()->server->get('DOCUMENT_ROOT') . '/static/' . $filename;
       if (!file_exists($filepath)) {
          return $response;
       }
-      // return $response;
       $response = new Response();
       $response->headers->set('Cache-Control', 'private');
       $response->headers->set('Content-Type', mime_content_type($filepath));
