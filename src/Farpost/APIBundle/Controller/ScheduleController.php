@@ -118,6 +118,6 @@ class ScheduleController extends Controller
       $result['schedule'] = $em->getRepository('FarpostStoreBundle:ScheduleRendered')
                                ->getForGroup($gId);
       return $response->setStatusCode(200)
-                      ->setContent(json_encode(['full_schedule' => $result]));
+                      ->setContent(json_encode($result));
    }
 }
