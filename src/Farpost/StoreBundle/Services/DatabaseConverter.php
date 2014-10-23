@@ -64,13 +64,13 @@ class DatabaseConverter
       $em_ba = $this->doctrine->getManager('default');
 
       $dbname_bu = "back_up_catalog";
-      $owner = "back_up_catalog";   
+      $owner = "postgres";   
       echo "<p>$infile</p>";
       $pg_err_num = 0;
       $pg_log_file = __DIR__ . '/../../../../web/uploads/documents/tmp_log.txt';
       // system("/usr/bin/psql -c -d $dbname_bu -c 'CREATE SCHEMA IF NOT EXISTS catalog;'");
       system("/usr/bin/pg_restore --host=localhost -U $owner -c -O -d $dbname_bu --schema=catalog $infile > $pg_log_file 2>&1", $pg_err_num);
-      $pg_log = file_get_contents($pg_log_file); 
+      $pg_log = file_get_contents($pg_log_file);
       if ($pg_err_num) {
          echo $pg_err_num;
          echo $pg_log;
@@ -149,7 +149,7 @@ class DatabaseConverter
       $version = new Version();
       $version->setVDateTime($timestamp)->setBase($new_name)->setType($level);
       $em->persist($version);
-      $em->flush();      
+      $em->flush();
       $zipName = $this->zipifyLast($timestamp, $em);
       $version = new Version();
       $version->setVDateTime($timestamp)->setBase($zipName)->setType(-58);

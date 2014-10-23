@@ -9,10 +9,10 @@ class GroupCache
    private $specializations; //alias => [id]
    private $courses;         //alias => [id]
    private $departments;     //id => [schoolId, studyTypeId, alias]
-   private $studySets;       //id => [specId, courseId, [departmentId1, departmentId2...]]
+   private $studySets;       //id => [specId, courseId, departmentId]
    private $groups;          //alias => [id, studySetId]
 
-   private function append(&$arr, $key, $val) //associate array
+   private function append(&$arr, $key, $val) //associative array
    {
       // echo json_encode([
          // 'key' => $key,
@@ -119,24 +119,15 @@ class GroupCache
          ];
       }      
 
-      $stmt = $this->pdo->prepare("SELECT id, specialization_id, course_id FROM study_sets");
+      $stmt = $this->pdo->prepare("SELECT id, specialization_id, course_id, department_id FROM study_sets");
       $stmt->execute();
       while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
          $this->studySets[$row['id']] = [
-            'specId'   => $row['specialization_id'],
-            'courseId' => $row['course_id']
+            'specId'       => $row['specialization_id'],
+            'courseId'     => $row['course_id'],
+            'depId' => $row['department_id']
          ];
       }
-
-      $stmt = $this->pdo->prepare("SELECT study_set_id, department_id FROM department_sets");
-      $stmt->execute();
-      while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-         $this->append(
-            $this->studySets[$row['study_set_id']],
-            'deps',
-            $row['department_id']
-         );
-      }   
 
       $stmt = $this->pdo->prepare("SELECT id, alias, study_set_id FROM groups");
       $stmt->execute();
@@ -189,7 +180,9 @@ class GroupCache
 
       $depId = null;
       foreach($this->departments as $key => &$dep) {
-         if ($dep['alias'] == $department && $dep['schoolId'] == $schoolId && $dep['studyTypeId'] == $stId) {
+         if ($dep['alias'] == $department &&
+             $dep['schoolId'] == $schoolId &&
+             $dep['studyTypeId'] == $stId) {
             $depId = $key;
             break;
          }
@@ -209,41 +202,23 @@ class GroupCache
 
       $ssId = null;
       foreach($this->studySets as $id => &$ss) {
-         if ($ss['specId'] == $specId && $ss['courseId'] == $courseId) {
+         if ($ss['specId'] == $specId &&
+             $ss['courseId'] == $courseId &&
+             $ss['depId'] == $depId) {
             $ssId = $id;
-            if (isset($ss['deps']) && in_array($depId, $ss['deps'])) {
-               break;
-            }
-            $this->PDOInsert(
-               ['study_set_id', 'department_id'],
-               [$ssId, $depId],
-               'department_sets',
-               false
-            );
-            $this->append(
-               $ss,
-               'deps',
-               $depId
-            );
             break;
          }
       }
       if (!isset($ssId)) {
          $ssId = $this->PDOInsert(
-            ['specialization_id', 'course_id'],
-            [$specId, $courseId],
+            ['specialization_id', 'course_id', 'department_id'],
+            [$specId, $courseId, $depId],
             'study_sets'
-         );
-         $this->PDOInsert(
-            ['study_set_id', 'department_id'],
-            [$ssId, $depId],
-            'department_sets',
-            false
          );
          $this->studySets[$ssId] = [
             'specId'   => $specId,
             'courseId' => $courseId,
-            'deps'     => [$depId]
+            'depId'    => $depId
          ];
       }
       if (!isset($this->groups[$group])) {
@@ -258,7 +233,6 @@ class GroupCache
          return $this->groups[$group]['id'];
       }
       $gId = $this->groups[$group]['id'];
-
       $this->PDOClearGroupSchedule($gId);
       return $gId;
    }

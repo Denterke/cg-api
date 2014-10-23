@@ -15,9 +15,6 @@ class StudySetRepository extends EntityRepository
       $qb->select('ss')
          ->distinct()
          ->from('FarpostStoreBundle:StudySet', 'ss');
-         // ->innerJoin('FarpostStoreBundle:Specialization', 'sp',  Join::WITH, 'ss.specialization = sp.id')
-         // ->innerJoin('FarpostStoreBundle:Course', 'c', Join::WITH, 'ss.course = c.id')
-         // ->innerJoin('FarpostStoreBundle:Department', 'd');
       return $qb;
    }
 

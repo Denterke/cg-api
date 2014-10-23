@@ -39,18 +39,12 @@ class StudySet
    protected $course;
 
    /**
-    * @ORM\ManyToMany(targetEntity="Department")
-    * @ORM\JoinTable(name="department_sets",
-    * joinColumns={@ORM\JoinColumn(name="study_set_id", referencedColumnName="id", onDelete="CASCADE")},
-    * inverseJoinColumns={@ORM\JoinColumn(name="department_id", referencedColumnName="id", onDelete="CASCADE")}
-    * )
+    * @var Department
+    *
+    * @ORM\ManyToOne(targetEntity="Department")
+    * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
     */
-   protected $departments;
-
-   public function __construct()
-   {
-    $this->departments = new ArrayCollection();
-   }
+   protected $department;
 
    /**
     * Get id
@@ -107,35 +101,25 @@ class StudySet
    }
 
     /**
-     * Add departments
+     * Set department
      *
-     * @param \Farpost\StoreBundle\Entity\Department $departments
+     * @param \Farpost\StoreBundle\Entity\Department $department
      * @return StudySet
      */
-    public function addDepartment(\Farpost\StoreBundle\Entity\Department $departments)
+    public function setDepartment(\Farpost\StoreBundle\Entity\Department $department = null)
     {
-        $this->departments[] = $departments;
+        $this->department = $department;
 
         return $this;
     }
 
     /**
-     * Remove departments
+     * Get department
      *
-     * @param \Farpost\StoreBundle\Entity\Department $departments
+     * @return \Farpost\StoreBundle\Entity\Department 
      */
-    public function removeDepartment(\Farpost\StoreBundle\Entity\Department $departments)
+    public function getDepartment()
     {
-        $this->departments->removeElement($departments);
-    }
-
-    /**
-     * Get departments
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getDepartments()
-    {
-        return $this->departments;
+        return $this->department;
     }
 }

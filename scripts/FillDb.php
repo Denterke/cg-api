@@ -90,19 +90,15 @@
                         ss.id
                      FROM
                         study_sets ss
-                     INNER JOIN
-                        department_sets ds
-                     ON ds.study_set_id = ss.id
                      WHERE
                         ss.specialization_id = spec_id
                      AND
                         ss.course_id = c_id
                      AND
-                        ds.department_id = dep_id
+                        ss.department_id = dep_id
                      LIMIT 1);
                   if (ss_id IS NULL) THEN
-                     INSERT INTO study_sets (specialization_id, course_id) VALUES (spec_id, c_id) returning id INTO ss_id;
-                     INSERT INTO department_sets (study_set_id, department_id) VALUES (ss_id, dep_id);
+                     INSERT INTO study_sets (specialization_id, course_id, department_id) VALUES (spec_id, c_id, dep_id) returning id INTO ss_id;
                   END IF;
                   --group
                   g_id = (SELECT id FROM groups WHERE alias = \$6);
@@ -221,7 +217,7 @@
       //WARNING: ORDER IS IMPORTANT!
       $arrays = [
          // 'schedule_rendered',
-         'department_sets',
+         // 'department_sets',
          'departments',
          'schools',
          'study_types',
