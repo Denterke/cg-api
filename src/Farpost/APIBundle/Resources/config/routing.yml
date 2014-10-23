@@ -46,4 +46,8 @@ farpost_api_init_app:
    path:     /init_app
    defaults: { _controller: FarpostAPIBundle:Default:initApp }
 
+farpost_api_full_schedule:
+   path:    /full.schedule.get.json
+   defaults: { _controller: FarpostAPIBundle:Schedule:getFullSchedule }
+
 
