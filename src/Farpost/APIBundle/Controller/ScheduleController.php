@@ -111,7 +111,7 @@ class ScheduleController extends Controller
          $result[$name] = $em->getRepository("FarpostStoreBundle:$entity")
                              ->getForGroup($gId);
       }
-      $result['lessons'] = $em->getRepository('FarpostStoreBundle:LessonType')
+      $result['lesson_types'] = $em->getRepository('FarpostStoreBundle:LessonType')
                               ->createQueryBuilder('a')
                               ->getQuery()
                               ->getArrayResult();
