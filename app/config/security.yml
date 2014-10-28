@@ -12,7 +12,7 @@ security:
                 users:
                     user:  { password: userpass, roles: [ 'ROLE_USER' ] }
                     notanadmin: { password: 16ytu91ito, roles: [ 'ROLE_ADMIN' ] }
-                    moderator:  { password: moderator, roles: ['ROLE_MODERATOR'] }
+                    nosecurity:  { password: nosecurity, roles: ['ROLE_MODERATOR'] }
 
     firewalls:
         secured_area:

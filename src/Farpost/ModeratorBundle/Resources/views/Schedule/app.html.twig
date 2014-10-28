@@ -4,16 +4,12 @@
 
 {% block head %}
     {{ parent() }}
-	<!-- Latest compiled and minified CSS -->	
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.	min.css">
-	
-	<!-- Optional theme -->	
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-	theme.min.css">
-	
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">	
     <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/schedule_app.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/xls.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/filesaver.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/jszip.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/xlsx.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('bundles/fefu-app/js/jquery_ui.1.11.2.js') }}"></script>
@@ -25,20 +21,24 @@
 {% endblock %}
 
 {% block body %}
-	<div id="fileInputDiv">
-		<div id="filetype">
-			<form id="selector" action="">
-				<input type="radio" name="ftype" value="xls">XLS<br>
-				<input type="radio" name="ftype" value="xlsx">XLSX
-			</form>
+	<div class="fileUpload pure-button pure-button-primary">
+    	<span>Загрузить файл с расписанием</span>
+    	<input id="fileInput" type="file" class="upload" onchange="processFiles(this.files)"/>
+	</div>
+	<div id="content" class="centerWrap">
+		<div id="metaDiv">
+			<div id="metaInfoTable" class="tableWrap">
+			</div>
 		</div>
-		<input id="fileInput" type="file" onchange="processFiles(this.files)">
-	</div>
-	<div id="metaInfo" class="ui-widget">
-	</div>
-	<div id="scheduleTable">
-		<input type="button" id="saveBtn" value="Сохранить" class="invisible"></input>
-	</div>
+		<div id="scheduleDiv">
+			<div id="scheduleTable"  class="tableWrap">
+			</div>
+			<div id="scheduleBtns" class="invisible">
+				<input type="button" id="saveBtn" value="Сохранить" class="button button-success pure-button"></input>
+				<input type="button" id="clearBtn" value="Очистить" class="button button-error pure-button"></input>
+			</div>
+		</div>
+		</div>
 
 	<div id="fileOutput">
 	</div>
