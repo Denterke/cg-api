@@ -94,11 +94,11 @@ class GeoObjectRepository extends EntityRepository
       return $recs;
    }
 
-   // private function writeTime($str)
-   // {
-      // $dt = new \Datetime();
-      // error_log("$str:" . $dt->getTimestamp());
-   // }
+   private function writeTime($str)
+   {
+      $dt = new \Datetime();
+      error_log("$str:" . $dt->getTimestamp());
+   }
 
    public function realizeFake(&$fakes)
    {
@@ -142,7 +142,7 @@ class GeoObjectRepository extends EntityRepository
             array_push($resRefs, $i);
             $curId++;
          } else {
-            $fakes[$i] = $objs[$fakes[$i]]['id'];
+            $fakes[$i] = $objs[$keys[$objIdx]]['id'];
          }
       }
       // $this->writeTime("after loop");
@@ -177,6 +177,7 @@ class GeoObjectRepository extends EntityRepository
    {
       echo "IN SYNC\n";
       $pdo = $this->_em->getConnection();
+      $this->writeTime('before delete');
       $stmt = $pdo->prepare(
          "DELETE FROM
             geoobjects
@@ -184,6 +185,7 @@ class GeoObjectRepository extends EntityRepository
             cataloged = 0"
       );
       $stmt->execute();
+      $this->writeTime('after delete');
       $stmt = $pdo->prepare(
          "SELECT
             id, geoobject_type_id as type_id, building_id, alias, level, lon, lat, status
@@ -203,7 +205,7 @@ class GeoObjectRepository extends EntityRepository
           VALUES ";
       $updStr = "";
       $firstIns = true;
-      // $this->writeTime("before loop");
+      $this->writeTime("before loop");
 
       foreach ($items as &$item) {
          unset($item['node_id']);
@@ -243,7 +245,7 @@ class GeoObjectRepository extends EntityRepository
                $stmt->execute();
          }
       }
-      // $this->writeTime("after loop");
+      $this->writeTime("after loop");
       if (!$firstIns) {
          // $this->writeTime("before insert2");
          $stmt = $pdo->prepare($insStr);

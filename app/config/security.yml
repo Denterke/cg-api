@@ -12,6 +12,7 @@ security:
                 users:
                     user:  { password: userpass, roles: [ 'ROLE_USER' ] }
                     notanadmin: { password: 16ytu91ito, roles: [ 'ROLE_ADMIN' ] }
+                    moderator:  { password: moderator, roles: ['ROLE_MODERATOR'] }
 
     firewalls:
         secured_area:
@@ -19,6 +20,11 @@ security:
             anonymous: ~
             http_basic:
                 realm: "Secured admin area"
+        moderator_area:
+            pattern: ^/moderator
+            anonymous: ~
+            http_basic:
+                realm: "Secured moderator area"
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -41,4 +47,5 @@ security:
 
     access_control:
         - {path: ^/admin, roles: 'ROLE_ADMIN'}
+        - {path: ^/moderator, roles: 'ROLE_MODERATOR'}
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

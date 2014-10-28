@@ -1,0 +1,32 @@
+.metaLabel {
+	display:block;
+}
+
+.metaInput {
+	display:block;
+}
+
+#fileInputDiv {
+	margin: 0 auto;
+	width: 20%;
+}
+
+#metaInfo {
+	float: left;
+	margin: 0 auto;
+	width: 20%;
+}
+
+#scheduleTable {
+	margin: 0 auto;
+	width: 80%;
+	float: right;
+}
+
+.visible {
+	display: block;
+}
+
+.invisible {
+	display: none;
+}

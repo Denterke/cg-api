@@ -1,0 +1,3 @@
+farpost_moderator_homepage:
+    path:     /
+    defaults: { _controller: FarpostModeratorBundle:Schedule:index }

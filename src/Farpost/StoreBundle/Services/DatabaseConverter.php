@@ -9,6 +9,7 @@ class DatabaseConverter
    private $doctrine;
    private $sqlite_manager;
    private $entity_dispatcher;
+   private $schedule_manager;
 
    private function SoftExit($msg)
    {
@@ -34,11 +35,12 @@ class DatabaseConverter
       return $filename;
    }
 
-   public function __construct($doctrine, $sqlite_manager, $entity_dispatcher)
+   public function __construct($doctrine, $sqlite_manager, $entity_dispatcher, $schedule_manager)
    {
       $this->doctrine = $doctrine;
       $this->sqlite_manager = $sqlite_manager;
       $this->entity_dispatcher = $entity_dispatcher;
+      $this->schedule_manager = $schedule_manager;
    }
 
    public function AddDb($type, $dbname)
@@ -64,7 +66,7 @@ class DatabaseConverter
       $em_ba = $this->doctrine->getManager('default');
 
       $dbname_bu = "back_up_catalog";
-      $owner = "postgres";   
+      $owner = "back_up_catalog";   
       echo "<p>$infile</p>";
       $pg_err_num = 0;
       $pg_log_file = __DIR__ . '/../../../../web/uploads/documents/tmp_log.txt';
@@ -90,6 +92,7 @@ class DatabaseConverter
          $this->SoftExit($e->message);
       }
       echo "i create sqlite file!";
+      $this->schedule_manager->rawClear();
       foreach($tables as &$table) {
          echo "<p>now table name is $table[table]</p>";
          $bu_items = $em_bu->getRepository(

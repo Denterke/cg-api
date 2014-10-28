@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Farpost\APIBundle\FarpostAPIBundle(),
             new Farpost\WebBundle\FarpostWebBundle(),
             new Farpost\BackUpBundle\FarpostBackUpBundle(),
+            new Farpost\ModeratorBundle\FarpostModeratorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

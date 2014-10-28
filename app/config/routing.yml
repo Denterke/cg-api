@@ -1,3 +1,7 @@
+farpost_moderator:
+    resource: "@FarpostModeratorBundle/Resources/config/routing.yml"
+    prefix:   /moderator/
+
 farpost_admin:
     resource: "@FarpostWebBundle/Resources/config/admin_routing.yml"
     prefix:   /admin/

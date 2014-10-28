@@ -1,11 +1,11 @@
  <?php
    function setUpdating(&$conn, &$table_name)
    {
-      $foo_name = $table_name . '_func_upd()';
+      //function for update or insert
+      $foo_name_upd = $table_name . '_func_upd()';
       $qname = '\'' . $table_name . '\'';
-      echo "creating function " . $foo_name . "\n";
-      $trig_name = $table_name . '_trig_upd';
-      $foo = "CREATE OR REPLACE FUNCTION  $foo_name RETURNS trigger AS
+      echo "creating function " . $foo_name_upd . "\n";
+      $foo = "CREATE OR REPLACE FUNCTION  $foo_name_upd RETURNS trigger AS
          \$BODY\$
          DECLARE
                c INTEGER;
@@ -25,10 +25,6 @@
                UPDATE last_modified SET last_modified = NOW(), status = 1 WHERE
                   table_name = $qname AND record_id = NEW.id;
                RETURN NEW;
-            ELSIF (TG_OP = 'DELETE') THEN
-               UPDATE last_modified SET last_modified = NOW(), status = 3 WHERE
-                  table_name = $qname AND record_id = OLD.id;
-               RETURN NEW;
             END IF;
          END;
          \$BODY\$ LANGUAGE plpgsql";
@@ -36,10 +32,38 @@
       if (!$result) {
          die("function creation failed\n");
       }
+      //trigger for update or insert
+      $trig_name = $table_name . '_trig_upd_ins';
       echo "creating trigger " . $trig_name . "\n";
       $trigger = "DROP TRIGGER IF EXISTS $trig_name ON $table_name;
-                 CREATE TRIGGER $trig_name AFTER INSERT OR UPDATE OR DELETE
-                 ON $table_name FOR EACH row EXECUTE PROCEDURE $foo_name;";
+                 CREATE TRIGGER $trig_name AFTER INSERT OR UPDATE 
+                 ON $table_name FOR EACH row EXECUTE PROCEDURE $foo_name_upd;";
+      $result = pg_query($conn, $trigger);
+      if (!$result) {
+         die("trigger creation failed\n");
+      }
+      echo "trigger added on table " . $table_name . "\n";
+      //function for delete
+      $foo_name_delete = $table_name . '_func_del()';
+      echo "creating function " . $foo_name_delete . "\n";
+      $foo = "CREATE OR REPLACE FUNCTION  $foo_name_delete RETURNS trigger AS
+         \$BODY\$
+         BEGIN
+            UPDATE last_modified SET last_modified = NOW(), status = 3 WHERE
+               table_name = $qname AND record_id = OLD.id;
+            RETURN NEW;
+         END;
+         \$BODY\$ LANGUAGE plpgsql";
+      $result = pg_query($conn, $foo);
+      if (!$result) {
+         die("function creation failed\n");
+      }
+      //trigger for delete
+      $trig_name = $table_name . '_trig_delete';
+      echo "creating trigger " . $trig_name . "\n";
+      $trigger = "DROP TRIGGER IF EXISTS $trig_name ON $table_name;
+                 CREATE TRIGGER $trig_name AFTER DELETE
+                 ON $table_name FOR EACH row EXECUTE PROCEDURE $foo_name_delete;";
       $result = pg_query($conn, $trigger);
       if (!$result) {
          die("trigger creation failed\n");

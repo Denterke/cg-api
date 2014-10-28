@@ -12,7 +12,7 @@ services:
         arguments: [ @doctrine, "@session" ]
     database_converter:
         class: Farpost\StoreBundle\Services\DatabaseConverter
-        arguments: [ @doctrine, "@sqlite_manager", "@entity_dispatcher" ]
+        arguments: [ @doctrine, "@sqlite_manager", "@entity_dispatcher", "@schedule_manager" ]
     sql_booster:
         class: Farpost\StoreBundle\Services\sql_booster
         arguments: [ @doctrine ]

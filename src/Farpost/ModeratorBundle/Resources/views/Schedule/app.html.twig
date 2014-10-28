@@ -1,0 +1,45 @@
+{% extends 'FarpostWebBundle:Default:base.html.twig' %}
+
+{% block title %}{{ parent() }} - Конвертация расписания{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+	<!-- Latest compiled and minified CSS -->	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.	min.css">
+	
+	<!-- Optional theme -->	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-	theme.min.css">
+	
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/schedule_app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/xls.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/jszip.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/xlsx.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/fefu-app/js/jquery_ui.1.11.2.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/fefu-app/js/handsontable/jquery.handsontable.full.js') }}"></script>
+	<link type="text/css" media="screen" href="{{ asset('bundles/fefu-app/css/handsontable/jquery.handsontable.full.css') }}" rel="stylesheet"/>
+   	<link type="text/css" href="{{ asset('bundles/fefu-app/css/jquery_ui.1.11.2.css') }}" rel="stylesheet"/>
+   	<link type="text/css" href="{{ asset('bundles/fefu-app/css/schedule_app.css') }}" rel="stylesheet"/>
+{# <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"> #}
+{% endblock %}
+
+{% block body %}
+	<div id="fileInputDiv">
+		<div id="filetype">
+			<form id="selector" action="">
+				<input type="radio" name="ftype" value="xls">XLS<br>
+				<input type="radio" name="ftype" value="xlsx">XLSX
+			</form>
+		</div>
+		<input id="fileInput" type="file" onchange="processFiles(this.files)">
+	</div>
+	<div id="metaInfo" class="ui-widget">
+	</div>
+	<div id="scheduleTable">
+		<input type="button" id="saveBtn" value="Сохранить" class="invisible"></input>
+	</div>
+
+	<div id="fileOutput">
+	</div>
+{% endblock %}

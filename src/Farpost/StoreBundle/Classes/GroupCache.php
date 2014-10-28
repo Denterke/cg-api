@@ -40,7 +40,12 @@ class GroupCache
 
    private function PDOClearGroupSchedule($gId)
    {
+      // $stmt = $this->pdo->prepare("
+      //    ALTER TABLE schedule_rendered DISABLE TRIGGER USER;
+      // ");
+      // $stmt->execute();
       $stmt = $this->pdo->prepare("
+
          DELETE FROM
             schedule s
          WHERE
@@ -59,6 +64,10 @@ class GroupCache
       );
       $stmt->bindValue(':groupId', $gId, \PDO::PARAM_INT);
       $stmt->execute();
+      // $stmt = $this->pdo->prepare("
+      //    ALTER TABLE schedule_rendered ENABLE TRIGGER USER;
+      // ");
+      // $stmt->execute();
    }
 
    public function statistics()
