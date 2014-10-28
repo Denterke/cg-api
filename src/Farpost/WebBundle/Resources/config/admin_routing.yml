@@ -41,3 +41,7 @@ admin_astarotlog:
 admin_astarotstart:
    path:     /astarot_start
    defaults: { _controller: FarpostWebBundle:Admin:astarotStart }
+
+admin_management:
+   path:     /management/{actions}
+   defaults: { _controller: FarpostWebBundle:Admin:management }

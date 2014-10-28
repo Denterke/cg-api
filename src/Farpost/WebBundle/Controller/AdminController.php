@@ -10,15 +10,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminController extends Controller {
-	private function _getRep($table) {
+class AdminController extends Controller
+{
+	private function _getRep($table)
+	{
 		return $this->getDoctrine()->getRepository(
 			'FarpostStoreBundle:' .
 			$this->get('entity_dispatcher')->tableToEntity($table)
 		);
 	}
 
-	private function _clearTmp() {
+	private function _clearTmp()
+	{
 		$tmpFiles = scandir(TEMP_DIR);
 		foreach ($tmpFiles as $tmpFile) {
 			if ($tmpFile[0] == '.') {
@@ -28,11 +31,13 @@ class AdminController extends Controller {
 		}
 	}
 
-	private function _isValidForm(&$form, $request) {
+	private function _isValidForm(&$form, $request)
+	{
 		return $form->handleRequest($request)->isValid();
 	}
 
-	public function deleteAction(Request $request) {
+	public function deleteAction(Request $request)
+	{
 		if (!($request->query->has('entity') && $request->query->has('id'))) {
 			return $this->redirect($this->generateUrl('admin_index'));
 		}
@@ -45,15 +50,18 @@ class AdminController extends Controller {
 		return $this->redirect($this->generateUrl('admin_' . $request->get('entity')));
 	}
 
-	public function indexAction() {
+	public function indexAction()
+	{
 		return $this->render('FarpostWebBundle:Admin:login.html.twig');
 	}
 
-	public function scheduleAction() {
+	public function scheduleAction()
+	{
 		return $this->render('FarpostWebBundle:Admin:schedule.html.twig');
 	}
 
-	public function changeAction(Request $request, $isAdd) {
+	public function changeAction(Request $request, $isAdd)
+	{
 		if (!$request->query->has('entity') || (!$isAdd && !$request->query->has('id'))) {
 			return $this->redirect($this->generateUrl('admin_index'));
 		}
@@ -74,7 +82,8 @@ class AdminController extends Controller {
 		return new Response('Not found', 404, ['Content-Type' => 'application/json']);
 	}
 
-	public function _departmentsChange($request, $isAdd) {
+	public function _departmentsChange($request, $isAdd)
+	{
 		$rep = $this->_getRep($request->get('entity'));
 		$form = $this->createForm(
 			new DepartmentType(),
@@ -93,7 +102,8 @@ class AdminController extends Controller {
 		]);
 	}
 
-	private function _versionAdd(Request $request) {
+	private function _versionAdd(Request $request)
+	{
 		$document = new Document();
 		$document->setType($request->query->get('id'));
 		$form = $this->createFormBuilder($document)
@@ -125,7 +135,8 @@ class AdminController extends Controller {
 			'version_form' => $form->createView(), 'type' => $promt]);
 	}
 
-	private function _ssourceAdd(Request $request) {
+	private function _ssourceAdd(Request $request)
+	{
 		if ($request->query->get('id') == -1) {
 			$promt = "Архив с расписанием";
 		} else {
@@ -187,13 +198,15 @@ class AdminController extends Controller {
 
 	}
 
-	public function departmentsAction(Request $request) {
+	public function departmentsAction(Request $request)
+	{
 		return $this->render('FarpostWebBundle:Admin:departments_view.html.twig', [
 			'departments' => $this->_getRep('departments')->findBy([], ['alias' => 'asc'])
 		]);
 	}
 
-	public function schoolsAction(Request $request) {
+	public function schoolsAction(Request $request)
+	{
 		$form = $this->createForm(new SchoolType(), null);
 		if ($this->_isValidForm($form, $request)) {
 			$em = $this->getDoctrine()->getManager();
@@ -207,7 +220,8 @@ class AdminController extends Controller {
 		]);
 	}
 
-	public function specializationsAction(Request $request) {
+	public function specializationsAction(Request $request)
+	{
 		$form = $this->createForm(new SpecializationViewType(), null);
 		if ($this->_isValidForm($form, $request)) {
 		}
@@ -217,14 +231,16 @@ class AdminController extends Controller {
 		]);
 	}
 
-	public function basemanagmentAction(Request $request) {
+	public function basemanagmentAction(Request $request)
+	{
 		return $this->render('FarpostWebBundle:Admin:basemanagement.html.twig', [
 			'versions' => $this->_getRep('versions')->getForWeb(),
 			'ssources' => $this->_getRep('ssources')->getForWeb()
 		]);
 	}
 
-	public function scheduleLogAction() {
+	public function scheduleLogAction()
+	{
 		$path = WEB_DIRECTORY . "/astarot_log.txt";
 		if (file_exists($path)) {
 			$result = file_get_contents($path);
@@ -242,8 +258,51 @@ class AdminController extends Controller {
 		return new Response($result, 200, ['Content-Type' => 'application/json']);
 	}
 
-	public function astarotStartAction() {
+	public function astarotStartAction()
+	{
 		$this->get('schedule_manager')->startAstarot();
 		return new Response('Astarot summoned!', 200, ['Content-Type' => 'application/json']);
+	}
+
+	public function managementAction($actions)
+	{
+		for ($i = 0; $i < strlen($actions); $i++) {
+			switch ($actions[$i]) {
+				case '1':
+					system(WEB_DIRECTORY . "/../app/console doctrine:database:drop --force");
+					break;
+				case '2':
+					system(WEB_DIRECTORY . "/../app/console doctrine:database:create");
+					break;
+				case '3':
+					system(WEB_DIRECTORY . "/../app/console doctrine:generate:entities --no-backup Farpost");
+					break;
+				case '4':
+					system(WEB_DIRECTORY . "/../app/console doctrine:schema:update --force --em=default");
+					break;
+				case '5':
+					system(WEB_DIRECTORY . "/../app/console cache:warmup --env=prod --no-debug");
+					break;
+				case '6':
+					system("rm -f " . WEB_DIRECTORY . "/static/*");
+					break;
+				case '7':
+					system("rm -f " . WEB_DIRECTORY . "/uploads/documents/*");
+					break;
+				case '8':
+					system("rm -f " . WEB_DIRECTORY . "/uploads/tmp/*");
+					break;
+				case '9':
+					system("rm -f " . WEB_DIRECTORY . "/uploads/schedules/*");
+					break;
+				case 'a':
+					system("rm -f " . WEB_DIRECTORY . "/astarot_log.txt");
+					break;
+				case 'b':
+					system("php " . WEB_DIRECTORY . "/../scripts/FillDb.php");
+					break;
+			}
+		}
+		return new Response('Actions performed!', 200, ['Content-Type' => 'application/json']);
 	}
 }
