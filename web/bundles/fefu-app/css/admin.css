@@ -268,3 +268,7 @@ table tr.head td {
 #container {
   width: 100%;
 }
+
+#ssrc_btns {
+  margin-top: 20px;
+}
