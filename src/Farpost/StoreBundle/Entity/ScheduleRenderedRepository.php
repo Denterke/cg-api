@@ -34,7 +34,7 @@ class ScheduleRenderedRepository extends EntityRepository
             "time_id"        => $hack ? 0 : $schedule_template->getTime()->getId(),
             "auditory_id"    => $hack ? 0 : ($schedule_template->getAuditory() ? $schedule_template->getAuditory()->getId() : null),
             "professor_id"   => $hack ? 0 : $schedule_template->getSchedulePart()->getProfessor()->getId(),
-            "date"           => $hack ? 0 : $elem['0']->getExecDate()->getTimestamp(),
+            "date"           => $hack ? 0 : ($elem['0']->getExecDate()->getTimestamp() + 60 * 60 * 12), //yet another fucking hack
             "id"             => $hack ? $elem->getRecordId() : $elem['0']->getId(),
             "status"         => $hack ? 3 : $elem['status']
          ];
