@@ -31,12 +31,12 @@ class ScheduleRenderedRepository extends EntityRepository
             "group_id"       => $hack ? $group_id : $schedule_template->getSchedulePart()->getGroup()->getId(),
             "lesson_type_id" => $hack ? 0 : $schedule_template->getLessonType()->getId(),
             "discipline_id"  => $hack ? 0 : $schedule_template->getSchedulePart()->getDiscipline()->getId(),
-            "time_id"        => $hack ? 0 :$schedule_template->getTime()->getId(),
-            "auditory_id"    => $hack ? 0 :$schedule_template->getAuditory()->getId(),
-            "professor_id"   => $hack ? 0 :$schedule_template->getSchedulePart()->getProfessor()->getId(),
-            "date"           => $hack ? 0 :$elem['0']->getExecDate()->getTimestamp(),
-            "id"             => $hack ? $elem->getRecordId() :$elem['0']->getId(),
-            "status"         => $hack ? 3 :$elem['status']
+            "time_id"        => $hack ? 0 : $schedule_template->getTime()->getId(),
+            "auditory_id"    => $hack ? 0 : ($schedule_template->getAuditory() ? $schedule_template->getAuditory()->getId() : null),
+            "professor_id"   => $hack ? 0 : $schedule_template->getSchedulePart()->getProfessor()->getId(),
+            "date"           => $hack ? 0 : $elem['0']->getExecDate()->getTimestamp(),
+            "id"             => $hack ? $elem->getRecordId() : $elem['0']->getId(),
+            "status"         => $hack ? 3 : $elem['status']
          ];
          array_push($result, $schedule_elem);
       }
