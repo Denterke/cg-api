@@ -305,4 +305,17 @@ class AdminController extends Controller
 		}
 		return new Response('Actions performed!', 200, ['Content-Type' => 'application/json']);
 	}
+
+	public function deleteGroupAction($group)
+	{
+		$em = $this->getDoctrine()->getManager();
+		try {
+			$group = $em->getRepository('FarpostStoreBundle:Group')->findOneById($group);
+		} catch (\Exception $e) {
+			return new Response('No group found!', 200, ['Content-Type' => 'application/json']);
+		}
+		$em->remove($group);
+		$em->flush();
+		return new Response('Group deleted', 200, ['Content-Type' => 'application/json']);
+	}
 }

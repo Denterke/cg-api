@@ -45,3 +45,7 @@ admin_astarotstart:
 admin_management:
    path:     /management/{actions}
    defaults: { _controller: FarpostWebBundle:Admin:management }
+
+admin_delete_group:
+   path:     /group/delete/{group}
+   defaults: { _controller: FarpostWebBundle:Admin:deleteGroup }
