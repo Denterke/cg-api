@@ -31,7 +31,7 @@ class ScheduleManager {
         $stmt->execute();
         //3. UPDATE last_modified
         $stmt = $pdo->prepare(
-           "UPDATE last_modified SET status = 3 WHERE table_name = 'schedule_rendered';"
+           "UPDATE last_modified SET last_modified = NOW(), status = 3 WHERE table_name = 'schedule_rendered';"
         );
         $stmt->execute();
         //4. ENABLE TRIGGERS FOR SCHEDULE RENDERED
