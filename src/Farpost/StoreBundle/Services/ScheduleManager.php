@@ -10,6 +10,30 @@ class ScheduleManager {
     private $session;
     private $groupCache;
 
+    /**
+     * Converts all schedule in directory $dir, add to schedule timestamp $timestamp
+     * Added: [2.0]
+     * @param string $dir
+     * @param integer $timestamp
+     */
+    public function convertDirSchedule($dir, $timestamp)
+    {
+        if (!$dh = @opendir($dir)) {
+            return;
+        }
+        while (false !== ($obj = readdir($dh))) {
+            if ($obj == '.' || $obj == '..') {
+                continue;
+            }
+            if (is_dir($dir . '/' . $obj)) {
+                $this->convertDirSchedule($dir . '/' . $obj, $timestamp);
+            } else {
+                $this->convertSchedule($dir . '/' . $obj, $timestamp);
+            }
+        }
+        closedir($dh);
+    }
+
     public function startAstarot()
     {
         exec(WEB_DIRECTORY . "/../app/console astarot > /dev/null 2>&1 &");
@@ -81,7 +105,7 @@ class ScheduleManager {
     private function syncGroupInfo($group_info) {
         $em = $this->doctrine->getManager('default');
         try {
-            // echo $group_info;
+            
             list(
                 $_school,
                 $_group,
@@ -127,6 +151,7 @@ class ScheduleManager {
         $group_info = fgets($ss_file);
         $str_num = 1;
         $this->logWrite('converter, step: 2');
+        // echo $path;
         $gId = $this->syncGroupInfo($group_info);
         $this->logWrite('converter, step: 3');
         $templates = [];
@@ -263,7 +288,7 @@ class ScheduleManager {
         }
     }
 
-    public function refreshSchedule() {
+    public function refreshSchedule($render = true) {
         $schedule_templates = $this->doctrine->getManager('default')
                                    ->getRepository('FarpostStoreBundle:ScheduleSource', 'ssrc')
                                    ->getLastRecords();
@@ -274,6 +299,8 @@ class ScheduleManager {
                 false
             );
         }
-        $this->startAstarot();
+        if ($render) {
+            $this->startAstarot();
+        }
     }
 }

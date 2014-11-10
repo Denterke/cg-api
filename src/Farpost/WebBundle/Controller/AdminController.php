@@ -30,7 +30,7 @@ class AdminController extends Controller
                 continue;
             }
             if (!@unlink($dir . '/' . $obj)) {
-                unlinkRecursive($dir.'/'.$obj, true);
+                $this->unlinkRecursive($dir.'/'.$obj, true);
             }
         }
         closedir($dh);
@@ -177,18 +177,23 @@ class AdminController extends Controller
                         $this->_clearTmp();
                         $zip->extractTo(TEMP_DIR);
                         $zip->close();
+                        $this->get('schedule_manager')->convertDirSchedule(
+                            TEMP_DIR,
+                            $document->getVDatetime()
+                        );
+                        $this->unlinkRecursive(TEMP_DIR, false);
                         // exit;
-                        $tmpFiles = scandir(TEMP_DIR);
-                        foreach ($tmpFiles as $tmpFile) {
-                            if ($tmpFile[0] == '.') {
-                                continue;
-                            }
-                            $this->get('schedule_manager')->convertSchedule(
-                                TEMP_DIR . '/' . $tmpFile,
-                                $document->getVDatetime()
-                            );
-                            unlink(TEMP_DIR . '/' . $tmpFile);
-                        }
+                        // $tmpFiles = scandir(TEMP_DIR);
+                        // foreach ($tmpFiles as $tmpFile) {
+                            // if ($tmpFile[0] == '.') {
+                                // continue;
+                            // }
+                            // $this->get('schedule_manager')->convertSchedule(
+                                // TEMP_DIR . '/' . $tmpFile,
+                                // $document->getVDatetime()
+                            // );
+                            // unlink(TEMP_DIR . '/' . $tmpFile);
+                        // }
                     }
                 } catch (\Exception $e) {
                     throw $e;
