@@ -169,7 +169,6 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($document);
             $em->flush();
-            $em->remove($document);
             if ($document->getType() == -21) {
                 try {
                     $zip = new \ZipArchive();
@@ -205,11 +204,12 @@ class AdminController extends Controller
                     $document->getVDatetime()
                 );
             }
-            $this->get('schedule_manager')->startAstarot();
+            // $this->get('schedule_manager')->startAstarot();
             // echo json_encode($_REQUEST);
             // echo json_encode($_FILES);
             // echo json_encode($_FILES);
             // exit;
+            $em->remove($document);
             $em->flush();
             return $this->redirect($this->generateUrl('admin_basemanagement'));
         }

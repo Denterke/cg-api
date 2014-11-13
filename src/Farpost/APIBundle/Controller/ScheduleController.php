@@ -74,7 +74,7 @@ class ScheduleController extends Controller {
      * Depricated: [2.0]
      * @return Response
      */
-    public function renderScheduleAction() {
+/*  public function renderScheduleAction() {
         $response = $this->_createResponse();
         $schedules = $this->getDoctrine()->getManager()
                           ->getRepository('FarpostStoreBundle:Schedule')
@@ -89,7 +89,7 @@ class ScheduleController extends Controller {
         $response->setStatusCode(200)->setContent('rendering finished!');
         return $response;
     }
-
+*/
     /**
      * Returns schedule for group_id
      * Added: [1.0]
@@ -99,11 +99,10 @@ class ScheduleController extends Controller {
      */
     public function getScheduleAction(Request $request) {
         $response = $this->_createResponse();
-        $result = $this->getDoctrine()->getManager()->getRepository('FarpostStoreBundle:ScheduleRendered')
-                       ->getForGroup($request->query->getInt('group', 0));
+        $result = $this->getDoctrine()->getManager()->getRepository('FarpostStoreBundle:Schedule')
+                       ->getScheduleRendered($request->query->getInt('group', 0));
         $response->setContent(json_encode(
             ['schedules' => $result]
-            // JSON_UNESCAPED_UNICODE
         ))
             ->setStatusCode(200);
         return $response;
@@ -138,8 +137,8 @@ class ScheduleController extends Controller {
                                      ->createQueryBuilder('a')
                                      ->getQuery()
                                      ->getArrayResult();
-        $result['schedule'] = $em->getRepository('FarpostStoreBundle:ScheduleRendered')
-                                 ->getForGroup($gId);
+        $result['schedule'] = $em->getRepository('FarpostStoreBundle:Schedule')
+                                 ->getScheduleRendered($gId);
         return $response->setStatusCode(200)
                         ->setContent(json_encode($result));
     }

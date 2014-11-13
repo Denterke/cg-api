@@ -2,6 +2,7 @@
 namespace Farpost\StoreBundle\Services;
 
 use Farpost\StoreBundle\Entity\ScheduleSource;
+use Farpost\StoreBundle\Entity\Group;
 use Symfony\Component\Process\Process;
 use Farpost\StoreBundle\Classes\GroupCache;
 
@@ -119,24 +120,15 @@ class ScheduleManager {
          catch (\Exception $e) {
             throw new \Exception("Can not split group info string:\n$group_info\n " . $e->getMessage());
         }
-        // $stmt = $em->getConnection()->prepare('SELECT * FROM groupInfoSync(:school, :st, :spec, :course, :dep, :group)');
-        // $stmt->bindValue(':school', $_school, \PDO::PARAM_STR);
-        // $stmt->bindValue(':st', $_study_type, \PDO::PARAM_STR);
-        // $stmt->bindValue(':spec', $_spec, \PDO::PARAM_STR);
-        // $stmt->bindValue(':course', $_course, \PDO::PARAM_STR);
-        // $stmt->bindValue(':dep', $_department, \PDO::PARAM_STR);
-        // $stmt->bindValue(':group', $_group, \PDO::PARAM_STR);
-        // $stmt->execute();
-        // $groupId = $stmt->fetch()['groupinfosync'];
-      $groupId = $this->groupCache->syncGroupInfo(
-         $_school,
-         $_study_type,
-         $_spec,
-         $_course,
-         $_department,
-         $_group
-      );
-      error_log($this->groupCache->statistics());
+        $groupId = $this->groupCache->syncGroupInfo(
+            $_school,
+            $_study_type,
+            $_spec,
+            $_course,
+            $_department,
+            $_group
+        );
+        error_log($this->groupCache->statistics());
         return $groupId;
     }
 
@@ -277,12 +269,16 @@ class ScheduleManager {
             $ids = $stmt->fetchAll();
             $this->logWrite('converter, step: 12');
         }
+        $group = $em->getRepository('FarpostStoreBundle:Group')->findOneById($gId);
+        $group->setLastModified($vdatetime);
+        $em->persist($group);
+        $em->flush();
         if ($createSS) {
             $ssource = new ScheduleSource();
             $ssource->setVDatetime($vdatetime)
                     ->setBase($path)
-                    ->setGroup($em->getRepository('FarpostStoreBundle:Group')->findOneById($gId))
-            ->cpFile();
+                    ->setGroup($group)
+                    ->cpFile();
             $em->persist($ssource);
             $em->flush();
         }
@@ -299,8 +295,8 @@ class ScheduleManager {
                 false
             );
         }
-        if ($render) {
-            $this->startAstarot();
-        }
+        // if ($render) {
+            // $this->startAstarot();
+        // }
     }
 }

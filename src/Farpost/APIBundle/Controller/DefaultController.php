@@ -78,7 +78,7 @@ class DefaultController extends Controller
       $em = $this->getDoctrine()->getEntityManager();
       $t = $request->query->has('t') ? $request->query->get('t') : 1;
       $result = $em->getRepository('FarpostStoreBundle:Group')
-               ->getList($t);
+                   ->getList($t);
       $dt = new \Datetime();
       $response->setContent(json_encode(
                               [
@@ -140,11 +140,12 @@ class DefaultController extends Controller
       $group = $request->query->getInt('group', 0);
       $result = [];
       $entities = [
-         'GeoObject' => 'auditories',
-         'User' => 'professors',
-         'Time' => 'times',
+         'GeoObject'  => 'auditories',
+         'User'       => 'professors',
+         'Time'       => 'times',
          'Discipline' => 'disciplines',
-         'ScheduleRendered' => 'schedules'
+         'Schedule'   => 'schedules',
+         'Group'      => 'groups'
       ];
       foreach($entities as $en_name => $table_name) {
          $elem = $this->getDoctrine()->getManager()

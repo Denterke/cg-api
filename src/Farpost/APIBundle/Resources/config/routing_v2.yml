@@ -1,0 +1,3 @@
+farpost_api_schedule_get_v2:
+   path:     /schedule.get.json
+   defaults: { _controller: FarpostAPIBundle:ScheduleV2:getSchedule }

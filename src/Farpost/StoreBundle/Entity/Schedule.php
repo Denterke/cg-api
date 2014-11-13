@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="schedule")
  * @ORM\Entity(repositoryClass="Farpost\StoreBundle\Entity\ScheduleRepository")
- */
+*/
 class Schedule
 {
    /**
@@ -318,5 +318,18 @@ class Schedule
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Schedule
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

@@ -22,14 +22,17 @@ farpost_api_departments_get:
    path:     /departments.get.json
    defaults: { _controller: FarpostAPIBundle:Default:getDepartments }
 
+#Replaced with /v2/schedule.get.json since v2
 farpost_api_schedule_get:
    path:     /schedule.get.json
    defaults: { _controller: FarpostAPIBundle:Schedule:getSchedule }
 
-farpost_api_schedule_render:
-   path:     /schedule.render
-   defaults: { _controller: FarpostAPIBundle:Schedule:renderSchedule }
+#Depricated since v2
+# farpost_api_schedule_render:
+#    path:     /schedule.render
+#    defaults: { _controller: FarpostAPIBundle:Schedule:renderSchedule }
 
+#Depricated since v2
 farpost_api_update_get:
    path:    /updates.get.json
    defaults: { _controller: FarpostAPIBundle:Default:getUpdates }
@@ -46,8 +49,7 @@ farpost_api_init_app:
    path:     /init_app
    defaults: { _controller: FarpostAPIBundle:Default:initApp }
 
+#Replaced with /v2/full.schedule.get.json since v2
 farpost_api_full_schedule:
    path:    /full.schedule.get.json
    defaults: { _controller: FarpostAPIBundle:Schedule:getFullSchedule }
-
-

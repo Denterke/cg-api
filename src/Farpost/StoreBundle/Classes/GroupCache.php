@@ -231,10 +231,11 @@ class GroupCache
          ];
       }
       if (!isset($this->groups[$group])) {
+         $dt = new \DateTime();
          $this->groups[$group] = [
             'id'         =>  $this->PDOInsert(
-                                ['alias', 'study_set_id'],
-                                ["'$group'", $ssId],
+                                ['alias', 'study_set_id', 'max_count', 'last_modified'],
+                                ["'$group'", $ssId, 0, $dt->getTimestamp()],
                                 'groups'
                              ),
             'studySetId' => $ssId
