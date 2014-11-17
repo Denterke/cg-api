@@ -98,7 +98,7 @@ class UserRepository extends EntityRepository
             $insStr .= $firstIns ? ' ' : ', ';
             $firstIns = false;
             if (!rtrim($fakes[$i])) {
-               $last = $middle = $first = 'no';
+               $last = $middle = $first = ' ';
             } else {
                try {
                   list(
@@ -107,7 +107,7 @@ class UserRepository extends EntityRepository
                      $middle
                   ) = explode(' ', rtrim($fakes[$i]));
                } catch (\Exception $e) {
-                  $last = $middle = $first = 'no';
+                  $last = $middle = $first = ' ';
                }
             }
             $insStr .= "('$first', '$last', '$middle')";
