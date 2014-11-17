@@ -181,17 +181,17 @@ class ScheduleManager {
              catch (\Exception $e) {
                 throw new \Exception("Can not split schedule template string #$str_num: " . $e->getMessage());
             }
-            $_professor = rtrim($_professor);
+            $_professor = trim($_professor);
             $discIdx = array_search($_discipline, $fake['disc']);
             if ($discIdx === false) {
                 $discIdx = array_push($fake['disc'], $_discipline) - 1;
             }
-            if ($_professor) {
+            // if ($_professor) {
                 $userIdx = array_search($_professor, $fake['user']);
                 if ($userIdx === false) {
                     $userIdx = array_push($fake['user'], $_professor) - 1;
                 }
-            }
+            // }
             $_sp = ['user' => $userIdx, 'disc' => $discIdx, 'group' => $gId];
             $spIdx = array_search($_sp, $fake['sp']);
             if ($spIdx === false) {

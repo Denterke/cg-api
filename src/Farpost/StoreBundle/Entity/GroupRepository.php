@@ -102,8 +102,8 @@ class GroupRepository extends EntityRepository
     }
 
     public function getUpdate($last_time, $group_id)
-    {
-        $recs = $this->_em
+    
+{        $recs = $this->_em
             ->createQueryBuilder()
             ->select('g.id, g.alias as g_alias, d.alias as d_alias, lm.status')
             ->from('FarpostStoreBundle:Group', 'g')

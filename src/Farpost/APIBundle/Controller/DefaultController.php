@@ -275,7 +275,7 @@ class DefaultController extends Controller
          $start_time = new \DateTime();
          $start_time->setTimestamp(strtotime('01.09.2014'));
          $end_time = new \DateTime();
-         $end_time->setTimestamp(strtotime('01.01.2015'));
+         $end_time->setTimestamp(strtotime('31.12.2014'));
          $semester->setTimeStart($start_time)->setTimeEnd($end_time)->setAlias('Test semester');
          $em->persist($semester);
          $em->flush();
