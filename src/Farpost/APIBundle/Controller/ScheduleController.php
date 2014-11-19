@@ -139,6 +139,8 @@ class ScheduleController extends Controller {
                                      ->getArrayResult();
         $result['schedule'] = $em->getRepository('FarpostStoreBundle:Schedule')
                                  ->getScheduleRendered($gId);
+        $dt = new \DateTime();
+        $result['timestamp'] = $dt->getTimestamp();
         return $response->setStatusCode(200)
                         ->setContent(json_encode($result));
     }
