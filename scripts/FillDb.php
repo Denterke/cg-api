@@ -271,7 +271,8 @@
       for ($i = 0; $i < count($arrays); $i++) {
          $result = pg_query($conn, "DELETE FROM " . $arrays[$i]);
          if (!$result) {
-            die("delete failed on table " . $arrays[$i] . "\n");
+            echo "delete failed on table " . $arrays[$i] . "\n";
+            echo pg_last_error($conn) . "\n";
          } else {
             echo "delete succeed on table " . $arrays[$i] . "\n";
          }
