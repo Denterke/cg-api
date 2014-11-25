@@ -133,6 +133,7 @@ class ScheduleManager {
     }
 
     public function convertSchedule($path, $vdatetime, $createSS = true) {
+        $CURRENT_SEMESTER = 1; //HERE IS SOMETHING WRONG! CONFIG ENTITY!
         $this->logWrite('converter, step: 1');
         $em = $this->doctrine->getManager('default');
         $group_info_entities = ['School', 'Group', 'StudyType', 'Course', 'Department', 'Specialization'];
@@ -192,7 +193,7 @@ class ScheduleManager {
                     $userIdx = array_push($fake['user'], $_professor) - 1;
                 }
             // }
-            $_sp = ['user' => $userIdx, 'disc' => $discIdx, 'group' => $gId];
+            $_sp = ['user' => $userIdx, 'disc' => $discIdx, 'group' => $gId, 'semester' => $CURRENT_SEMESTER];
             $spIdx = array_search($_sp, $fake['sp']);
             if ($spIdx === false) {
                 $spIdx = array_push($fake['sp'], $_sp) - 1;
@@ -272,6 +273,7 @@ class ScheduleManager {
         $group = $em->getRepository('FarpostStoreBundle:Group')->findOneById($gId);
         $group->setLastModified($vdatetime);
         $em->persist($group);
+        set_time_limit(100);
         $em->flush();
         if ($createSS) {
             $ssource = new ScheduleSource();

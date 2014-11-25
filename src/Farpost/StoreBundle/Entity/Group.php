@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Group
 {
-   const MAX_SCH_RENDERED_COUNT = 3000;
+    const MAX_SCH_RENDERED_COUNT = 3000;
     /**
      * @var integer
      *
@@ -50,6 +50,13 @@ class Group
      * @ORM\Column(name="last_modified", type="integer")
      */
     protected $lastModified;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AdminGroup", mappedBy="group")
+     */
+    protected $admins;
 
     /**
      * Get id
@@ -160,5 +167,45 @@ class Group
     public function getSRFirstId($offset = 0)
     {
         return ($this->id + $offset) * self::MAX_SCH_RENDERED_COUNT;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->admins = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add admins
+     *
+     * @param \Farpost\StoreBundle\Entity\AdminGroup $admins
+     * @return Group
+     */
+    public function addAdmin(\Farpost\StoreBundle\Entity\AdminGroup $admins)
+    {
+        $this->admins[] = $admins;
+
+        return $this;
+    }
+
+    /**
+     * Remove admins
+     *
+     * @param \Farpost\StoreBundle\Entity\AdminGroup $admins
+     */
+    public function removeAdmin(\Farpost\StoreBundle\Entity\AdminGroup $admins)
+    {
+        $this->admins->removeElement($admins);
+    }
+
+    /**
+     * Get admins
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAdmins()
+    {
+        return $this->admins;
     }
 }

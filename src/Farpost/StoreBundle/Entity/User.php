@@ -64,17 +64,14 @@ class User
    protected $salt;
 
    /**
-    * @ORM\ManyToMany(targetEntity="Role")
-    * @ORM\JoinTable(name="users_roles",
-    * joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-    * inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
-    * )
+    * @ORM\OneToMany(targetEntity="Policy", mappedBy="user")
     */
-   protected $roles;
+   protected $policies;
 
    public function __construct()
    {
-      $roles = new ArrayCollection();
+      $this->roles = new ArrayCollection();
+      $this->policies = new ArrayCollecton();
    }
 
 
@@ -280,4 +277,37 @@ class User
    {
       return $this->roles;
    }
+
+    /**
+     * Add policies
+     *
+     * @param \Farpost\StoreBundle\Entity\Policy $policies
+     * @return User
+     */
+    public function addPolicy(\Farpost\StoreBundle\Entity\Policy $policies)
+    {
+        $this->policies[] = $policies;
+
+        return $this;
+    }
+
+    /**
+     * Remove policies
+     *
+     * @param \Farpost\StoreBundle\Entity\Policy $policies
+     */
+    public function removePolicy(\Farpost\StoreBundle\Entity\Policy $policies)
+    {
+        $this->policies->removeElement($policies);
+    }
+
+    /**
+     * Get policies
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPolicies()
+    {
+        return $this->policies;
+    }
 }

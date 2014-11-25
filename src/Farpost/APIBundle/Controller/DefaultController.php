@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Farpost\StoreBundle\Entity;
 use Farpost\StoreBundle\Entity\Time;
 use Farpost\StoreBundle\Entity\Semester;
+use Farpost\StoreBundle\Entity\Role;
 use Doctrine\ORM\Query\Expr\Join;
 
 class DefaultController extends Controller
@@ -94,7 +95,7 @@ class DefaultController extends Controller
    public function getForGroupAction($name)
    {
       $request = Request::createFromGlobals();
-      $response = $this->_createResponse();
+   $response = $this->_createResponse();
       $entities = [
          'times'       => 'Time',
          'auditories'  => 'GeoObject',
@@ -276,9 +277,21 @@ class DefaultController extends Controller
          $start_time->setTimestamp(strtotime('01.09.2014'));
          $end_time = new \DateTime();
          $end_time->setTimestamp(strtotime('31.12.2014'));
-         $semester->setTimeStart($start_time)->setTimeEnd($end_time)->setAlias('Test semester');
+         $semester->setTimeStart($start_time)->setTimeEnd($end_time)->setAlias('2014-2015 (1)');
          $em->persist($semester);
          $em->flush();
+      }
+
+      $roles = ['ADMIN', 'USER'];
+      foreach($roles as $roleAlias) {
+         $role = $em->getRepository('FarpostStoreBundle:Role')
+                    ->findOneBy(['alias' => $roleAlias]);
+         if (is_null($role)) {
+            $role = new Role();
+            $role->setAlias($roleAlias);
+            $em->persist($role);
+            $em->flush();
+         }
       }
       return $this->_createResponse()->setStatusCode(200)->setContent("all right");
    }

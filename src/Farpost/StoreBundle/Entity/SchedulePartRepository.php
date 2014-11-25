@@ -51,25 +51,25 @@ class SchedulePartRepository extends EntityRepository
       $objs = [];
       while ($row = $stmt->fetch()) {
          $objs[
-            "{$row['professor_id']} {$row['group_id']} {$row['discipline_id']}"
+            "{$row['professor_id']} {$row['group_id']} {$row['discipline_id']} {$row['semester_id']}"
          ] = $row;
       }
       $keys = array_keys($objs);
       $insStr = 
          "INSERT INTO
             schedule_parts
-            (professor_id, group_id, discipline_id)
+            (professor_id, group_id, discipline_id, semester_id)
           VALUES";
       $firstIns = true;
       $resRefs = [];
       for ($i = 0; $i < count($fakes); $i++) {
-         $fake_key = "{fakes[$i]['user']} {fakes[$i]['group']} {fakes[$i]['disc']}";
+         $fake_key = "{$fakes[$i]['user']} {$fakes[$i]['group']} {$fakes[$i]['disc']} {$fakes[$i]['semester']}";
          $objIdx = array_search($fake_key, $keys);
          if ($objIdx === false) {
             $insStr .= $firstIns ? ' ' : ', ';
             $firstIns = false;
             try {
-               $insStr .= "('{$fakes[$i]['user']}', '{$fakes[$i]['group']}', '{$fakes[$i]['disc']}')";
+               $insStr .= "('{$fakes[$i]['user']}', '{$fakes[$i]['group']}', '{$fakes[$i]['disc']}', {$fakes[$i]['semester']})";
             } catch (\Exception $e) {
                print_r($fakes[$i]);
                throw $e;
