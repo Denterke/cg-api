@@ -321,6 +321,9 @@ class AdminController extends Controller
                 case 'b':
                     system("php " . WEB_DIRECTORY . "/../scripts/FillDb.php");
                     break;
+                case 'c':
+                    system(WEB_DIRECTORY . "/../app/console doctrine:fixtures:load --no-interaction --append");
+                    break;
             }
         }
         return new Response('Actions performed!', 200, ['Content-Type' => 'application/json']);

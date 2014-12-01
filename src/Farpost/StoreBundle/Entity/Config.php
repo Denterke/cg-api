@@ -25,14 +25,14 @@ class Config
    /**
     * @var string
     *
-    * @ORM\Column(name="alias", type="string", length=255)
+    * @ORM\Column(name="param", type="string", length=255)
     */
    protected $param;
 
    /**
     * @var string
     *
-    * @ORM\Column(name="number", type="string", length=255)
+    * @ORM\Column(name="value", type="string", length=255, nullable=true)
     */
    protected $value;
 

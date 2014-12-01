@@ -133,16 +133,18 @@ class GroupRepository extends EntityRepository
 
     public function getGroupByMD5($md5)
     {
-        $recs = $this->_em
-            ->createQueryBuilder()
-            ->select('g.id')
-            ->from('FarpostStoreBundle:Group', 'g')
-            ->where("md5(g.alias || i8gl2634ywgexjvu3akngklahofh) = :md5")
-            ->setParameter('md5', $md5)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult();
-        $rec = count($recs) > 0 ? $recs[0]['id'] : 0;
-        return $rec;
+        $pdo = $this->_em->getConnection();
+        $stmt = $pdo->prepare(
+            "SELECT
+                id
+            FROM
+                groups
+            WHERE
+                md5(alias || 'i8gl2634ywgexjvu3akngklahofh') = :md5"
+        );
+        $stmt->bindValue(':md5', $md5, \PDO::PARAM_STR);
+        $stmt->execute();
+        $ids = $stmt->fetchAll();
+        return count($ids) > 0 ? $ids[0]['id'] : 0;
     }
 }

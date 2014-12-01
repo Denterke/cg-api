@@ -35,10 +35,10 @@ class CollisionFixer
     {
         $wipeTS = $this->helper->getLastWipeTS();
         if ($wipeTS >= $cliTS) {
-            if (!$md5Alias || !$cliId ||  !$cliTS) {
+            if (!$cliMD5 || !$cliId) {
                 return self::BAD_REQUEST;
             }
-            $realGroupId = $this->getDoctrine()
+            $realGroupId = $this->doctrine
                 ->getManager()
                 ->getRepository('FarpostStoreBundle:Group')
                 ->getGroupByMD5($cliMD5);
@@ -101,7 +101,7 @@ class CollisionFixer
     public function wipeCheck(Request $request, &$response, &$result)
     {
         $response = $this->helper->create404();
-        $cliTS = $request->query->('t', 1);
+        $cliTS = $request->query->get('t', 1);
         $wipeTS = $this->helper->getLastWipeTS();
         if ($wipeTS >= $cliTS) {
             $result = [

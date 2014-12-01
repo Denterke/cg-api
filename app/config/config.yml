@@ -21,6 +21,7 @@ services:
         arguments: [ @doctrine, "@api_helper" ]
     api_helper:
         class: Farpost\APIBundle\Services\APIHelper
+        arguments: [ @doctrine ]
 
 framework:
     #esi:             ~

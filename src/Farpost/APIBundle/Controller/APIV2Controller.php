@@ -51,7 +51,7 @@ class APIV2Controller extends APIV1Controller
         $result["groups"] = $em->getRepository('FarpostStoreBundle:Group')
             ->getList($t);
         $result["timestamp"] = $helper->getTimestamp();
-        $response->setContent(json_encode([$result]))
+        $response->setContent(json_encode($result))
             ->setStatusCode(200);
         return $response;
     }

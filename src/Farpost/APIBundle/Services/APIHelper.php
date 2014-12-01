@@ -7,6 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class APIHelper
 {
+    private $doctrine;
+
+    public function __construct($doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
      * returns current timestamp
      * @return timestamp
@@ -43,5 +50,18 @@ class APIHelper
             501,
             ['Content-Type' => 'application/json']
         );
+    }
+
+    /**
+     * Returns last wipe timestamp
+     * Added: [2.0]
+     * @return Timestamp
+     */
+    public function getLastWipeTS()
+    {
+        return $this->doctrine
+            ->getManager()
+            ->getRepository('FarpostStoreBundle:Config')
+            ->getLastWipeTS();
     }
 }
