@@ -68,10 +68,16 @@ class User
     */
    protected $policies;
 
+   /**
+    * @ORM\OneToMany(targetEntity="AdminGroup", mappedBy="user")
+    */
+   protected $controlGroups;
+
    public function __construct()
    {
       $this->roles = new ArrayCollection();
       $this->policies = new ArrayCollecton();
+      $this->controlGroups = new ArrayCollection();
    }
 
 
@@ -309,5 +315,38 @@ class User
     public function getPolicies()
     {
         return $this->policies;
+    }
+
+    /**
+     * Add controlGroups
+     *
+     * @param \Farpost\StoreBundle\Entity\AdminGroup $controlGroups
+     * @return User
+     */
+    public function addControlGroup(\Farpost\StoreBundle\Entity\AdminGroup $controlGroups)
+    {
+        $this->controlGroups[] = $controlGroups;
+
+        return $this;
+    }
+
+    /**
+     * Remove controlGroups
+     *
+     * @param \Farpost\StoreBundle\Entity\AdminGroup $controlGroups
+     */
+    public function removeControlGroup(\Farpost\StoreBundle\Entity\AdminGroup $controlGroups)
+    {
+        $this->controlGroups->removeElement($controlGroups);
+    }
+
+    /**
+     * Get controlGroups
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getControlGroups()
+    {
+        return $this->controlGroups;
     }
 }

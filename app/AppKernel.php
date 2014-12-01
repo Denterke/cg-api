@@ -17,11 +17,11 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Farpost\StoreBundle\FarpostStoreBundle(),
-            new Farpost\TestBundle\FarpostTestBundle(),
             new Farpost\APIBundle\FarpostAPIBundle(),
             new Farpost\WebBundle\FarpostWebBundle(),
             new Farpost\BackUpBundle\FarpostBackUpBundle(),
             new Farpost\ModeratorBundle\FarpostModeratorBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

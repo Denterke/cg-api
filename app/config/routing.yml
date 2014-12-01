@@ -10,20 +10,21 @@ farpost_ajax:
     resource: "@FarpostWebBundle/Resources/config/ajax_routing.yml"
     prefix:   /ajax/
 
-#some routes were depricated since v2
-farpost_api:
-    resource: "@FarpostAPIBundle/Resources/config/routing.yml"
-    prefix:   /method/
+#API
+#system methods
+farpost_bases:
+    path: /update/{filename}
+    defaults: { _controller: FarpostAPIBundle:System:getFile }
 
+farpost_init_app:
+   path:     /init_app
+   defaults: { _controller: FarpostAPIBundle:System:initApp }
+
+#version 1
+farpost_api:
+    resource: "@FarpostAPIBundle/Resources/config/routing_v1.yml"
+    prefix:   /method/
+#version 2
 farpost_api_v2:
     resource: "@FarpostAPIBundle/Resources/config/routing_v2.yml"
-    prefix:   /v2/method/
-
-farpost_web:
-    resource: "@FarpostWebBundle/Resources/config/routing.yml"
-    prefix:   /
-
-farpost_bases:
-    path:     /update/{filename}
-    defaults: { _controller: FarpostAPIBundle:Default:getFile }
-
+    prefix:   /api2/method/

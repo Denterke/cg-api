@@ -16,12 +16,11 @@ services:
     sql_booster:
         class: Farpost\StoreBundle\Services\sql_booster
         arguments: [ @doctrine ]
-    # update_listener:
-        # class: Farpost\StoreBundle\EventListener\UpdateListener
-        # tags:
-            # - { name: doctrine.event_listener, event: postPersist, connection: default, method: postPersist }
-            # - { name: doctrine.event_listener, event: preRemove,   connection: default, method: preRemove }
-            # - { name: doctrine.event_listener, event: postUpdate,  connection: default, method: postUpdate }
+    collision_fixer:
+        class: Farpost\APIBundle\Services\CollisionFixer
+        arguments: [ @doctrine, "@api_helper" ]
+    api_helper:
+        class: Farpost\APIBundle\Services\APIHelper
 
 framework:
     #esi:             ~
@@ -75,15 +74,15 @@ doctrine:
                 host:     "localhost"
                 port:     "5432"
                 dbname:   "backend"
-                user:     "backend"
-                password: "ahjihaR1eeQu"
+                user:     "postgres"
+                password: "16ytu91ito"
             back_up:
                 driver:   "pdo_pgsql"
                 host:     "localhost"
                 port:     "5432"
                 dbname:   "back_up_catalog"
-                user:     "back_up_catalog"
-                password: "Xt4Mc5hm$v"
+                user:     "postgres"
+                password: "16ytu91ito"
 
         #ahjihaR1eeQu
         #Xt4Mc5hm$v

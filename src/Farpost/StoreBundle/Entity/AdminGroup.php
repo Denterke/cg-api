@@ -22,7 +22,7 @@ class AdminGroup
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="groups")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="controlGroups")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     protected $user;

@@ -102,8 +102,8 @@ class GroupRepository extends EntityRepository
     }
 
     public function getUpdate($last_time, $group_id)
-    
-{        $recs = $this->_em
+    {
+        $recs = $this->_em
             ->createQueryBuilder()
             ->select('g.id, g.alias as g_alias, d.alias as d_alias, lm.status')
             ->from('FarpostStoreBundle:Group', 'g')
@@ -129,5 +129,20 @@ class GroupRepository extends EntityRepository
             }, 
             $recs
         );
+    }
+
+    public function getGroupByMD5($md5)
+    {
+        $recs = $this->_em
+            ->createQueryBuilder()
+            ->select('g.id')
+            ->from('FarpostStoreBundle:Group', 'g')
+            ->where("md5(g.alias || i8gl2634ywgexjvu3akngklahofh) = :md5")
+            ->setParameter('md5', $md5)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+        $rec = count($recs) > 0 ? $recs[0]['id'] : 0;
+        return $rec;
     }
 }

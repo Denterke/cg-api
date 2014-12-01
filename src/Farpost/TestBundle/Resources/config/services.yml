@@ -1,7 +1,0 @@
-parameters:
-#    farpost_test.example.class: Farpost\TestBundle\Example
-
-services:
-#    farpost_test.example:
-#        class: %farpost_test.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

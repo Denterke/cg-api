@@ -66,7 +66,7 @@ class DatabaseConverter
       $em_ba = $this->doctrine->getManager('default');
 
       $dbname_bu = "back_up_catalog";
-      $owner = "back_up_catalog";   
+      $owner = "postgres";   
       echo "<p>$infile</p>";
       $pg_err_num = 0;
       $pg_log_file = __DIR__ . '/../../../../web/uploads/documents/tmp_log.txt';
@@ -78,8 +78,6 @@ class DatabaseConverter
          echo $pg_log;
          // throw new \Exception("pg_restore failed!");
       }
-
-
       //create sqlite file
       try {
          list($db_sqlite, $dt, $db_sqlite_name) = $this->sqlite_manager->CreateDb();
@@ -92,7 +90,7 @@ class DatabaseConverter
          $this->SoftExit($e->message);
       }
       echo "i create sqlite file!";
-      $this->schedule_manager->rawClear();
+      //$this->schedule_manager->rawClear();
       foreach($tables as &$table) {
          echo "<p>now table name is $table[table]</p>";
          $bu_items = $em_bu->getRepository(
