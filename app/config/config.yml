@@ -74,15 +74,15 @@ doctrine:
                 host:     "localhost"
                 port:     "5432"
                 dbname:   "backend"
-                user:     "postgres"
-                password: "16ytu91ito"
+                user:     "backend"
+                password: "ahjihaR1eeQu"
             back_up:
                 driver:   "pdo_pgsql"
                 host:     "localhost"
                 port:     "5432"
                 dbname:   "back_up_catalog"
-                user:     "postgres"
-                password: "16ytu91ito"
+                user:     "back_up_catalog"
+                password: "Xt4Mc5hm$v"
 
         #ahjihaR1eeQu
         #Xt4Mc5hm$v
