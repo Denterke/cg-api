@@ -56,7 +56,7 @@ class CollisionFixer
                 return self::DISCONFIG;
             } else {
                 $result = [
-                    "update" => false,
+                    "update" => true,
                     "group_id" => $realGroupId
                 ];
                 return self::NO_ERROR;
