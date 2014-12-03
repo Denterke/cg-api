@@ -61,6 +61,14 @@ class SchedulePart
     protected $semester;
 
     /**
+     * @var StudyType
+     *
+     * @ORM\ManyToOne(targetEntity="LessonType")
+     * @ORM\JoinColumn(name="lesson_type_id", referencedColumnName="id", nullable=true)
+     */
+    protected $lessonType;
+
+    /**
      * Get id
      *
      * @return integer 
