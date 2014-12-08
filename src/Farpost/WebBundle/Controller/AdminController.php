@@ -324,6 +324,18 @@ class AdminController extends Controller
                 case 'c':
                     system(WEB_DIRECTORY . "/../app/console doctrine:fixtures:load --no-interaction --append");
                     break;
+                case 'd':
+                    system(WEB_DIRECTORY . "/../app/console csmc --clear");
+                    break;
+                case 'e':
+                    system(WEB_DIRECTORY . "/../app/console paimon");
+                    break;
+                case 'f':
+                    system("rm -f " . WEB_DIRECTORY . "/paimon_log.txt");
+                    break;
+                case 'g':
+                    system("rm -f " . WEB_DIRECTORY . "/static/newsImgs/*");
+                    break;
             }
         }
         return new Response('Actions performed!', 200, ['Content-Type' => 'application/json']);

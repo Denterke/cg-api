@@ -34,11 +34,14 @@ farpost_api2_base_update_get:
    path:    /base_update.get.json
    defaults: { _controller: FarpostAPIBundle:APIV2:getBaseUpdates }
 
-farpost_api2_getters_for_group:
-   path:     /{name}.get.json
-   defaults: { _controller: FarpostAPIBundle:APIV2:getForGroup }
-
+farpost_api2_get_news:
+   path:    /news.get.json
+   defaults: { _controller: FarpostAPIBundle:APIV2:getNews }
 
 farpost_api2_full_schedule:
    path:    /full.schedule.get.json
    defaults: { _controller: FarpostAPIBundle:APIV2:getFullSchedule }
+
+farpost_api2_getters_for_group:
+   path:     /{name}.get.json
+   defaults: { _controller: FarpostAPIBundle:APIV2:getForGroup }

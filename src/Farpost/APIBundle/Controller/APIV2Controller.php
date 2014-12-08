@@ -165,10 +165,12 @@ class APIV2Controller extends APIV1Controller
         /**
      * Returns schedule and all entities, required by schedule, for group_id
      * Added: [2.0]
+     * Required: [Client 2.0]
      * @param  Request $request
      * @return Response
      */
-    public function getFullScheduleAction(Request $request) {
+    public function getFullScheduleAction(Request $request)
+    {
         $response= null;
         $result = [];
         $fatal = $this->get('collision_fixer')->usualCheck($request, $response, $result);
@@ -194,5 +196,33 @@ class APIV2Controller extends APIV1Controller
             $response->setContent(json_encode($result))->setStatusCode(200);
         }
         return $response;
+    }
+
+    /**
+     * Returns news, from $news_id to $news_id + $cnt (cnt may be < 0)
+     * Added: [2.0]
+     * Required: [Client 2.0]
+     * @param Request $request
+     * @return Response 
+     */
+    public function getNewsAction(Request $request)
+    {
+        $helper = $this->get('api_helper');
+        $response = $helper->create404();
+        $newsId = $request->query->getInt('news_id', 1);
+        $count = $request->query->getInt('count', 10);
+        $result = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('FarpostStoreBundle:News')
+            ->getNews($newsId, $count, $this->getRequest()->getHost());
+        if ($result === null) {
+            return $response;
+        }
+        return $response->setContent(
+            json_encode([
+                'news' => $result,
+                'timestamp' => $helper->getTimestamp()
+            ])
+        )->setStatusCode(200);
     }
 }

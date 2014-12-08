@@ -25,7 +25,10 @@ class ClearShMemCommand extends ContainerAwareCommand
             'cur' => 0,
             'cnt' => 0,
             'pid' => -1,
-            'res' => 0
+            'res' => 0,
+            'paimon_run' => 0,
+            'paimon_pid' => -1,
+            'paimon_stop' => 0
         ];
         $memcache = new \Memcache;
         $memcache->connect('localhost') or die('Can not connect memcache server');

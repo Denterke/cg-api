@@ -192,4 +192,27 @@ class SchedulePart
     {
         return $this->semester;
     }
+
+    /**
+     * Set lessonType
+     *
+     * @param \Farpost\StoreBundle\Entity\LessonType $lessonType
+     * @return SchedulePart
+     */
+    public function setLessonType(\Farpost\StoreBundle\Entity\LessonType $lessonType = null)
+    {
+        $this->lessonType = $lessonType;
+
+        return $this;
+    }
+
+    /**
+     * Get lessonType
+     *
+     * @return \Farpost\StoreBundle\Entity\LessonType 
+     */
+    public function getLessonType()
+    {
+        return $this->lessonType;
+    }
 }
