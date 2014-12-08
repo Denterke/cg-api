@@ -328,7 +328,7 @@ class AdminController extends Controller
                     system(WEB_DIRECTORY . "/../app/console csmc --clear");
                     break;
                 case 'e':
-                    system(WEB_DIRECTORY . "/../app/console paimon");
+                    exec(WEB_DIRECTORY . "/../app/console paimon > /dev/null 2>&1 &");
                     break;
                 case 'f':
                     system("rm -f " . WEB_DIRECTORY . "/paimon_log.txt");
