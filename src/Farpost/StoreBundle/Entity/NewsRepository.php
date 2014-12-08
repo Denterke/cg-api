@@ -19,14 +19,20 @@ class NewsRepository extends EntityRepository
 
    public function getNews($start, $count, $hostname)
    {
-      $sign = $count >= 0 ? " >= " : " <= ";
-      $qb = $this->_prepareQB();
-      $recs = $qb->where('n.active = true')
-         ->andWhere("n.id $sign :start")
-         ->setMaxResults(abs($count))
-         ->setParameter('start', $start)
-         ->getQuery()
-         ->getResult();
+      $qb = $this->_prepareQB()->where('n.active = true')
+         ->setMaxResults(abs($count));
+      if ($start == -1) {
+         $recs = $qb->orderBy('n.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+      } else {
+         $sign = $count >= 0 ? " >= " : " <= ";
+         $recs = $qb->andWhere("n.id $sign :start")
+            ->setParameter('start', $start)
+            ->orderBy('n.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+      }
       $result = [];
       foreach ($recs as &$rec) {
          $elem = [

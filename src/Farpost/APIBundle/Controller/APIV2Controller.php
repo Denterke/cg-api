@@ -209,7 +209,7 @@ class APIV2Controller extends APIV1Controller
     {
         $helper = $this->get('api_helper');
         $response = $helper->create404();
-        $newsId = $request->query->getInt('news_id', 1);
+        $newsId = $request->query->getInt('news_id', -1);
         $count = $request->query->getInt('count', 10);
         $result = $this->getDoctrine()
             ->getManager()
