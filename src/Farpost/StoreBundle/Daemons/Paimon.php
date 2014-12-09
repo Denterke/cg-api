@@ -150,6 +150,9 @@ class Paimon extends ContainerAwareCommand
         );
         foreach ($news as $new_item) {
             if (is_array($new_item)) {
+                if ($new_item['post_type'] !== 'post') {
+                    continue;
+                }
                 if (in_array($new_item['id'], $ids)) {
                     continue;
                 }
