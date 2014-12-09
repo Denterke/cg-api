@@ -26,12 +26,19 @@ class NewsRepository extends EntityRepository
             ->getQuery()
             ->getResult();
       } else {
-         $sign = $count >= 0 ? " >= " : " <= ";
+         $sign = $count >= 0 ? ">" : "<";
+         $order = $count >= 0 ? "ASC" : "DESC";
          $recs = $qb->andWhere("n.id $sign :start")
             ->setParameter('start', $start)
-            ->orderBy('n.id', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('n.id', $order)
+            ->getQuery();
+         // echo $recs->getDQL() . "\n";
+         // echo $start . "\n";
+         // echo $count . "\n";
+         $recs = $recs->getResult();
+            // ->getDQL();
+         // echo $recs;
+            // ->getResult();
       }
       $result = [];
       foreach ($recs as &$rec) {

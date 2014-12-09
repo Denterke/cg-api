@@ -169,9 +169,17 @@ class Paimon extends ContainerAwareCommand
                         $new_item['id'],
                         $new_item['date'],
                         '',
-                        "$new_item[text]",
+                        preg_replace(
+                            '/\<.*?\>/',
+                            '',
+                            preg_replace(
+                                '/\<br\>/',
+                                "\n",
+                                $new_item['text']
+                            )
+                        ),
                         true,
-                        "$img"
+                        $img
                     ]
                 );
                 list($newsId) = pg_fetch_row($resource);
