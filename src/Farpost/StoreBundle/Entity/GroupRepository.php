@@ -131,6 +131,22 @@ class GroupRepository extends EntityRepository
         );
     }
 
+    /**
+     * Returns true only if $group_id has been modified since $last_time
+     * Added: [2.0]
+     * @param  integer $last_time
+     * @param  integer $group_id
+     * @return boolean
+     */
+    public function checkUpdate($last_time, $group_id)
+    {
+        $group = $this->findOneBy(['id' => $group_id]);
+        if (is_null($group) || $group === false) {
+            return false;
+        }
+        return $group->getLastModified() > $last_time;
+    }
+
     public function getGroupByMD5($md5)
     {
         $pdo = $this->_em->getConnection();

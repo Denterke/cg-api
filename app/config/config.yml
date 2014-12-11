@@ -16,9 +16,6 @@ services:
     sql_booster:
         class: Farpost\StoreBundle\Services\sql_booster
         arguments: [ @doctrine ]
-    collision_fixer:
-        class: Farpost\APIBundle\Services\CollisionFixer
-        arguments: [ @doctrine, "@api_helper" ]
     api_helper:
         class: Farpost\APIBundle\Services\APIHelper
         arguments: [ @doctrine ]

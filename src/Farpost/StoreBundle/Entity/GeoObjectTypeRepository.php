@@ -18,28 +18,6 @@ class GeoObjectTypeRepository extends EntityRepository
       return $qb;
    }
 
-//    private function _finalizeRaw(&$recs)
-//    {
-//       $result = [];
-//       foreach($recs as $rec) {
-//          $elem = [
-//             'id'             => $rec->getId(),
-//             'level'          => $rec->getLevel(),
-//             'id_vertex_from' => $rec->getObjectFrom()->getId(),
-//             'id_vertex_to'   => $rec->getObjectTo()->getId()
-//          ];
-//          array_push($result, $elem);
-//       }
-//       return $result;
-//    }
-
-//    public function getRawResults()
-//    {
-//       $recs = $this->_prepareQB()->getQuery()
-//                    ->setHint(\Doctrine\ORM\Query::HINT_INCLUDE_META_COLUMNS, true)
-//                    ->getArrayResult();
-//       return $recs;
-//    }
    public function synchronizeWith($items)
    {
       $qb = $this->_prepareQB();
