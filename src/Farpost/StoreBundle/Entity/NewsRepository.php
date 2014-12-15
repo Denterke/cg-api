@@ -26,11 +26,9 @@ class NewsRepository extends EntityRepository
             ->getQuery()
             ->getResult();
       } else {
-         $sign = $count >= 0 ? ">" : "<";
-         $order = $count >= 0 ? "ASC" : "DESC";
-         $recs = $qb->andWhere("n.id $sign :start")
+         $recs = $qb->andWhere("n.id < :start")
             ->setParameter('start', $start)
-            ->orderBy('n.id', $order)
+            ->orderBy('n.id', 'DESC')
             ->getQuery();
          // echo $recs->getDQL() . "\n";
          // echo $start . "\n";
