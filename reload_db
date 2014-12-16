@@ -31,3 +31,4 @@ app/console paimon
 #rm -f web/paimon_log.txt;
 #g
 #rm -f web/static/newsImgs/*;
+#this is a fake line, specially for Jenkins rebuild
