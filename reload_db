@@ -26,7 +26,7 @@ app/console doctrine:fixtures:load --no-interaction --append;
 #d
 app/console csmc --clear
 #e
-app/console paimon
+#app/console paimon
 #f
 #rm -f web/paimon_log.txt;
 #g
