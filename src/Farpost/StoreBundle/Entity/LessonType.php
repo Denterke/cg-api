@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LessonType
 {
+    public static $NOTHING_TYPE_ID = 1024;
+    public static $NOTHING_TYPE_ALIAS = '';
     /**
      * @var integer
      *

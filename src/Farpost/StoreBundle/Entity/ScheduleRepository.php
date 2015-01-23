@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Farpost\StoreBundle\Entity\Schedule;
 use Farpost\StoreBundle\Entity\Group;
+use Farpost\StoreBundle\Entity\LessonType;
 
 /*
  *ScheduleRepository
@@ -242,7 +243,7 @@ class ScheduleRepository extends EntityRepository
                 }
                 $scheduleProcessed = [
                     "group_id"       => $gId,
-                    "lesson_type_id" => $schedule->getLessonType()->getId(),
+                    "lesson_type_id" => $schedule->getLessonType() ? $schedule->getLessonType()->getId() : LessonType::$NOTHING_TYPE_ID,
                     "discipline_id"  => $schedule->getSchedulePart()->getDiscipline()->getId(),
                     "time_id"        => $schedule->getTime()->getId(),
                     "auditory_id"    => ($schedule->getAuditory() ? $schedule->getAuditory()->getId() : null),

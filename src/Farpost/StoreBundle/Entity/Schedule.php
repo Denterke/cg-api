@@ -85,6 +85,20 @@ class Schedule
     */
    protected $status; //status for rendering
 
+   /**
+    * @var date
+    *
+    * @ORM\Column(name="time_start", type="date", nullable=true)
+    */
+   protected $time_start;
+
+   /**
+    * @var date
+    *
+    * @ORM\Column(name="time_end", type="date", nullable=true)
+    */
+   protected $time_end;
+
     /**
      * Constructor
      */
