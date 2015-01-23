@@ -8,6 +8,7 @@ use Farpost\StoreBundle\Entity\Config;
 
 class LoadSemesterData implements FixtureInterface
 {
+    public static $CURRENT_SEMESTER = 2;
     public function load(ObjectManager $manager)
     {
         $semester = $manager->getRepository('FarpostStoreBundle:Semester')
@@ -22,12 +23,28 @@ class LoadSemesterData implements FixtureInterface
             $manager->persist($semester);
             $manager->flush();
         }
+        $semester = $manager->getRepository('FarpostStoreBundle:Semester')
+            ->findOneBy(['id' => 2]);
+        if (is_null($semester)) {
+            $semester = new Semester();
+            $start_time = new \DateTime();
+            $start_time->setTimestamp(strtotime('09.02.2015'));
+            $end_time = new \DateTime();
+            $end_time->setTimestamp(strtotime('15.06.2015'));
+            $semester->setTimeStart($start_time)->setTimeEnd($end_time)->setAlias('2014-2015 (2)');
+            $manager->persist($semester);
+            $manager->flush();
+        }
         $config = $manager->getRepository('FarpostStoreBundle:Config')
             ->findOneBy(['param' => 'current_semester']);
         if (is_null($config) || !($config->getValue())) {
             $config = new Config();
-            $config->setParam('current_semester')->setValue(1);
+            $config->setParam('current_semester')->setValue(self::$CURRENT_SEMESTER);
             $manager->persist($config);
+            $manager->flush();
+        } else {
+            $config->setParam('current_semester')->setValue(self::$CURRENT_SEMESTER);
+            $manager->merge($config);
             $manager->flush();
         }
     }
