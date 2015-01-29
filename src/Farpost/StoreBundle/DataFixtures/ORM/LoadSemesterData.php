@@ -26,13 +26,23 @@ class LoadSemesterData implements FixtureInterface
         $semester = $manager->getRepository('FarpostStoreBundle:Semester')
             ->findOneBy(['id' => 2]);
         if (is_null($semester)) {
+            echo "is_null";
             $semester = new Semester();
+            $semester->id = 2;
             $start_time = new \DateTime();
             $start_time->setTimestamp(strtotime('09.02.2015'));
             $end_time = new \DateTime();
             $end_time->setTimestamp(strtotime('15.06.2015'));
             $semester->setTimeStart($start_time)->setTimeEnd($end_time)->setAlias('2014-2015 (2)');
             $manager->persist($semester);
+            $manager->flush();
+        } else {
+            $start_time = new \DateTime();
+            $start_time->setTimestamp(strtotime('09.02.2015'));
+            $end_time = new \DateTime();
+            $end_time->setTimestamp(strtotime('15.06.2015'));
+            $semester->setTimeStart($start_time)->setTimeEnd($end_time)->setAlias('2014-2015 (2)');
+            $manager->merge($semester);
             $manager->flush();
         }
         $config = $manager->getRepository('FarpostStoreBundle:Config')

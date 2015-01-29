@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Farpost\StoreBundle\Entity\Schedule;
 use Farpost\StoreBundle\Entity\Group;
 use Farpost\StoreBundle\Entity\LessonType;
+use Farpost\StoreBundle\DataFixtures\ORM\LoadSemesterData;
 
 /*
  *ScheduleRepository
@@ -196,7 +197,7 @@ class ScheduleRepository extends EntityRepository
         return array_map(
             function($rec) {
                 return $rec->getAlias();
-            },  
+            },
             $recs
         );
     }
@@ -216,8 +217,10 @@ class ScheduleRepository extends EntityRepository
         $id = $group->getSRFirstId();
         $recs = $this->_prepareQB()
                      ->where('g.id = :gId')
+                     ->andWhere('sm.id = :semesterId')
                      ->orderBy('s.id', 'ASC')
                      ->setParameter('gId', $gId)
+                     ->setParameter('semesterId', LoadSemesterData::$CURRENT_SEMESTER)
                      ->getQuery()
                      ->getResult();
         $i = 0;
