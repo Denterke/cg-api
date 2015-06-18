@@ -16,6 +16,7 @@ class LoadSemesterData implements FixtureInterface
         if (is_null($semester)) {
             $semester = new Semester();
             $start_time = new \DateTime();
+            $semester->id = 1;
             $start_time->setTimestamp(strtotime('01.09.2014'));
             $end_time = new \DateTime();
             $end_time->setTimestamp(strtotime('31.12.2014'));
