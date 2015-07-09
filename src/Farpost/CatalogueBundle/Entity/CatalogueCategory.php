@@ -64,6 +64,13 @@ class CatalogueCategory
     protected $children;
 
     /**
+     * @var CatalogueCategoryObjectEdge
+     *
+     * @ORM\OneToMany(targetEntity="CatalogueCategoryObjectEdge", mappedBy="category", cascade={"persist"}, orphanRemoval=true)
+     */
+    protected $objects;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="site", type="string", length=100, nullable=true)
@@ -74,6 +81,7 @@ class CatalogueCategory
     {
         $this->children = new ArrayCollection();
         $this->parents = new ArrayCollection();
+        $this->objects = new ArrayCollection();
     }
 
     public function getId()
@@ -198,13 +206,13 @@ class CatalogueCategory
     /**
      * Add children
      *
-     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $linkWithChild
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $edge
      * @return CatalogueCategory
      */
-    public function addChild(\Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $linkWithChild)
+    public function addChild(\Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $edge)
     {
-        $linkWithChild->setParent($this);
-        $this->children[] = $linkWithChild;
+        $edge->setParent($this);
+        $this->children[] = $edge;
 
         return $this;
     }
@@ -212,13 +220,13 @@ class CatalogueCategory
     /**
      * Remove children
      *
-     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $linkWithChild
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $edge
      * @return CatalogueCategory
      */
-    public function removeChild(\Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $linkWithChild)
+    public function removeChild(\Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $edge)
     {
-        $linkWithChild->setParent(null);
-        $this->children->removeElement($linkWithChild);
+        $edge->setParent(null);
+        $this->children->removeElement($edge);
 
         return $this;
     }
@@ -239,5 +247,43 @@ class CatalogueCategory
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * Add objects
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge $edge
+     * @return CatalogueCategory
+     */
+    public function addObject(\Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge $edge)
+    {
+        $edge->setCategory($this);
+        $this->objects[] = $edge;
+
+        return $this;
+    }
+
+    /**
+     * Remove objects
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge $edge
+     * @return CatalogueCategory
+     */
+    public function removeObject(\Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge $edge)
+    {
+        $edge->setCategory(null);
+        $this->objects->removeElement($edge);
+
+        return $this;
+    }
+
+    /**
+     * Get objects
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getObjects()
+    {
+        return $this->objects;
     }
 }

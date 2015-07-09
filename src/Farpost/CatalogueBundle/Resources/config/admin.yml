@@ -2,7 +2,7 @@ services:
     sonata.admin.catalogue_object:
         class: Farpost\CatalogueBundle\Admin\CatalogueObjectAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Справочник", label: "Объекты" }
+            - { name: sonata.admin, manager_type: orm, group: "title.catalogue", label: "title.objects" }
         arguments:
             - ~
             - Farpost\CatalogueBundle\Entity\CatalogueObject
@@ -13,7 +13,7 @@ services:
     sonata.admin.catalogue_category:
         class: Farpost\CatalogueBundle\Admin\CatalogueCategoryAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Справочник", label: "Категории и организации" }
+            - { name: sonata.admin, manager_type: orm, group: "title.catalogue", label: "title.categories_and_organisations" }
         arguments:
             - ~
             - Farpost\CatalogueBundle\Entity\CatalogueCategory
@@ -24,10 +24,21 @@ services:
     sonata.admin.catalogue_category_edge:
         class: Farpost\CatalogueBundle\Admin\CatalogueCategoryEdgeAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Справочник", label: "Связь категорий" }
+            - { name: sonata.admin, manager_type: orm, group: "title.catalogue", label: "title.catalogue_category_edge", show_in_dashboard: false }
         arguments:
             - ~
             - Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue_category_object_edge:
+        class: Farpost\CatalogueBundle\Admin\CatalogueCategoryObjectEdgeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "title.catalogue", label: "title.catalogue_category_object_edge", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge
             - ~
         calls:
             - [ setTranslationDomain, [FarpostCatalogueBundle] ]

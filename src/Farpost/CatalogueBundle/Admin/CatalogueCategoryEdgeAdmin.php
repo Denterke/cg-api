@@ -18,7 +18,6 @@ class CatalogueCategoryEdgeAdmin extends Admin {
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-//            ->add('parent', 'sonata_type_model', ['label' => 'label.parent_category'])
             ->add('child', 'sonata_type_model', ['label' => 'label.child_category'])
         ;
     }

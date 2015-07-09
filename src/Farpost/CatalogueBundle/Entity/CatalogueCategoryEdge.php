@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class CatalogueCategoryEdge
  * @package Farpost\CatalogueBundle\Entity
  *
- * @ORM\Table(name="category_tree")
+ * @ORM\Table(name="catalogue_category_tree")
  * @ORM\Entity
  */
 class CatalogueCategoryEdge {

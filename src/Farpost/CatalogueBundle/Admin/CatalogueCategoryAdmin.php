@@ -40,6 +40,11 @@ class CatalogueCategoryAdmin extends Admin {
                 'inline' => 'table',
                 'sortable' => 'id'
             ])
+            ->add('objects', 'sonata_type_collection', ['by_reference' => false], [
+                'edit' => 'inline',
+                'inline' => 'table',
+                'sortable' => 'id'
+            ])
         ;
     }
 

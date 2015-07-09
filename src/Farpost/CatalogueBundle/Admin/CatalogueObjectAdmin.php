@@ -31,6 +31,11 @@ class CatalogueObjectAdmin extends Admin
                 'label' => 'label.site',
                 'required' => false
             ])
+            ->add('categories', 'sonata_type_collection', ['by_reference' => true], [
+                'edit' => 'inline',
+                'inline' => 'table',
+                'sortable' => 'id'
+            ])
         ;
     }
 

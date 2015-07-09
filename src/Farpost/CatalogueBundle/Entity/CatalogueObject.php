@@ -3,7 +3,7 @@
 namespace Farpost\CatalogueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  *
  * @ORM\Table(name="catalogue_objects")
@@ -49,23 +49,32 @@ class CatalogueObject
      */
     protected $site;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CatalogueCategoryObjectEdge", mappedBy="object", cascade={"persist"}, orphanRemoval=true)
+     */
+    protected $categories;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
     public function getId()
     {
         return $this->id;
     }
 
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return CatalogueObject
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -73,11 +82,22 @@ class CatalogueObject
         return $this;
     }
 
-    public function getDescription()
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
     {
-        return $this->description;
+        return $this->name;
     }
 
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return CatalogueObject
+     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -85,11 +105,22 @@ class CatalogueObject
         return $this;
     }
 
-    public function getPhone()
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
     {
-        return $this->phone;
+        return $this->description;
     }
 
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     * @return CatalogueObject
+     */
     public function setPhone($phone)
     {
         $this->phone = $phone;
@@ -97,15 +128,82 @@ class CatalogueObject
         return $this;
     }
 
+    /**
+     * Get phone
+     *
+     * @return string 
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set site
+     *
+     * @param string $site
+     * @return CatalogueObject
+     */
+    public function setSite($site)
+    {
+        $this->site = $site;
+
+        return $this;
+    }
+
+    /**
+     * Get site
+     *
+     * @return string 
+     */
     public function getSite()
     {
         return $this->site;
     }
 
-    public function setSite($site)
+    /**
+     * Add categories
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge $edge
+     * @return CatalogueObject
+     */
+    public function addCategory(\Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge $edge)
     {
-        $this->site = $site;
+        $edge->setObject($this);
+        $this->categories[] = $edge;
 
-        return $this->site;
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge $edge
+     * @return CatalogueObject
+     */
+    public function removeCategory(\Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge $edge)
+    {
+        $edge->setObject(null);
+        $this->categories->removeElement($edge);
+
+        return $this;
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 }
