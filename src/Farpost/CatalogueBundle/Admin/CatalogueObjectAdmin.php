@@ -31,7 +31,10 @@ class CatalogueObjectAdmin extends Admin
                 'label' => 'label.site',
                 'required' => false
             ])
-            ->add('categories', 'sonata_type_collection', ['by_reference' => true], [
+            ->add('categories', 'sonata_type_collection', [
+                'by_reference' => true,
+                'label' => 'label.parent_categories'
+            ], [
                 'edit' => 'inline',
                 'inline' => 'table',
                 'sortable' => 'id'
@@ -50,10 +53,10 @@ class CatalogueObjectAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('name')
-            ->add('description')
-            ->add('phone')
-            ->add('site')
+            ->add('name', null, ['label' => 'label.name'])
+            ->add('description', null, ['label' => 'label.description'])
+            ->add('phone', null, ['label' => 'label.phone'])
+            ->add('site', null, ['label' => 'label.site'])
         ;
     }
 

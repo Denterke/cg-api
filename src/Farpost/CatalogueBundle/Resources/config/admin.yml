@@ -2,7 +2,7 @@ services:
     sonata.admin.catalogue_object:
         class: Farpost\CatalogueBundle\Admin\CatalogueObjectAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "title.catalogue", label: "title.objects" }
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.objects" }
         arguments:
             - ~
             - Farpost\CatalogueBundle\Entity\CatalogueObject
@@ -13,7 +13,7 @@ services:
     sonata.admin.catalogue_category:
         class: Farpost\CatalogueBundle\Admin\CatalogueCategoryAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "title.catalogue", label: "title.categories_and_organisations" }
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.categories_and_organisations" }
         arguments:
             - ~
             - Farpost\CatalogueBundle\Entity\CatalogueCategory
@@ -24,7 +24,7 @@ services:
     sonata.admin.catalogue_category_edge:
         class: Farpost\CatalogueBundle\Admin\CatalogueCategoryEdgeAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "title.catalogue", label: "title.catalogue_category_edge", show_in_dashboard: false }
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_category_edge", show_in_dashboard: false }
         arguments:
             - ~
             - Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge
@@ -35,7 +35,7 @@ services:
     sonata.admin.catalogue_category_object_edge:
         class: Farpost\CatalogueBundle\Admin\CatalogueCategoryObjectEdgeAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "title.catalogue", label: "title.catalogue_category_object_edge", show_in_dashboard: false }
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_category_object_edge", show_in_dashboard: false }
         arguments:
             - ~
             - Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge

@@ -35,12 +35,18 @@ class CatalogueCategoryAdmin extends Admin {
                 'label' => 'label.site',
                 'required' => false
             ])
-            ->add('children', 'sonata_type_collection', ['by_reference' => false], [
+            ->add('children', 'sonata_type_collection', [
+                'by_reference' => false,
+                'label' => 'label.children_categories'
+            ], [
                 'edit' => 'inline',
                 'inline' => 'table',
                 'sortable' => 'id'
             ])
-            ->add('objects', 'sonata_type_collection', ['by_reference' => false], [
+            ->add('objects', 'sonata_type_collection', [
+                'by_reference' => false,
+                'label' => 'label.children_objects'
+            ], [
                 'edit' => 'inline',
                 'inline' => 'table',
                 'sortable' => 'id'
@@ -51,7 +57,8 @@ class CatalogueCategoryAdmin extends Admin {
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
+            ->add('isOrganization', null, ['operator_type' => 'sonata_type_boolean', 'label' => 'label.is_organization'])
+            ->add('name', null, ['label' => 'label.name'])
         ;
     }
 
@@ -59,10 +66,11 @@ class CatalogueCategoryAdmin extends Admin {
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('name')
-            ->add('description')
-            ->add('phone')
-            ->add('site')
+            ->add('isOrganization', null, ['label' => 'label.is_organization'])
+            ->add('name', null, ['label' => 'label.name'])
+            ->add('description', null, ['label' => 'label.description'])
+            ->add('phone', null, ['label' => 'label.phone'])
+            ->add('site', null, ['label' => 'label.site'])
         ;
     }
 }

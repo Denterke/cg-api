@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="FarpostCatalogueBundle.ru.xliff" >
+        <body>
+            <trans-unit id="title.objects">
+                <source>title.objects</source>
+                <target>Объекты</target>
+            </trans-unit>
+            <trans-unit id="title.categories_and_organisations">
+                <source>title.categories_and_organisations</source>
+                <target>Категории и организации</target>
+            </trans-unit>
+            <trans-unit id="title.catalogue">
+                <source>title.catalogue</source>
+                <target>Справочник</target>
+            </trans-unit>
+
+            <trans-unit id="label.name">
+                <source>label.name</source>
+                <target>Название</target>
+            </trans-unit>
+            <trans-unit id="label.object">
+                <source>label.object</source>
+                <target>Объект справочника</target>
+            </trans-unit>
+            <trans-unit id="label.description">
+                <source>label.description</source>
+                <target>Описание</target>
+            </trans-unit>
+            <trans-unit id="label.phone">
+                <source>label.phone</source>
+                <target>Номер телефона</target>
+            </trans-unit>
+            <trans-unit id="label.site">
+                <source>label.site</source>
+                <target>Адрес сайта</target>
+            </trans-unit>
+            <trans-unit id="label.parent_categories">
+                <source>label.parent_categories</source>
+                <target>Родительские категории</target>
+            </trans-unit>
+            <trans-unit id="label.parent_category">
+                <source>label.parent_category</source>
+                <target>Родительская категория</target>
+            </trans-unit>
+            <trans-unit id="label.is_organization">
+                <source>label.is_organization</source>
+                <target>Является организацией</target>
+            </trans-unit>
+            <trans-unit id="label.children_categories">
+                <source>label.children_categories</source>
+                <target>Дочерние категории</target>
+            </trans-unit>
+            <trans-unit id="label.children_objects">
+                <source>label.children_objects</source>
+                <target>Дочерние объекты (не категории)</target>
+            </trans-unit>
+            <trans-unit id="label.child_category">
+                <source>label.child_category</source>
+                <target>Дочерняя категория</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

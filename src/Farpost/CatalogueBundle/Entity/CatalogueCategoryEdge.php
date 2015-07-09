@@ -30,7 +30,7 @@ class CatalogueCategoryEdge {
     /**
      * @var CatalogueCategory
      *
-     * @ORM\ManyToOne(targetEntity="CatalogueCategory", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="CatalogueCategory", inversedBy="parents")
      * @ORM\JoinColumn(name="child_id", referencedColumnName="id")
      */
     protected $child;
@@ -38,7 +38,7 @@ class CatalogueCategoryEdge {
     /**
      * @var CatalogueCategory
      *
-     * @ORM\ManyToOne(targetEntity="CatalogueCategory", inversedBy="parents")
+     * @ORM\ManyToOne(targetEntity="CatalogueCategory", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     protected $parent;
