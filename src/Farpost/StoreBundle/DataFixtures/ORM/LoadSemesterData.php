@@ -15,6 +15,7 @@ class LoadSemesterData implements FixtureInterface
             ->findOneBy(['id' => 1]);
         if (is_null($semester)) {
             $semester = new Semester();
+            $semester->id = 1;
             $start_time = new \DateTime();
             $semester->id = 1;
             $start_time->setTimestamp(strtotime('01.09.2014'));
