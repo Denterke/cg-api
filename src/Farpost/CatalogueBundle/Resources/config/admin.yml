@@ -2,10 +2,32 @@ services:
     sonata.admin.catalogue_object:
         class: Farpost\CatalogueBundle\Admin\CatalogueObjectAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Справочник", label: "Объект" }
+            - { name: sonata.admin, manager_type: orm, group: "Справочник", label: "Объекты" }
         arguments:
             - ~
             - Farpost\CatalogueBundle\Entity\CatalogueObject
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue_category:
+        class: Farpost\CatalogueBundle\Admin\CatalogueCategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Справочник", label: "Категории и организации" }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueCategory
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue_category_edge:
+        class: Farpost\CatalogueBundle\Admin\CatalogueCategoryEdgeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Справочник", label: "Связь категорий" }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge
             - ~
         calls:
             - [ setTranslationDomain, [FarpostCatalogueBundle] ]
