@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: @FarpostCatalogueBundle/Resources/config/admin.yml }
 
 services:
     entity_dispatcher:
@@ -68,35 +69,31 @@ doctrine:
         default_connection: default
         connections:
             default:
-                driver:   "pdo_pgsql"
-                host:     "localhost"
-                port:     "5432"
-                dbname:   "backend"
-                user:     "backend"
-                password: "ahjihaR1eeQu"
+                driver:   "%default_database_driver%"
+                host:     "%default_database_host%"
+                port:     "%default_database_port%"
+                dbname:   "%default_database_name%"
+                user:     "%default_database_user%"
+                password: "%default_database_password%"
             back_up:
-                driver:   "pdo_pgsql"
-                host:     "localhost"
-                port:     "5432"
-                dbname:   "back_up_catalog"
-                user:     "back_up_catalog"
-                password: "Xt4Mc5hm$v"
+                driver:   "%backup_database_driver%"
+                host:     "%backup_database_host%"
+                port:     "%backup_database_port%"
+                dbname:   "%backup_database_name%"
+                user:     "%backup_database_user%"
+                password: "%backup_database_password%"
 
         #ahjihaR1eeQu
         #Xt4Mc5hm$v
-        #charset:  "UTF-8"
-        # if using pdo_sqlite as your database driver, add the path in parameters.yml
-        # e.g. database_path: "%kernel.root_dir%/data/data.db3"
-        # path:     "%database_path%"
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        # auto_mapping: true
         default_entity_manager: default
         entity_managers:
             default:
                 connection: default
                 mappings:
+                    FarpostCatalogueBundle: ~
                     FarpostStoreBundle: ~
             back_up:
                 connection: back_up
@@ -106,6 +103,22 @@ doctrine:
                 connection: default
                 mappings:
                     FarpostStoreBundle: ~
+
+#sonata
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # Enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        # Your other blocks
+
+sonata_admin:
+    title: Кампус Гид
+
+sonata_doctrine_orm_admin:
+    # default value is null, so doctrine uses the value defined in the configuration
+    entity_manager: ~
 
 
 # Swiftmailer Configuration

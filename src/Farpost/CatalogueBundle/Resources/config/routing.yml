@@ -1,0 +1,3 @@
+farpost_catalogue_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: FarpostCatalogueBundle:Default:index }

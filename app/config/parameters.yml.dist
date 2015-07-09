@@ -1,19 +1,24 @@
 parameters:
-    database_driver:   pdo_mysql
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
+    default_database_driver: pdo_pgsql
+    default_database_host: 127.0.0.1
+    default_database_port: 5423
+    default_database_name: backend
+    default_database_user: null
+    default_database_password: null
 
-    mailer_transport:  smtp
-    mailer_host:       127.0.0.1
-    mailer_user:       ~
-    mailer_password:   ~
+    backup_database_driver: pdo_pgsql
+    backup_database_host: 127.0.0.1
+    backup_database_port: 5423
+    backup_database_name: back_up_catalog
+    backup_database_user: null
+    backup_database_password: null
 
-    locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
-
-    debug_toolbar:          true
-    debug_redirects:        false
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
+    debug_toolbar: true
+    debug_redirects: false
     use_assetic_controller: true

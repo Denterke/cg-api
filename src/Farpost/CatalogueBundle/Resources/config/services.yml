@@ -1,0 +1,7 @@
+parameters:
+#    farpost_catalogue.example.class: Farpost\CatalogueBundle\Example
+
+services:
+#    farpost_catalogue.example:
+#        class: %farpost_catalogue.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

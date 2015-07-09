@@ -1,0 +1,11 @@
+services:
+    sonata.admin.catalogue_object:
+        class: Farpost\CatalogueBundle\Admin\CatalogueObjectAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Справочник", label: "Объект" }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueObject
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]

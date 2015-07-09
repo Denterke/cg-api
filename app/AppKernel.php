@@ -21,7 +21,13 @@ class AppKernel extends Kernel
             new Farpost\WebBundle\FarpostWebBundle(),
             new Farpost\BackUpBundle\FarpostBackUpBundle(),
             new Farpost\ModeratorBundle\FarpostModeratorBundle(),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle()
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Sonata\CoreBundle\SonataCoreBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+            new Sonata\AdminBundle\SonataAdminBundle(),
+            new Farpost\CatalogueBundle\FarpostCatalogueBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
