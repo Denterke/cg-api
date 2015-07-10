@@ -59,6 +59,52 @@
                 <source>label.child_category</source>
                 <target>Дочерняя категория</target>
             </trans-unit>
+            <trans-unit id="label.schedule">
+                <source>label.schedule</source>
+                <target>Расписание</target>
+            </trans-unit>
+            <trans-unit id="label.start_at">
+                <source>label.start_at</source>
+                <target>Время начала работы</target>
+            </trans-unit>
+            <trans-unit id="label.end_at">
+                <source>label.end_at</source>
+                <target>Время окончания работы</target>
+            </trans-unit>
+            <trans-unit id="label.day_number">
+                <source>label.day_number</source>
+                <target>День недели</target>
+            </trans-unit>
+
+            <trans-unit id="dow.monday">
+                <source>dow.monday</source>
+                <target>Понедельник</target>
+            </trans-unit>
+            <trans-unit id="dow.tuesday">
+                <source>dow.tuesday</source>
+                <target>Вторник</target>
+            </trans-unit>
+            <trans-unit id="dow.wednesday">
+                <source>dow.wednesday</source>
+                <target>Среда</target>
+            </trans-unit>
+            <trans-unit id="dow.thursday">
+                <source>dow.thursday</source>
+                <target>Четверг</target>
+            </trans-unit>
+            <trans-unit id="dow.friday">
+                <source>dow.friday</source>
+                <target>Пятница</target>
+            </trans-unit>
+            <trans-unit id="dow.saturday">
+                <source>dow.saturday</source>
+                <target>Суббота</target>
+            </trans-unit>
+            <trans-unit id="dow.sunday">
+                <source>dow.sunday</source>
+                <target>Воскресенье</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

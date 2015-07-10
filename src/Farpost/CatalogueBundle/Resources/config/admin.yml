@@ -42,3 +42,14 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue_category_object_schedule:
+        class: Farpost\CatalogueBundle\Admin\CatalogueObjectScheduleAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_object_schedule", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueObjectSchedule
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]

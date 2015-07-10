@@ -37,6 +37,7 @@ class CatalogueCategoryAdmin extends Admin {
             ])
             ->add('children', 'sonata_type_collection', [
                 'by_reference' => false,
+                'required' => false,
                 'label' => 'label.children_categories'
             ], [
                 'edit' => 'inline',
@@ -45,6 +46,7 @@ class CatalogueCategoryAdmin extends Admin {
             ])
             ->add('objects', 'sonata_type_collection', [
                 'by_reference' => false,
+                'required' => false,
                 'label' => 'label.children_objects'
             ], [
                 'edit' => 'inline',

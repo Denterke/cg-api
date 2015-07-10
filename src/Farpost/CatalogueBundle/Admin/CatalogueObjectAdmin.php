@@ -32,8 +32,18 @@ class CatalogueObjectAdmin extends Admin
                 'required' => false
             ])
             ->add('categories', 'sonata_type_collection', [
-                'by_reference' => true,
+                'by_reference' => false,
+                'required' => false,
                 'label' => 'label.parent_categories'
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table',
+                'sortable' => 'id'
+            ])
+            -> add('schedule', 'sonata_type_collection', [
+                'by_reference' => false,
+                'required' => false,
+                'label' => 'label.schedule'
             ], [
                 'edit' => 'inline',
                 'inline' => 'table',
@@ -45,7 +55,7 @@ class CatalogueObjectAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
+            ->add('name', null, ['label' => 'label.name'])
         ;
     }
 

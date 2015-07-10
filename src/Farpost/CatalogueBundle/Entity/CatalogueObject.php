@@ -54,6 +54,11 @@ class CatalogueObject
      */
     protected $categories;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CatalogueObjectSchedule", mappedBy="object", cascade={"persist"}, orphanRemoval=true)
+     */
+    protected $schedule;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -205,5 +210,43 @@ class CatalogueObject
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * Add schedule
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueObjectSchedule $schedule
+     * @return CatalogueObject
+     */
+    public function addSchedule(\Farpost\CatalogueBundle\Entity\CatalogueObjectSchedule $schedule)
+    {
+        $schedule->setObject($this);
+        $this->schedule[] = $schedule;
+
+        return $this;
+    }
+
+    /**
+     * Remove schedule
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueObjectSchedule $schedule
+     * @return CatalogueObject
+     */
+    public function removeSchedule(\Farpost\CatalogueBundle\Entity\CatalogueObjectSchedule $schedule)
+    {
+        $schedule->setObject(null);
+        $this->schedule->removeElement($schedule);
+
+        return $this;
+    }
+
+    /**
+     * Get schedule
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSchedule()
+    {
+        return $this->schedule;
     }
 }
