@@ -17,11 +17,29 @@ use Sonata\AdminBundle\Form\FormMapper;
 class CatalogueImageAdmin extends Admin {
     protected function configureFormFields(FormMapper $formMapper)
     {
+        if ($this->hasParentFieldDescription()) {
+            $getter = 'get' . ucfirst($this->getParentFieldDescription()->getFieldName());
+            $parent = $this->getParentFieldDescription()->getAdmin()->getSubject();
+            if ($parent) {
+                $image = $parent->$getter();
+            } else {
+                $image = null;
+            }
+        } else {
+            $image = $this->getSubject();
+        }
+
+        $fileFieldOptions = [
+            'required' => true,
+            'label' => 'label.image'
+        ];
+        if ($image && ($webPath = $image->getWebPath())) {
+            $container = $this->getConfigurationPool()->getContainer();
+            $fullPath = $container->get('request')->getBasePath() . '/' . $webPath;
+            $fileFieldOptions['help'] = "<img src='$fullPath' class='admin-preview' />";
+        }
         $formMapper
-            ->add('file', 'file', [
-                'required' => true,
-                'label' => 'label.image'
-            ])
+            ->add('file', 'file', $fileFieldOptions)
         ;
     }
 

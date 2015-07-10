@@ -67,10 +67,26 @@ class CatalogueImage
         return $this->file;
     }
 
+    /**
+     * Returns web path to image
+     *
+     * @return string
+     */
+    public function getWebPath()
+    {
+        return $this->getFilename()
+            ? self::UPLOAD_ROOT_PATH . '/' . $this->getFilename()
+            : null;
+    }
+
     public function upload()
     {
         if (null === $this->getFile()) {
             return;
+        }
+
+        if ($this->filename) {
+            $this->removeFile();
         }
 
         $clientFileName = $this->getFile()->getClientOriginalName();
@@ -101,6 +117,17 @@ class CatalogueImage
     public function refreshUpdated()
     {
         $this->setUpdatedAt(new \DateTime("now"));
+    }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function removeFile()
+    {
+        $fileName = self::UPLOAD_ROOT_PATH . '/' . $this->getFilename();
+        if (file_exists($fileName)) {
+            unlink($fileName);
+        }
     }
 
     /**
@@ -157,5 +184,28 @@ class CatalogueImage
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set originalFilename
+     *
+     * @param string $originalFilename
+     * @return CatalogueImage
+     */
+    public function setOriginalFilename($originalFilename)
+    {
+        $this->originalFilename = $originalFilename;
+
+        return $this;
+    }
+
+    /**
+     * Get originalFilename
+     *
+     * @return string 
+     */
+    public function getOriginalFilename()
+    {
+        return $this->originalFilename;
     }
 }

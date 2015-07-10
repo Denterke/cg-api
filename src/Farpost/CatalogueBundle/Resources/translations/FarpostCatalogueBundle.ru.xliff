@@ -14,6 +14,10 @@
                 <source>title.catalogue</source>
                 <target>Справочник</target>
             </trans-unit>
+            <trans-unit id="title.catalogue_image">
+                <source>title.catalogue_image</source>
+                <target>Изображения</target>
+            </trans-unit>
 
             <trans-unit id="label.name">
                 <source>label.name</source>
@@ -104,6 +108,16 @@
                 <source>dow.sunday</source>
                 <target>Воскресенье</target>
             </trans-unit>
+
+            <trans-unit id="label.image">
+                <source>label.image</source>
+                <target>Изображение</target>
+            </trans-unit>
+            <trans-unit id="label.logo">
+                <source>label.logo</source>
+                <target>Логотип</target>
+            </trans-unit>
+
 
         </body>
     </file>

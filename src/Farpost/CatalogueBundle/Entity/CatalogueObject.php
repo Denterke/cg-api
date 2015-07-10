@@ -59,6 +59,18 @@ class CatalogueObject
      */
     protected $schedule;
 
+    /**
+     * @ORM\OneToOne(targetEntity="CatalogueImage", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="logo_standard_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $logoStandard;
+
+    /**
+     * @ORM\OneToOne(targetEntity="CatalogueImage", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="logo_thumbnail_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $logoThumbnail;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -249,5 +261,51 @@ class CatalogueObject
     public function getSchedule()
     {
         return $this->schedule;
+    }
+
+    /**
+     * Set logoStandard
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueImage $logoStandard
+     * @return CatalogueObject
+     */
+    public function setLogoStandard(\Farpost\CatalogueBundle\Entity\CatalogueImage $logoStandard = null)
+    {
+        $this->logoStandard = $logoStandard;
+
+        return $this;
+    }
+
+    /**
+     * Get logoStandard
+     *
+     * @return \Farpost\CatalogueBundle\Entity\CatalogueImage 
+     */
+    public function getLogoStandard()
+    {
+        return $this->logoStandard;
+    }
+
+    /**
+     * Set logoThumbnail
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueImage $logoThumbnail
+     * @return CatalogueObject
+     */
+    public function setLogoThumbnail(\Farpost\CatalogueBundle\Entity\CatalogueImage $logoThumbnail = null)
+    {
+        $this->logoThumbnail = $logoThumbnail;
+
+        return $this;
+    }
+
+    /**
+     * Get logoThumbnail
+     *
+     * @return \Farpost\CatalogueBundle\Entity\CatalogueImage 
+     */
+    public function getLogoThumbnail()
+    {
+        return $this->logoThumbnail;
     }
 }

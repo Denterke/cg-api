@@ -118,6 +118,22 @@ sonata_block:
 
 sonata_admin:
     title: Кампус Гид
+    templates:
+        dashboard: SonataAdminBundle:Core:dashboard.html.twig
+    assets:
+        stylesheets:
+            - bundles/sonataadmin/vendor/bootstrap/dist/css/bootstrap.min.css
+            - bundles/sonataadmin/vendor/AdminLTE/css/font-awesome.min.css
+            - bundles/sonataadmin/vendor/AdminLTE/css/ionicons.min.css
+            - bundles/sonataadmin/vendor/AdminLTE/css/AdminLTE.css
+            - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
+            - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
+            - bundles/sonataadmin/vendor/select2/select2.css
+            - bundles/sonataadmin/vendor/select2/select2-bootstrap.css
+            - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css
+            - bundles/sonataadmin/css/styles.css
+            - bundles/sonataadmin/css/layout.css
+            - bundles/farpostcatalogue/css/custom.css
 
 sonata_doctrine_orm_admin:
     # default value is null, so doctrine uses the value defined in the configuration
