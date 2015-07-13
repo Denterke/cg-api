@@ -1,7 +1,7 @@
 parameters:
-#    farpost_catalogue.example.class: Farpost\CatalogueBundle\Example
+    farpost_catalogue.image_manager.class: Farpost\CatalogueBundle\Services\ImageManager
 
 services:
-#    farpost_catalogue.example:
-#        class: %farpost_catalogue.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    farpost_catalogue.image_manager:
+        class: %farpost_catalogue.image_manager.class%
+        arguments: [@image.handling, @doctrine]

@@ -3,7 +3,7 @@
 namespace Farpost\CatalogueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 /**
  *
  * @ORM\Table(name="catalogue_images")
@@ -32,13 +32,6 @@ class CatalogueImage
     protected $filename;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="original_filename", type="string", length=255)
-     */
-    protected $originalFilename;
-
-    /**
      * @var datetime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
@@ -50,17 +43,20 @@ class CatalogueImage
     /**
      * Sets file
      *
-     * @param UploadedFile $file
+     * @param File $file
+     * @return CatalogueImage
      */
     public function setFile($file)
     {
         $this->file = $file;
+
+        return $this;
     }
 
     /**
      * Get file
      *
-     * @return UploadedFile
+     * @return File
      */
     public function getFile()
     {
@@ -89,10 +85,7 @@ class CatalogueImage
             $this->removeFile();
         }
 
-        $clientFileName = $this->getFile()->getClientOriginalName();
-        $clientExtName = $this->getFile()->getClientOriginalExtension();
-
-        $this->originalFilename = $clientFileName;
+        $clientExtName = $this->getFile()->guessExtension();
         $newFileName = join('.', [uniqid('', true), $clientExtName]);
 
         $this->getFile()->move(
@@ -184,28 +177,5 @@ class CatalogueImage
     public function getUpdatedAt()
     {
         return $this->updatedAt;
-    }
-
-    /**
-     * Set originalFilename
-     *
-     * @param string $originalFilename
-     * @return CatalogueImage
-     */
-    public function setOriginalFilename($originalFilename)
-    {
-        $this->originalFilename = $originalFilename;
-
-        return $this;
-    }
-
-    /**
-     * Get originalFilename
-     *
-     * @return string 
-     */
-    public function getOriginalFilename()
-    {
-        return $this->originalFilename;
     }
 }

@@ -86,6 +86,7 @@ class CatalogueObjectAdmin extends Admin
         ($image = $params['logoStandard']) &&
         (isset($image['_delete']) && !empty($image['_delete']))) {
             $object->setLogoStandard(null);
+            $object->setLogoThumbnail(null);
         } else {
             $this->manageLogoImageAdmin($object);
         }
@@ -96,7 +97,13 @@ class CatalogueObjectAdmin extends Admin
         $image = $object->getLogoStandard();
         if ($image) {
             if ($image->getFile()) {
-                $image->refreshUpdated();
+                $images = $this->getConfigurationPool()
+                    ->getContainer()
+                    ->get('farpost_catalogue.image_manager')
+                    ->createImagesFromFile($image->getFile());
+                $object->setLogoStandard($images['standard'])
+                    ->setLogoThumbnail($images['thumbnail'])
+                ;
             } elseif (!$image->getFile() && !$image->getFilename()) {
                 $object->setLogoStandard(null);
                 $object->setLogoThumbnail(null);
