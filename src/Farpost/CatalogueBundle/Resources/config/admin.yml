@@ -64,3 +64,10 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+
+    sonata.block.service.versions:
+        class: Farpost\CatalogueBundle\Block\VersionBlockService
+        arguments: [ "sonata.block.service.versions", @templating, @doctrine.orm.entity_manager ]
+        tags:
+            - { name: sonata.block }

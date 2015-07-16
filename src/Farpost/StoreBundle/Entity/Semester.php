@@ -119,4 +119,17 @@ class Semester
     {
         return $this->alias;
     }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Semester
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

@@ -16,3 +16,4 @@
 /composer.lock
 /catalog_backup/*
 /web/static/*
+.idea/*

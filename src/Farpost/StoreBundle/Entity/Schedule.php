@@ -346,4 +346,50 @@ class Schedule
 
         return $this;
     }
+
+    /**
+     * Set time_start
+     *
+     * @param \DateTime $timeStart
+     * @return Schedule
+     */
+    public function setTimeStart($timeStart)
+    {
+        $this->time_start = $timeStart;
+
+        return $this;
+    }
+
+    /**
+     * Get time_start
+     *
+     * @return \DateTime 
+     */
+    public function getTimeStart()
+    {
+        return $this->time_start;
+    }
+
+    /**
+     * Set time_end
+     *
+     * @param \DateTime $timeEnd
+     * @return Schedule
+     */
+    public function setTimeEnd($timeEnd)
+    {
+        $this->time_end = $timeEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get time_end
+     *
+     * @return \DateTime 
+     */
+    public function getTimeEnd()
+    {
+        return $this->time_end;
+    }
 }

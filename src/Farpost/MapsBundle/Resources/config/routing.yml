@@ -1,0 +1,7 @@
+farpost_maps_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: FarpostMapsBundle:Default:index }
+
+farpost_maps_import_graph:
+    path:     /import/graph
+    defaults: { _controller: FarpostMapsBundle:Import:graph }

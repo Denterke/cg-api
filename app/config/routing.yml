@@ -1,3 +1,7 @@
+farpost_maps:
+    resource: "@FarpostMapsBundle/Resources/config/routing.yml"
+    prefix:   /admin/
+
 farpost_moderator:
     resource: "@FarpostModeratorBundle/Resources/config/routing.yml"
     prefix:   /moderator/
@@ -19,6 +23,12 @@ _sonata_admin:
     resource: .
     type: sonata_admin
     prefix: /admin
+
+#catalogue
+
+farpost_catalogue:
+    resource: "@FarpostCatalogueBundle/Resources/config/routing.yml"
+    prefix: ""
 
 #API
 #system methods

@@ -1,0 +1,6 @@
+services:
+    sonata.block.service.graph_importer:
+        class: Farpost\MapsBundle\Block\GraphImporterBlockService
+        arguments: [ "sonata.block.service.graph_importer", @templating, @doctrine.orm.entity_manager ]
+        tags:
+            - { name: sonata.block }

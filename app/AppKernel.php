@@ -28,7 +28,8 @@ class AppKernel extends Kernel
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Farpost\CatalogueBundle\FarpostCatalogueBundle(),
-            new Gregwar\ImageBundle\GregwarImageBundle()
+            new Gregwar\ImageBundle\GregwarImageBundle(),
+            new Farpost\MapsBundle\FarpostMapsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

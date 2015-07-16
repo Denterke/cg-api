@@ -80,14 +80,14 @@ class DatabaseConverter
       }
       //create sqlite file
       try {
-         list($db_sqlite, $dt, $db_sqlite_name) = $this->sqlite_manager->CreateDb();
-         $tables = $this->sqlite_manager->Tables();
-         $this->sqlite_manager->CreateTables($tables, $db_sqlite);
-         $this->sqlite_manager->ClearTables($tables, $db_sqlite);
+         list($db_sqlite, $dt, $db_sqlite_name) = $this->sqlite_manager->createDb();
+         $tables = $this->sqlite_manager->getCatalogv1Tables();
+         $this->sqlite_manager->createTables($tables, $db_sqlite);
+         $this->sqlite_manager->clearTables($tables, $db_sqlite);
       }
       catch (\Exception $e) {
          // echo $e->message;
-         $this->SoftExit($e->message);
+         $this->SoftExit($e->getMessage());
       }
       echo "i create sqlite file!";
       //$this->schedule_manager->rawClear();
@@ -101,7 +101,7 @@ class DatabaseConverter
             )
          )->getRawResults();
          try {
-            $this->sqlite_manager->GroupInsert($table, $bu_items, $db_sqlite);
+            $this->sqlite_manager->groupInsert($table, $bu_items, $db_sqlite);
          }
          catch (\Exception $e) {
             // echo $e->message;

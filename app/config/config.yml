@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: @FarpostCatalogueBundle/Resources/config/admin.yml }
+    - { resource: @FarpostMapsBundle/Resources/config/admin.yml }
 
 services:
     entity_dispatcher:
@@ -98,6 +99,7 @@ doctrine:
                 mappings:
                     FarpostCatalogueBundle: ~
                     FarpostStoreBundle: ~
+                    FarpostMapsBundle: ~
             back_up:
                 connection: back_up
                 mappings:
@@ -114,6 +116,10 @@ sonata_block:
         # Enable the SonataAdminBundle block
         sonata.admin.block.admin_list:
             contexts:   [admin]
+        sonata.block.service.text: ~
+        sonata.block.service.action: ~
+        sonata.block.service.versions: ~
+        sonata.block.service.graph_importer: ~
         # Your other blocks
 
 sonata_admin:
@@ -134,6 +140,12 @@ sonata_admin:
             - bundles/sonataadmin/css/styles.css
             - bundles/sonataadmin/css/layout.css
             - bundles/farpostcatalogue/css/custom.css
+    dashboard:
+        blocks:
+            - { position: left, type: sonata.admin.block.admin_list }
+            - { position: right, type: sonata.block.service.graph_importer }
+            - { position: right, type: sonata.block.service.versions }
+
 
 sonata_doctrine_orm_admin:
     # default value is null, so doctrine uses the value defined in the configuration
