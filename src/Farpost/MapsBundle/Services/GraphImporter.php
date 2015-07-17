@@ -67,7 +67,7 @@ class GraphImporter
         $em->persist($version);
         $em->flush();
 
-        $owner = "dev";
+        $owner = "back_up_catalog";
         $backUpDatabase = "back_up_catalog";
         system("/usr/bin/pg_restore --host=localhost -U $owner -c -O -d $backUpDatabase --schema=catalog $filename");
 
