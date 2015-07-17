@@ -19,6 +19,53 @@ use Doctrine\ORM\Mapping as ORM;
  */
 
 class EdgePoint {
+
+    static public $sqliteAnnotations = [
+        'table' => 'path_segment_points',
+        'fields' => [
+            [
+                'name' => '_id',
+                'type' => 'INTEGER',
+                'PK' => true,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getId'
+            ],
+            [
+                'name' => 'path_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => 'path_segments',
+                'getter' => 'getEdge'
+            ],
+            [
+                'name' => 'lat',
+                'type' => 'DOUBLE',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLat'
+            ],
+            [
+                'name' => 'lon',
+                'type' => 'DOUBLE',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLon'
+            ],
+            [
+                'name' => 'seq',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getSeq'
+            ]
+        ]
+    ];
+
     /**
      * @var integer
      *
@@ -30,8 +77,9 @@ class EdgePoint {
     /**
      * @var Edge
      *
-     * @ORM\ManyToOne(targetEntity="Edge")
-     * @ORM\JoinColumn(name="edge_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Edge", inversedBy="points")
+     * @ORM\JoinColumn(name="edge_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\OrderBy({"seq" = "asc"})
      */
     protected $edge;
 

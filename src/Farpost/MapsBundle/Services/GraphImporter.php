@@ -9,6 +9,7 @@
 namespace Farpost\MapsBundle\Services;
 
 use Doctrine\ORM\EntityManager;
+use Farpost\StoreBundle\Entity\Version;
 
 class GraphImporter
 {
@@ -45,25 +46,38 @@ class GraphImporter
         }
     }
 
-    public function normalize(EntityManager $em)
+    public function finalize(EntityManager $em)
     {
-//        $em->getRepository
+        $em->getRepository('FarpostMapsBundle:Edge')->normalize();
     }
 
     public function import($filename)
     {
-        $owner = "dev";
-        $backUpDatabase = "back_up_catalog";
-
-        system("/usr/bin/pg_restore --host=localhost -U $owner -c -O -d $backUpDatabase --schema=catalog $filename");
-
         $em = $this->doctrine->getManager();
         $backUpEm = $this->doctrine->getManager('back_up');
 
+        $dt = new \DateTime();
+        $version = new Version();
+        $version->setType(Version::GRAPH_DUMP)
+            ->setVDatetime($dt->getTimestamp())
+            ->setBase(basename($filename))
+            ->setIsProcessing(true)
+        ;
+
+        $em->persist($version);
+        $em->flush();
+
+        $owner = "dev";
+        $backUpDatabase = "back_up_catalog";
+        system("/usr/bin/pg_restore --host=localhost -U $owner -c -O -d $backUpDatabase --schema=catalog $filename");
+
         $this->clearMaps($em);
         $this->copyToMaps($em, $backUpEm);
-        $this->normalize($em);
-        $this->count
+        $this->finalize($em);
 
+        $em->clear();
+        $version->setIsProcessing(false);
+        $em->merge($version);
+        $em->flush();
     }
 }

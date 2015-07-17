@@ -30,7 +30,7 @@ class SQLiteManager {
     }
 
     //returns sql for table creation
-    private function createTable($table_name, $fields)
+    private function getTableCreationSQL($table_name, $fields)
     {
         // echo "CreateTable $table_name";
         $promtSql = "CREATE TABLE IF NOT EXISTS $table_name (";
@@ -58,16 +58,30 @@ class SQLiteManager {
         return $resultSql;
     }
 
+    private function getVirtualTableCreationSQL($name, $fields)
+    {
+        $fieldsSQL = join(',', $fields);
+        return "CREATE VIRTUAL TABLE $name using fts4($fieldsSQL)";
+    }
+
+    public function createTable($table, $db) {
+        $db->query($this->getTableCreationSQL($table['table'], $table['fields']));
+        if (array_key_exists('virtual_table', $table)) {
+            $virtualName = $table['virtual_table'];
+            $virtualFields = [];
+            foreach($table['fields'] as $field) {
+                if (array_key_exists('virtual', $field) && $field['virtual']) {
+                    $virtualFields[] = $field['name'];
+                }
+            }
+            $db->query($this->getVirtualTableCreationSQL($virtualName, $virtualFields));
+        }
+    }
+
     public function createTables($tables, $db)
     {
         foreach ($tables as &$table) {
-            try {
-                $db->query($this->createTable($table['table'], $table['fields']));
-            }
-            catch (\Exception $e) {
-                $message = $e->getMessage();
-                throw new \Exception('SQLite \Exception! SQLiteCreateTables:' . $message);
-            }
+            $this->createTable($table, $db);
         }
     }
 
@@ -77,7 +91,7 @@ class SQLiteManager {
             [
                 'table'  => 'buildings',
                 'fields' => [
-                    $this->toField('id', 'INTEGER', true, false, ''),
+                    $this->toField('_id', 'INTEGER', true, false, ''),
                     $this->toField('number', 'VARCHAR', false, true, ''),
                     $this->toField('alias', 'VARCHAR', false, true, ''),
                     $this->toField('lon', 'DOUBLE', false, true, ''),
@@ -85,30 +99,47 @@ class SQLiteManager {
                 ]
             ],
             [
+                'table' => 'node_types',
+                'fields' => [
+                    $this->toField('_id', 'INTEGER', true, false, ''),
+                    $this->toField('alias', 'VARCHAR', false, true, '')
+                ]
+            ],
+            [
+                'table' => 'levels',
+                'fields' => [
+                    $this->toField('_id', 'INTEGER', true, false, ''),
+                    $this->toField('level', 'INTEGER', false, false, ''),
+                    $this->toField('alias', 'VARCHAR', false, false, '')
+                ]
+            ],
+            [
                 'table' => 'nodes',
                 'fields' => [
-                    $this->toField('id', 'INTEGER', true, false, ''),
+                    $this->toField('_id', 'INTEGER', true, false, ''),
                     $this->toField('building_id', 'INTEGER', false, false, 'buildings'),
-                    $this->toField('level', 'INTEGER', false, false, ''),
+                    $this->toField('level_id', 'INTEGER', false, false, 'levels'),
                     $this->toField('alias', 'VARCHAR', false, true, ''),
                     $this->toField('lat', 'DOUBLE', false, true, ''),
-                    $this->toField('lon', 'DOUBLE', false, true, '')
+                    $this->toField('lon', 'DOUBLE', false, true, ''),
+                    $this->toField('type_id', 'INTEGER', false, true, 'node_types')
                 ]
             ],
             [
                 'table' => 'path_segments',
                 'fields' => [
-                    $this->toField('id', 'INTEGER', true, false, ''),
-                    $this->toField('level', 'INTEGER', false, true, ''),
+                    $this->toField('_id', 'INTEGER', true, false, ''),
+                    $this->toField('level_id', 'INTEGER', false, true, 'levels'),
                     $this->toField('node_from_id', 'INTEGER', false, false, 'nodes'),
                     $this->toField('node_to_id', 'INTEGER', false, false, 'nodes'),
-                    $this->toField('weight', 'DOUBLE', false, false, '')
+                    $this->toField('weight', 'DOUBLE', false, false, ''),
+                    $this->toField('distance', 'DOUBLE', false, false, '')
                 ]
             ],
             [
                 'table' => 'path_segment_points',
                 'fields' => [
-                    $this->toField('id', 'INTEGER', true, false, ''),
+                    $this->toField('_id', 'INTEGER', true, false, ''),
                     $this->toField('path_id', 'INTEGER', false, false, 'path_segments'),
                     $this->toField('lon', 'DOUBLE', false, false, ''),
                     $this->toField('lat', 'DOUBLE', false, false, ''),
@@ -118,7 +149,7 @@ class SQLiteManager {
             [
                 'table' => 'categories',
                 'fields' => [
-                    $this->toField('id', 'INTEGER', true, false, ''),
+                    $this->toField('_id', 'INTEGER', true, false, ''),
                     $this->toField('name', 'VARCHAR', false, false, ''),
                     $this->toField('is_organization', 'BOOLEAN', false, false, ''),
                     $this->toField('description', 'VARCHAR', false, true, ''),
@@ -131,7 +162,7 @@ class SQLiteManager {
             [
                 'table' => 'categories_tree',
                 'fields' => [
-                    $this->toField('id', 'INTEGER', true, false, ''),
+                    $this->toField('_id', 'INTEGER', true, false, ''),
                     $this->toField('child_id', 'INTEGER', false, false, 'categories'),
                     $this->toField('parent_id', 'INTEGER', false, false, 'categories')
                 ]
@@ -139,7 +170,7 @@ class SQLiteManager {
             [
                 'table' => 'objects',
                 'fields' => [
-                    $this->toField('id', 'INTEGER', true, false, ''),
+                    $this->toField('_id', 'INTEGER', true, false, ''),
                     $this->toField('name', 'VARCHAR', false, false, ''),
                     $this->toField('description', 'VARCHAR', false, true, ''),
                     $this->toField('logo_standard', 'VARCHAR', false, true, ''),
@@ -152,7 +183,7 @@ class SQLiteManager {
             [
                 'table' => 'categories_objects',
                 'fields' => [
-                    $this->toField('id', 'INTEGER', true, false, ''),
+                    $this->toField('_id', 'INTEGER', true, false, ''),
                     $this->toField('object_id', 'INTEGER', false, false, 'objects'),
                     $this->toField('category_id', 'INTEGER', false, false, 'categories')
                 ]
@@ -160,7 +191,7 @@ class SQLiteManager {
             [
                 'table' => 'objects_schedule',
                 'fields' => [
-                    $this->toField('id', 'INTEGER', true, false, ''),
+                    $this->toField('_id', 'INTEGER', true, false, ''),
                     $this->toField('day_number', 'INTEGER', false, false, ''),
                     $this->toField('start_at', 'VARCHAR', false, true, ''),
                     $this->toField('end_at', 'VARCHAR', false, true, ''),
@@ -275,46 +306,42 @@ class SQLiteManager {
 
     public function groupInsert($table, $items, $db)
     {
-        // echo "<p>Table name = $table[table]</p>";
-        // echo "<p>Items count = " . count($items) . "</p>";
-        // $dt = new \Datetime();
-        // error_log("gi_start" . $dt->getTimestamp());
         if (!$this->beginTransaction($db)) {
             return false;
         }
-        // echo $this->getInsertSQL($table);
-        // exit;
         $stmt = $db->prepare($this->getInsertSQL($table));
 
+        $virtualTable = null;
+        if (array_key_exists('virtual_table', $table)) {
+            $virtualTable = [
+                'table' => $table['virtual_table'],
+                'fields' => []
+            ];
+            foreach($table['fields'] as $field) {
+                if (array_key_exists('virtual', $field) && $field['virtual']) {
+                    $virtualTable['fields'][] = $field;
+                }
+            }
+            $virtualStmt = $db->prepare($this->getInsertSQL($virtualTable));
+        }
+
         foreach($items as &$item) {
-            // echo "<p>Items before insert in table $table[table]</p>";
-            // $results = $db->query("select * from $table[table]");
-            // while ($row = $results->fetchArray()) {
-            // echo "<p>" . json_encode($row) . "</p>";
-            // }
-            // echo "<p>Inserted_Item_id = $item[id]</p>";
             $this->insert($table, $item, $stmt, $db);
             $stmt->execute();
-            // $stmt->clear();
+            if ($virtualTable) {
+                $this->insert($virtualTable, $item, $virtualStmt, $db, true);
+                $virtualStmt->execute();
+            }
         }
         $this->commit($db);
-        // $dt = new \Datetime();
-        // error_log("gi_end" . $dt->getTimestamp());
-        // exit;
-        // $db->
     }
 
-    private function insert($table, $record, &$stmt, $db)
+    private function insert($table, $record, &$stmt, $db, $toLower = false)
     {
-        if ($table['table'] == 'objects') {
-            $record['type_id'] = $record['type_id'] ? $record['type_id'] : 0;
-            $record['node_id'] = $record['node_id'] ? $record['node_id'] : 2;
-            if ($record['type_id'] == self::AUDITORY_TYPE_ID && rtrim($record['alias']) == '') {
-                $record['type_id'] = 0;
-            }
-            $record['unialias'] = mb_strtolower($record['alias'], 'UTF-8');
-        }
         foreach($record as $field => $value) {
+            if ($toLower) {
+                $value = mb_strtolower($value, 'UTF-8');
+            }
             $stmt->bindValue(":" . $field, $value);
         }
     }

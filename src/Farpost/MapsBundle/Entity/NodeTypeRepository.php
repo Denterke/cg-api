@@ -15,7 +15,7 @@ class NodeTypeRepository extends EntityRepository
 {
     public function copyFrom(EntityManager $src)
     {
-        $q = $src->createQuery('select nt from FarpostBackUpBundle:NodeType nt');
+        $q = $src->createQuery('select ot from FarpostBackUpBundle:ObjectType ot');
         $it = $q->iterate();
         $batchSize = 20;
         $i = 0;

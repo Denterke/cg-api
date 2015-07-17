@@ -29,9 +29,11 @@ class NodeRepository extends EntityRepository
                 ->setBuilding($this->_em->getReference('FarpostMapsBundle:Building', $srcNode->getBuilding()->getId()))
                 ->setLevel($this->_em->getReference('FarpostMapsBundle:Level', $srcNode->getLevel()))
             ;
-            if ($srcNode->getNodeType()) {
-                $node->setType($this->_em->getReference('FarpostMapsBundle:NodeType', $srcNode->getNodeType()->getId()));
-            }
+            $nodeType = $srcNode->getObjectType()
+                ? $srcNode->getObjectType()->getId()
+                : 0;
+            $node->setType($this->_em->getReference('FarpostMapsBundle:NodeType', $nodeType));
+
             $this->_em->persist($node);
             if (++$i % $batchSize === 0) {
                 $this->_em->flush();

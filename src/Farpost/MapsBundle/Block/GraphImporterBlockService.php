@@ -9,6 +9,7 @@
 namespace Farpost\MapsBundle\Block;
 
 use Doctrine\ORM\EntityManager;
+use Farpost\StoreBundle\Entity\Version;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -18,8 +19,6 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 
 use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\BlockBundle\Block\BaseBlockService;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 
 class GraphImporterBlockService extends BaseBlockService {
@@ -77,10 +76,12 @@ class GraphImporterBlockService extends BaseBlockService {
     {
         $block = $blockContext->getBlock();
         $settings = array_merge($this->getDefaultSettings(), $block->getSettings());
+        $processingCnt = $this->em->getRepository('FarpostStoreBundle:Version')->getProcessingEntitiesCount(Version::GRAPH_DUMP);
 
         return $this->renderResponse('FarpostMapsBundle:Block:block_graphimporter.html.twig', [
             'block' => $block,
             'settings' => $settings,
+            'processingCnt' => $processingCnt
         ], $response);
     }
 }

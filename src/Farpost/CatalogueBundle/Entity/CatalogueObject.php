@@ -12,6 +12,81 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class CatalogueObject
 {
+
+    static public $sqliteAnnotations = [
+        'table' => 'objects',
+        'virtual_table' => 'objects_search',
+        'fields' => [
+            [
+                'name' => '_id',
+                'type' => 'INTEGER',
+                'PK' => true,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getId',
+                'virtual' => true
+            ],
+            [
+                'name' => 'name',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getName',
+                'virtual' => true
+            ],
+            [
+                'name' => 'description',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getDescription',
+                'virtual' => true
+            ],
+            [
+                'name' => 'logo_standard',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLogoStandardUrl'
+            ],
+            [
+                'name' => 'logo_thumbnail',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLogoThumbnailUrl'
+            ],
+            [
+                'name' => 'phone',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getPhone'
+            ],
+            [
+                'name' => 'site',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getSite'
+            ],
+            [
+                'name' => 'node_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => 'nodes',
+                'getter' => 'getNode'
+            ]
+        ]
+    ];
+
     /**
      * @var integer
      *
@@ -70,6 +145,14 @@ class CatalogueObject
      * @ORM\JoinColumn(name="logo_thumbnail_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $logoThumbnail;
+
+    /**
+     * @var Farpost\MapsBundle\Entity\Node
+     *
+     * @ORM\ManyToOne(targetEntity="Farpost\MapsBundle\Entity\Node", inversedBy="objects")
+     * @ORM\JoinColumn(name="node_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     */
+    protected $node;
 
     public function __construct()
     {
@@ -307,5 +390,48 @@ class CatalogueObject
     public function getLogoThumbnail()
     {
         return $this->logoThumbnail;
+    }
+
+    /**
+     * Set node
+     *
+     * @param \Farpost\MapsBundle\Entity\Node $node
+     * @return CatalogueObject
+     */
+    public function setNode(\Farpost\MapsBundle\Entity\Node $node = null)
+    {
+        $this->node = $node;
+
+        return $this;
+    }
+
+    /**
+     * Get node
+     *
+     * @return \Farpost\MapsBundle\Entity\Node 
+     */
+    public function getNode()
+    {
+        return $this->node;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogoStandardUrl()
+    {
+        return $this->logoStandard
+            ? $this->logoStandard->getWebPath()
+            : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogoThumbnailUrl()
+    {
+        return $this->logoThumbnail
+            ? $this->logoThumbnail->getWebPath()
+            : null;
     }
 }

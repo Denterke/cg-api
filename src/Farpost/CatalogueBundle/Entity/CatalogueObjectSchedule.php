@@ -13,6 +13,53 @@ use Farpost\CatalogueBundle\Validator\Constraints as CatalogueAssert;
 
 class CatalogueObjectSchedule
 {
+
+    static public $sqliteAnnotations = [
+        'table' => 'objects_schedule',
+        'fields' => [
+            [
+                'name' => '_id',
+                'type' => 'INTEGER',
+                'PK' => true,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getId'
+            ],
+            [
+                'name' => 'object_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => 'objects',
+                'getter' => 'getObject'
+            ],
+            [
+                'name' => 'day_number',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getDayNumber'
+            ],
+            [
+                'name' => 'start_at',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getStartAtAsString'
+            ],
+            [
+                'name' => 'end_at',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getEndAtAsString'
+            ]
+        ]
+    ];
+
     /**
      * @var integer
      *
@@ -108,6 +155,18 @@ class CatalogueObjectSchedule
     }
 
     /**
+     * Get startAt as string
+     *
+     * @return \string
+     */
+    public function getStartAtAsString()
+    {
+        return $this->startAt
+            ? $this->startAt->format('H:i')
+            : null;
+    }
+
+    /**
      * Set endAt
      *
      * @param \DateTime $endAt
@@ -128,6 +187,18 @@ class CatalogueObjectSchedule
     public function getEndAt()
     {
         return $this->endAt;
+    }
+
+    /**
+     * Get endAt as string
+     *
+     * @return string
+     */
+    public function getEndAtAsString()
+    {
+        return $this->endAt
+            ? $this->endAt->format('H:i')
+            : null;
     }
 
     /**

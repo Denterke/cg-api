@@ -8,6 +8,7 @@
 
 namespace Farpost\MapsBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,6 +20,69 @@ use Doctrine\ORM\Mapping as ORM;
  */
 
 class Node {
+
+    static public $sqliteAnnotations = [
+        'table'  => 'nodes',
+        'fields' => [
+            [
+                'name' =>'_id',
+                'type' => 'INTEGER',
+                'PK' => true,
+                'RK' => '',
+                'nullable' => false,
+                'getter' => 'getId'
+            ],
+            [
+                'name' => 'building_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'RK' => 'buildings',
+                'nullable' => false,
+                'getter' => 'getBuilding'
+            ],
+            [
+                'name' => 'level_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'RK' => 'levels',
+                'nullable' => 'false',
+                'getter' => 'getLevel'
+            ],
+            [
+                'name' => 'alias',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getAlias'
+            ],
+            [
+                'name' => 'lat',
+                'type' => 'DOUBLE',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLat'
+            ],
+            [
+                'name' => 'lon',
+                'type' => 'DOUBLE',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLon'
+            ],
+            [
+                'name' => 'type_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => 'node_types',
+                'getter' => 'getType'
+            ]
+        ]
+    ];
+
     /**
      * @var integer
      *
@@ -71,6 +135,15 @@ class Node {
      */
     protected $lon;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Farpost\CatalogueBundle\Entity\CatalogueObject", mappedBy="node")
+     */
+    protected $objects;
+
+
+    public function __construct() {
+        $this->objects = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -231,5 +304,38 @@ class Node {
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Add objects
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueObject $objects
+     * @return Node
+     */
+    public function addObject(\Farpost\CatalogueBundle\Entity\CatalogueObject $objects)
+    {
+        $this->objects[] = $objects;
+
+        return $this;
+    }
+
+    /**
+     * Remove objects
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueObject $objects
+     */
+    public function removeObject(\Farpost\CatalogueBundle\Entity\CatalogueObject $objects)
+    {
+        $this->objects->removeElement($objects);
+    }
+
+    /**
+     * Get objects
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getObjects()
+    {
+        return $this->objects;
     }
 }

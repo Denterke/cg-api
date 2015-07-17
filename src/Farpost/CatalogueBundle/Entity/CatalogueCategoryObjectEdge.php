@@ -18,6 +18,37 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  */
 class CatalogueCategoryObjectEdge {
+
+    static public $sqliteAnnotations = [
+        'table' => 'categories_objects',
+        'fields' => [
+            [
+                'name' => '_id',
+                'type' => 'INTEGER',
+                'PK' => true,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getId'
+            ],
+            [
+                'name' => 'object_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => 'objects',
+                'getter' => 'getObject'
+            ],
+            [
+                'name' => 'category_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => 'categories',
+                'getter' => 'getCategory'
+            ]
+        ]
+    ];
+
     /**
      * @var integer
      *

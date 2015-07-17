@@ -13,14 +13,18 @@
         <tbody>
             <tr>
                 <td>
-                    <form action="{{ path('farpost_maps_import_graph') }}" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="graph-upload-input">Дамп базы с графом</label>
-                            <input class="form-control" id="graph-upload-input" type="file" name="file" />
-                        </div>
+                    {% if processingCnt > 0 %}
+                        <a class="btn btn-danger" disabled>Конвертация уже идет ({{ processingCnt }})</a>
+                    {% else %}
+                        <form action="{{ path('farpost_maps_import_graph') }}" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="graph-upload-input">Дамп базы с графом</label>
+                                <input class="form-control" id="graph-upload-input" type="file" name="file" />
+                            </div>
 
-                        <button type="submit" class="btn btn-success">Отправить на конвертацию</button>
-                    </form>
+                            <button type="submit" class="btn btn-success">Отправить на конвертацию</button>
+                        </form>
+                    {% endif %}
                 </td>
             </tr>
         </tbody>

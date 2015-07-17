@@ -94,7 +94,8 @@ class VersionRepository extends EntityRepository
             Version::LEVEL_9 => 0,
             Version::LEVEL_10 => 0,
             Version::LEVEL_11 => 0,
-            Version::LEVEL_12 => 0
+            Version::LEVEL_12 => 0,
+            Version::GRAPH_DUMP => 0
         ];
         foreach ($recs as &$rec) {
             $dt = date('d-m-Y, G:i:s', $rec['v_datetime']);

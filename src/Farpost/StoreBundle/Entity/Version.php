@@ -15,8 +15,9 @@ class Version
 {
     const MAP = -59;
     const ZIP_PLANS = -58;
-    const CATALOG = -20;
     const CATALOG_V2 = -21;
+    const CATALOG = -20;
+    const GRAPH_DUMP = -19;
     //the shittiest shit ever
     const LEVEL_0 = 0;
     const LEVEL_1 = 1;
@@ -174,6 +175,8 @@ class Version
                 return 'Справочник';
             case self::ZIP_PLANS:
                 return 'Архивированные тайлы';
+            case self::GRAPH_DUMP:
+                return 'Дамп базы картографов';
             case self::LEVEL_0:
             case self::LEVEL_1:
             case self::LEVEL_2:

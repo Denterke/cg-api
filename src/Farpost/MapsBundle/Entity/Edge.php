@@ -8,6 +8,7 @@
 
 namespace Farpost\MapsBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * Edges
@@ -16,6 +17,61 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Farpost\MapsBundle\Entity\EdgeRepository")
  */
 class Edge {
+
+    static public $sqliteAnnotations = [
+        'table' => 'path_segments',
+        'fields' => [
+            [
+                'name' => '_id',
+                'type' => 'INTEGER',
+                'PK' => true,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getId'
+            ],
+            [
+                'name' => 'level_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => 'levels',
+                'getter' => 'getLevel'
+            ],
+            [
+                'name' => 'node_from_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => 'nodes',
+                'getter' => 'getFromNode'
+            ],
+            [
+                'name' => 'node_to_id',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => 'nodes',
+                'getter' => 'getToNode'
+            ],
+            [
+                'name' => 'weight',
+                'type' => 'DOUBLE',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getWeight'
+            ],
+            [
+                'name' => 'distance',
+                'type' => 'DOUBLE',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getDistance'
+            ]
+        ]
+    ];
+
     /**
      * @var integer
      *
@@ -54,6 +110,27 @@ class Edge {
      * @ORM\Column(name="weight", type="float", nullable=true)
      */
     protected $weight;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="distance", type="float", nullable=true)
+     */
+    protected $distance;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="EdgePoint", mappedBy="edge")
+     */
+    protected $points;
+
+    public function __construct()
+    {
+        $this->points = new ArrayCollection();
+        $this->weight = 0;
+        $this->distance = 0;
+    }
 
     /**
      * Set id
@@ -168,5 +245,61 @@ class Edge {
     public function getToNode()
     {
         return $this->toNode;
+    }
+
+    /**
+     * Add points
+     *
+     * @param \Farpost\MapsBundle\Entity\EdgePoint $points
+     * @return Edge
+     */
+    public function addPoint(\Farpost\MapsBundle\Entity\EdgePoint $points)
+    {
+        $this->points[] = $points;
+
+        return $this;
+    }
+
+    /**
+     * Remove points
+     *
+     * @param \Farpost\MapsBundle\Entity\EdgePoint $points
+     */
+    public function removePoint(\Farpost\MapsBundle\Entity\EdgePoint $points)
+    {
+        $this->points->removeElement($points);
+    }
+
+    /**
+     * Get points
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPoints()
+    {
+        return $this->points;
+    }
+
+    /**
+     * Set distance
+     *
+     * @param float $distance
+     * @return Edge
+     */
+    public function setDistance($distance)
+    {
+        $this->distance = $distance;
+
+        return $this;
+    }
+
+    /**
+     * Get distance
+     *
+     * @return float 
+     */
+    public function getDistance()
+    {
+        return $this->distance;
     }
 }

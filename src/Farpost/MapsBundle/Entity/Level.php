@@ -19,6 +19,36 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Level {
 
+    static public $sqliteAnnotations = [
+        'table'  => 'levels',
+        'fields' => [
+            [
+                'name' =>'_id',
+                'type' => 'INTEGER',
+                'PK' => true,
+                'RK' => '',
+                'nullable' => false,
+                'getter' => 'getId'
+            ],
+            [
+                'name' => 'level',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getLevel'
+            ],
+            [
+                'name' => 'alias',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getAlias'
+            ],
+        ]
+    ];
+
     const MAX_LEVEL_NUMBER = 12;
     /**
      * @var integer

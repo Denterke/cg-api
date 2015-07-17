@@ -12,6 +12,81 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class CatalogueCategory
 {
+
+    static public $sqliteAnnotations = [
+        'table' => 'categories',
+        'virtual_table' => 'categories_search',
+        'fields' => [
+            [
+                'name' => '_id',
+                'type' => 'INTEGER',
+                'PK' => true,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getId',
+                'virtual' => true
+            ],
+            [
+                'name' => 'name',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getName',
+                'virtual' => 'true'
+            ],
+            [
+                'name' => 'is_organization',
+                'type' => 'BOOLEAN',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getIsOrganization'
+            ],
+            [
+                'name' => 'description',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getDescription',
+                'virtual' => true
+            ],
+            [
+                'name' => 'logo_standard',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLogoStandardUrl'
+            ],
+            [
+                'name' => 'logo_thumbnail',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLogoThumbnailUrl'
+            ],
+            [
+                'name' => 'phone',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getPhone'
+            ],
+            [
+                'name' => 'site',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getSite'
+            ]
+        ]
+    ];
+
     /**
      * @var integer
      *
@@ -343,5 +418,25 @@ class CatalogueCategory
     public function getLogoThumbnail()
     {
         return $this->logoThumbnail;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogoStandardUrl()
+    {
+        return $this->logoStandard
+            ? $this->logoStandard->getWebPath()
+            : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogoThumbnailUrl()
+    {
+        return $this->logoThumbnail
+            ? $this->logoThumbnail->getWebPath()
+            : null;
     }
 }

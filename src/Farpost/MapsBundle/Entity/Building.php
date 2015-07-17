@@ -17,6 +17,53 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Farpost\MapsBundle\Entity\BuildingRepository")
  */
 class Building {
+
+    static public $sqliteAnnotations = [
+        'table'  => 'buildings',
+        'fields' => [
+            [
+                'name' =>'_id',
+                'type' => 'INTEGER',
+                'PK' => true,
+                'RK' => '',
+                'nullable' => false,
+                'getter' => 'getId'
+            ],
+            [
+                'name' => 'number',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getNumber'
+            ],
+            [
+                'name' => 'alias',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getAlias'
+            ],
+            [
+                'name' => 'lon',
+                'type' => 'DOUBLE',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLon'
+            ],
+            [
+                'name' => 'lat',
+                'type' => 'DOUBLE',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLat'
+            ]
+        ]
+    ];
+
     /**
      * @var integer
      *

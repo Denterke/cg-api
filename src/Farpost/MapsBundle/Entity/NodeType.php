@@ -18,6 +18,44 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class NodeType
 {
+
+    static public $sqliteAnnotations = [
+        'table'  => 'node_types',
+        'fields' => [
+            [
+                'name' =>'_id',
+                'type' => 'INTEGER',
+                'PK' => true,
+                'RK' => '',
+                'nullable' => false,
+                'getter' => 'getId'
+            ],
+            [
+                'name' => 'alias',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getAlias'
+            ],
+        ]
+    ];
+
+    const STAIR = 11;
+    const ELEVATOR = 13;
+    const ESCALATOR = 21;
+    const STAIR_WEIGHT = 5000;
+    const ELEVATOR_WEIGHT = 1000;
+    const ESCALATOR_WEIGHT = 7000;
+    const FRACTION_SHIFT = 10000;
+
+    static public $WEIGHTS = [
+        self::STAIR => self::STAIR_WEIGHT,
+        self::ELEVATOR => self::ELEVATOR_WEIGHT,
+        self::ESCALATOR => self::ESCALATOR_WEIGHT
+    ];
+
+
     /**
      * @var integer
      *

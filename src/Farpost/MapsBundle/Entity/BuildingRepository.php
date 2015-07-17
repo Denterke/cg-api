@@ -10,6 +10,7 @@ namespace Farpost\MapsBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
+use Farpost\StoreBundle\Services\SQLiteManager;
 
 class BuildingRepository extends EntityRepository
 {
