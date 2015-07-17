@@ -56,11 +56,12 @@ class APIV2Controller extends APIV1Controller
      * Get catalog db and mbtiles updates
      * Added: [1.0]
      * Required: [Client 1.0]
+     * @param Request
      * @return Response
      */
-    public function getBaseUpdatesAction()
+    public function getBaseUpdatesAction(Request $request)
     {
-        return parent::getBaseUpdatesAction();
+        return parent::getBaseUpdatesAction($request);
     }
 
     /**

@@ -65,7 +65,7 @@ class Version
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_processing", type="boolean")
+     * @ORM\Column(name="is_processing", type="boolean", options={"default" = 0})
      */
     protected $isProcessing;
 
@@ -194,6 +194,11 @@ class Version
             default:
                 return 'Неизвестный файл';
         }
+    }
+
+    static public function isTypeLevel($type)
+    {
+        return $type >= self::LEVEL_0 && $type <= self::LEVEL_12;
     }
 
     /**

@@ -62,7 +62,7 @@ class SystemController extends APIV1Controller
         $response = new Response();
         $response->headers->set('Cache-Control', 'private');
         $response->headers->set('Content-Type', mime_content_type($filepath));
-        $response->headers->set('Content-Disposition', "attachment; filename=\"'$filename'\";");
+        $response->headers->set('Content-Disposition', "attachment; filename=\"$filename\";");
         $response->headers->set('Content-length', filesize($filepath));
         $response->sendHeaders();
         $response->setContent(file_get_contents($filepath));

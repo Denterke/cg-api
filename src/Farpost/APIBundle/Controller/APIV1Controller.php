@@ -180,14 +180,14 @@ class APIV1Controller extends Controller
      * Required: [Client 1.0]
      * @return Response
      */
-    public function getBaseUpdatesAction()
+    public function getBaseUpdatesAction(Request $request)
     {
         $helper = $this->get('api_helper');
         $response = $helper->create404();
         $result = [
            'update' =>  $this->getDoctrine()->getManager()
                 ->getRepository('FarpostStoreBundle:Version')
-                ->getBases($this->getRequest()->getHost())
+                ->getBases($request->getHost())
             ];
         return $response->setStatusCode(200)
             ->setContent(json_encode($result));

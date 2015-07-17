@@ -92,7 +92,8 @@ class CatalogueExporter {
             }
         }
 
-        $version->setIsProcessing(false);
+        $version->setIsProcessing(false)
+            ->setBase($sqliteDbName);
         $em->merge($version);
         $em->flush();
     }

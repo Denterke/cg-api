@@ -2,7 +2,6 @@
 
 namespace Farpost\StoreBundle\Entity;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 
 /*
  *VersionRepository
@@ -42,35 +41,40 @@ class VersionRepository extends EntityRepository
         $result = [];
         $plans = [];
         foreach($recs as &$rec) {
-            // if ($rec['type'] == -58) {
-            // continue;
-            // }
-            // $dt = date('Ymd', $rec['v_datetime']);
-            // $dt = $rec['v_datetime']->getTimestamp();
             $dt = $rec['v_datetime'];
             $path = 'http://' . $hostname . '/update/' . $rec['base'];
-            $level = $rec['type'];
+            $type = $rec['type'];
             $elem = [
                 'version' => $dt,
                 'source'  => $path
             ];
-            if ($level == -20) {
-                $result['catalog'] = $elem;
-                continue;
-            } else if ($level == -59) {
-                $result['map'] = $elem;
-                continue;
-            } else if ($level == -58) {
-                $result['plans_zip'] = $elem;
+            $key = null;
+            switch ($type) {
+                case Version::CATALOG:
+                    $key = 'catalog';
+                    break;
+                case Version::CATALOG_V2:
+                    $key = 'catalog_v2';
+                    break;
+                case Version::MAP:
+                    $key = 'map';
+                    break;
+                case Version::ZIP_PLANS:
+                    $key = 'plans_zip';
+                    break;
+            }
+            if ($key) {
+                $result[$key] = $elem;
                 continue;
             }
-            $elem['level'] = $level;
-            array_push($plans, $elem);
+            if (Version::isTypeLevel($type)) {
+                $elem['level'] = $type;
+                array_push($plans, $elem);
+            }
         }
         if (count($plans) > 0) {
             $result['plans'] = $plans;
         }
-        // echo json_encode($plans);
         $recs = $result;
     }
 
