@@ -2,6 +2,7 @@
 
 namespace Farpost\CatalogueBundle\Entity;
 
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 /**
@@ -83,6 +84,14 @@ class CatalogueCategory
                 'nullable' => true,
                 'RK' => '',
                 'getter' => 'getSite'
+            ],
+            [
+                'name' => 'is_root',
+                'type' => 'BOOLEAN',
+                'PK' => false,
+                'nullable' => false,
+                'RK' => '',
+                'getter' => 'getIsRoot'
             ]
         ]
     ];
@@ -164,11 +173,19 @@ class CatalogueCategory
      */
     protected $logoThumbnail;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_root", type="boolean", nullable=false)
+     */
+    protected $isRoot;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
         $this->parents = new ArrayCollection();
         $this->objects = new ArrayCollection();
+        $this->isRoot = false;
     }
 
     public function getId()
@@ -438,5 +455,28 @@ class CatalogueCategory
         return $this->logoThumbnail
             ? $this->logoThumbnail->getWebPath()
             : null;
+    }
+
+    /**
+     * Set isRoot
+     *
+     * @param boolean $isRoot
+     * @return CatalogueCategory
+     */
+    public function setIsRoot($isRoot)
+    {
+        $this->isRoot = $isRoot;
+
+        return $this;
+    }
+
+    /**
+     * Get isRoot
+     *
+     * @return boolean 
+     */
+    public function getIsRoot()
+    {
+        return $this->isRoot;
     }
 }

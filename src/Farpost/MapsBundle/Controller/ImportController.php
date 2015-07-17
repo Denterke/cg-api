@@ -21,6 +21,7 @@ class ImportController extends Controller
                 $newPathname = join('/', [self::GRAPH_DUMPS_DIR, $newFileName]);
                 $file->move(self::GRAPH_DUMPS_DIR, $newFileName);
                 shell_exec("../app/console graph:import $newPathname > /dev/null 2>/dev/null &");
+                sleep(1);
             }
         }
         return $this->redirect($this->generateUrl('sonata_admin_dashboard'));

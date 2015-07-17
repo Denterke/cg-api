@@ -117,6 +117,10 @@
                 <source>label.logo</source>
                 <target>Логотип</target>
             </trans-unit>
+            <trans-unit id="label.versions">
+                <source>label.versions</source>
+                <target>Версии файлов</target>
+            </trans-unit>
 
 
         </body>

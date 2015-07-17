@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Exception\InvalidParameterException;
 
 
 class CatalogueCategoryAdmin extends Admin
@@ -84,10 +85,21 @@ class CatalogueCategoryAdmin extends Admin
         $this->manageLogoImageAdmin($category);
     }
 
+    public function preRemove($category)
+    {
+        if ($category->getIsRoot()) {
+            throw new \Exception("Нельзя удалить корневую категорию");
+        }
+    }
+
+    public function getBatchActions()
+    {
+        return null;
+    }
+
     public function preUpdate($category)
     {
         $params = $this->getRequest()->request->get($this->getUniqid());
-        echo json_encode($params);
 
         if (isset($params['logoStandard']) &&
             ($image = $params['logoStandard']) &&
