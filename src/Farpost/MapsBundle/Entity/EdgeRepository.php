@@ -10,14 +10,17 @@ namespace Farpost\MapsBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Events;
 
 class EdgeRepository extends EntityRepository
 {
     public function copyFrom(EntityManager $src)
     {
+        $this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
+        
         $q = $src->createQuery('select ps from FarpostBackUpBundle:PathSegment ps');
         $it = $q->iterate();
-        $batchSize = 20;
+        $batchSize = 1000;
         $i = 0;
         foreach($it as $row) {
             $srcEdge = $row[0];
@@ -36,6 +39,7 @@ class EdgeRepository extends EntityRepository
             }
         }
         $this->_em->flush();
+        $this->_em->clear();
     }
 
     public function calcEdgeWeight(Edge $edge)

@@ -10,11 +10,14 @@ namespace Farpost\MapsBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Events;
 
 class NodeRepository extends EntityRepository
 {
     public function copyFrom(EntityManager $src)
     {
+        $this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
+
         $q = $src->createQuery('select o from FarpostBackUpBundle:Object o');
         $it = $q->iterate();
         $batchSize = 20;

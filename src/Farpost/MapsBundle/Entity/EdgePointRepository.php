@@ -15,6 +15,8 @@ class EdgePointRepository extends EntityRepository
 {
     public function copyFrom(EntityManager $src)
     {
+        $this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
+
         $q = $src->createQuery('select psp from FarpostBackUpBundle:PathSegmentPoint psp');
         $it = $q->iterate();
         $batchSize = 20;
