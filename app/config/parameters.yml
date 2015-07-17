@@ -4,14 +4,14 @@ parameters:
     default_database_host: 127.0.0.1
     default_database_port: 5432
     default_database_name: backend
-    default_database_user: dev
-    default_database_password: 16ytu91ito
+    default_database_user: backend
+    default_database_password: ahjihaR1eeQu
     backup_database_driver: pdo_pgsql
     backup_database_host: 127.0.0.1
     backup_database_port: 5432
     backup_database_name: back_up_catalog
-    backup_database_user: dev
-    backup_database_password: 16ytu91ito
+    backup_database_user: back_up_catalog
+    backup_database_password: Xt4Mc5hm$v
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
