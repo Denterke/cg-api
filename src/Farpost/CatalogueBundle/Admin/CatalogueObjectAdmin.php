@@ -66,11 +66,12 @@ class CatalogueObjectAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('id')
-            ->add('name', null, ['label' => 'label.name'])
+            ->addIdentifier('name', null, ['label' => 'label.name'])
             ->add('description', null, ['label' => 'label.description'])
             ->add('phone', null, ['label' => 'label.phone'])
-            ->add('site', null, ['label' => 'label.site']);
+            ->add('site', null, ['label' => 'label.site'])
+            ->add('id', null, ['label' => 'label.id'])
+        ;
     }
 
     public function prePersist($object)

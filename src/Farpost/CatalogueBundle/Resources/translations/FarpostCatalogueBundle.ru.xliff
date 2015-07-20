@@ -121,6 +121,10 @@
                 <source>label.versions</source>
                 <target>Версии файлов</target>
             </trans-unit>
+            <trans-unit id="label.id">
+                <source>label.id</source>
+                <target>Идентификатор</target>
+            </trans-unit>
 
             <trans-unit id="help.is_organisation">
                 <source>help.is_organisation</source>
@@ -138,7 +142,6 @@
                 <source>help.parent_categories</source>
                 <target>Список категорий, в которых будет находиться этот объект справочника</target>
             </trans-unit>
-
 
         </body>
     </file>
