@@ -180,6 +180,12 @@ class CatalogueCategory
      */
     protected $isRoot;
 
+
+    /**
+     * color of graph vertex, using for detecting cycles in graph
+     */
+    private $color;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
@@ -274,12 +280,13 @@ class CatalogueCategory
     /**
      * Add parents
      *
-     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $parents
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $edge
      * @return CatalogueCategory
      */
-    public function addParent(\Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $parents)
+    public function addParent(\Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $edge)
     {
-        $this->parents[] = $parents;
+        $edge->setChild($this);
+        $this->parents[] = $edge;
 
         return $this;
     }
@@ -287,12 +294,13 @@ class CatalogueCategory
     /**
      * Remove parents
      *
-     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $parents
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $edge
      * @return CatalogueCategory
      */
-    public function removeParent(\Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $parents)
+    public function removeParent(\Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge $edge)
     {
-        $this->parents->removeElement($parents);
+        $edge->setChild(null);
+        $this->parents->removeElement($edge);
 
         return $this;
     }
@@ -479,4 +487,10 @@ class CatalogueCategory
     {
         return $this->isRoot;
     }
+
+    /**
+     * set color
+     *
+     * @param
+     */
 }
