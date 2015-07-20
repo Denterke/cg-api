@@ -42,6 +42,8 @@ class GraphImporter
     {
         $em->getRepository("FarpostMapsBundle:Level")->generate();
         foreach(self::$mapsEntites as $mapsEntity) {
+            echo "$mapsEntity\n";
+            echo number_format(memory_get_usage()) . "\n";
             $em->getRepository("FarpostMapsBundle:$mapsEntity")->copyFrom($backUpEm);
         }
     }
@@ -67,15 +69,18 @@ class GraphImporter
         $em->persist($version);
         $em->flush();
 
-        $owner = "back_up_catalog";
+        $owner = "dev";
         $backUpDatabase = "back_up_catalog";
         system("/usr/bin/pg_restore --host=localhost -U $owner -c -O -d $backUpDatabase --schema=catalog $filename");
 
+        echo number_format(memory_get_usage()) . "\n";
         $this->clearMaps($em);
+        echo number_format(memory_get_usage()) . "\n";
         $this->copyToMaps($em, $backUpEm);
+        echo number_format(memory_get_usage()) . "\n";
         $this->finalize($em);
+        echo number_format(memory_get_usage()) . "\n";
 
-        $em->clear();
         $version->setIsProcessing(false);
         $em->merge($version);
         $em->flush();

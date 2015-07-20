@@ -16,8 +16,8 @@ class NodeRepository extends EntityRepository
 {
     public function copyFrom(EntityManager $src)
     {
-        $this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
-
+        $this->_em->getConfiguration()->setSQLLogger(null);
+        gc_enable();
         $q = $src->createQuery('select o from FarpostBackUpBundle:Object o');
         $it = $q->iterate();
         $batchSize = 20;
@@ -36,13 +36,20 @@ class NodeRepository extends EntityRepository
                 ? $srcNode->getObjectType()->getId()
                 : 0;
             $node->setType($this->_em->getReference('FarpostMapsBundle:NodeType', $nodeType));
-
             $this->_em->persist($node);
+            unset($node);
+            unset($srcNode);
+            unset($nodeType);
             if (++$i % $batchSize === 0) {
                 $this->_em->flush();
                 $this->_em->clear();
+                $src->clear();
+                gc_collect_cycles();
             }
         }
         $this->_em->flush();
+        $this->_em->clear();
+        $src->clear();
+        gc_collect_cycles();
     }
 }

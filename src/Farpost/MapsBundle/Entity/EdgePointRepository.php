@@ -15,27 +15,39 @@ class EdgePointRepository extends EntityRepository
 {
     public function copyFrom(EntityManager $src)
     {
-        $this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
-
+        $this->_em->getConfiguration()->setSQLLogger(null);
+        gc_enable();
         $q = $src->createQuery('select psp from FarpostBackUpBundle:PathSegmentPoint psp');
         $it = $q->iterate();
         $batchSize = 20;
         $i = 0;
-        foreach($it as $row) {
+        while (($row = $it->next()) !== false) {
             $srcEdgePoint = $row[0];
             $edgePoint = new EdgePoint();
+            $edge = $this->_em
+                ->getRepository('FarpostMapsBundle:Edge')
+                ->findOneById($srcEdgePoint->getPathSegment()->getId())
+            ;
             $edgePoint->setId($srcEdgePoint->getId())
                 ->setLon($srcEdgePoint->getLon())
                 ->setLat($srcEdgePoint->getLat())
                 ->setSeq($srcEdgePoint->getIdx())
-                ->setEdge($this->_em->getReference('FarpostMapsBundle:Edge', $srcEdgePoint->getPathSegment()->getId()))
+                ->setEdge($edge)
             ;
             $this->_em->persist($edgePoint);
+            unset($edgePoint);
+            unset($edge);
+            unset($srcEdgePoint);
             if (++$i % $batchSize === 0) {
                 $this->_em->flush();
                 $this->_em->clear();
+                $src->clear();
+                gc_collect_cycles();
             }
         }
         $this->_em->flush();
+        $this->_em->clear();
+        $src->clear();
+        gc_collect_cycles();
     }
 }

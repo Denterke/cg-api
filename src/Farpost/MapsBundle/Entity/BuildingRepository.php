@@ -16,6 +16,8 @@ class BuildingRepository extends EntityRepository
 {
     public function copyFrom(EntityManager $src)
     {
+        $this->_em->getConfiguration()->setSQLLogger(null);
+        gc_enable();
         $q = $src->createQuery('select b from FarpostBackUpBundle:Building b');
         $it = $q->iterate();
         $batchSize = 20;
@@ -30,11 +32,18 @@ class BuildingRepository extends EntityRepository
                 ->setLon($srcBuilding->getLon())
             ;
             $this->_em->persist($building);
+            unset($srcBuilding);
+            unset($building);
             if (++$i % $batchSize === 0) {
                 $this->_em->flush();
                 $this->_em->clear();
+                $src->clear();
+                gc_collect_cycles();
             }
         }
         $this->_em->flush();
+        $this->_em->clear();
+        $src->clear();
+        gc_collect_cycles();
     }
 }

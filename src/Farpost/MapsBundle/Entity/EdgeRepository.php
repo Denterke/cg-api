@@ -16,11 +16,11 @@ class EdgeRepository extends EntityRepository
 {
     public function copyFrom(EntityManager $src)
     {
-        $this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
-        
+        $this->_em->getConfiguration()->setSQLLogger(null);
+        gc_enable();
         $q = $src->createQuery('select ps from FarpostBackUpBundle:PathSegment ps');
         $it = $q->iterate();
-        $batchSize = 1000;
+        $batchSize = 20;
         $i = 0;
         foreach($it as $row) {
             $srcEdge = $row[0];
@@ -33,13 +33,19 @@ class EdgeRepository extends EntityRepository
                 $edge->setLevel($this->_em->getReference('FarpostMapsBundle:Level', $srcEdge->getLevel()));
             }
             $this->_em->persist($edge);
+            unset($edge);
+            unset($srcEdge);
             if (++$i % $batchSize === 0) {
                 $this->_em->flush();
                 $this->_em->clear();
+                $src->clear();
+                gc_collect_cycles();
             }
         }
         $this->_em->flush();
         $this->_em->clear();
+        $src->clear();
+        gc_collect_cycles();
     }
 
     public function calcEdgeWeight(Edge $edge)
@@ -108,10 +114,13 @@ class EdgeRepository extends EntityRepository
 
     public function normalize()
     {
+        $this->_em->getConfiguration()->setSQLLogger(null);
+        gc_enable();
         $q = $this->_em->createQuery('select e from FarpostMapsBundle:Edge e');
         $it = $q->iterate();
         $batchSize = 20;
         $i = 0;
+        $processed = [];
         foreach($it as $row) {
             $edge = $row[0];
             $processed[] = $edge;
@@ -125,9 +134,19 @@ class EdgeRepository extends EntityRepository
             if (++$i % $batchSize === 0) {
                 $this->_em->flush();
                 $this->_em->clear();
+                for ($j = 0; $j < count($processed); $j++) {
+                    unset($processed[$i]);
+                }
+                $processed = [];
+                gc_collect_cycles();
             }
-
         }
         $this->_em->flush();
+        $this->_em->clear();
+        for ($j = 0; $j < count($processed); $j++) {
+            unset($processed[$i]);
+        }
+        unset($processed);
+        gc_collect_cycles();
     }
 }
