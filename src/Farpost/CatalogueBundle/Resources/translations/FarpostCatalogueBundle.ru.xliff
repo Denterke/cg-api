@@ -140,7 +140,7 @@
             </trans-unit>
             <trans-unit id="help.parent_categories">
                 <source>help.parent_categories</source>
-                <target>Список категорий, в которых будет находиться этот объект справочника</target>
+                <target>Список категорий, из которых можно сюда перейти</target>
             </trans-unit>
 
         </body>

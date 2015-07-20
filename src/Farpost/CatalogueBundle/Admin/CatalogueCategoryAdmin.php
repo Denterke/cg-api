@@ -49,6 +49,16 @@ class CatalogueCategoryAdmin extends Admin
                 'label' => 'label.site',
                 'required' => false,
             ])
+            ->add('parents', 'sonata_type_collection', [
+                'by_reference' => false,
+                'required' => false,
+                'label' => 'label.parent_categories',
+                'help' => 'help.parent_categories'
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table',
+                'sortable' => 'id'
+            ])
             ->add('children', 'sonata_type_collection', [
                 'by_reference' => false,
                 'required' => false,
