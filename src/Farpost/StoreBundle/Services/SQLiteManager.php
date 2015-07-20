@@ -50,7 +50,7 @@ class SQLiteManager {
             if ($field['RK']) {
                 $field_name = $field['name'];
                 $field_rk = $field['RK'];
-                $refSql .= ", FOREIGN KEY($field_name) REFERENCES $field_rk(id)";
+                $refSql .= ", FOREIGN KEY($field_name) REFERENCES $field_rk(_id)";
             }
         }
         $resultSql = $promtSql . $fieldSql . $refSql . ");";
