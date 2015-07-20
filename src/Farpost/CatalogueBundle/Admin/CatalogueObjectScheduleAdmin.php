@@ -34,12 +34,11 @@ class CatalogueObjectScheduleAdmin extends Admin {
             ])
             ->add('startAt', 'sonata_type_datetime_picker', [
                 'label' => 'label.start_at',
-                'format' => 'HH:mm',
+                'format' => 'HH:mm'
             ])
             ->add('endAt', 'sonata_type_datetime_picker', [
                 'label' => 'label.end_at',
-                'format' => 'HH:mm',
-                'date_format' => DateTimeType::DEFAULT_TIME_FORMAT
+                'format' => 'HH:mm'
             ])
         ;
     }

@@ -39,7 +39,8 @@ class CatalogueObjectAdmin extends Admin
             ->add('categories', 'sonata_type_collection', [
                 'by_reference' => false,
                 'required' => false,
-                'label' => 'label.parent_categories'
+                'label' => 'label.parent_categories',
+                'help' => 'help.parent_categories'
             ], [
                 'edit' => 'inline',
                 'inline' => 'table',

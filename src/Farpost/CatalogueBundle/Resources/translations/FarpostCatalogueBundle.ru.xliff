@@ -122,6 +122,23 @@
                 <target>Версии файлов</target>
             </trans-unit>
 
+            <trans-unit id="help.is_organisation">
+                <source>help.is_organisation</source>
+                <target>Отметьте это поле, если эту категорию следует считать организацией</target>
+            </trans-unit>
+            <trans-unit id="help.children_objects">
+                <source>help.children_objects</source>
+                <target>Список объектов справочника, в которые можно будет перейти из этой категории (организации) </target>
+            </trans-unit>
+            <trans-unit id="help.children_categories">
+                <source>help.children_categories</source>
+                <target>Список категорий (и организаций) справочника, в которые можно будет перейти из этой категории (организации)</target>
+            </trans-unit>
+            <trans-unit id="help.parent_categories">
+                <source>help.parent_categories</source>
+                <target>Список категорий, в которых будет находиться этот объект справочника</target>
+            </trans-unit>
+
 
         </body>
     </file>

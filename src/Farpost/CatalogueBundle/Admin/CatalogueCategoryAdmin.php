@@ -17,35 +17,43 @@ use Sonata\CoreBundle\Exception\InvalidParameterException;
 
 class CatalogueCategoryAdmin extends Admin
 {
+    public function configure() {
+        $this->setTemplate('edit', 'FarpostCatalogueBundle:CRUD:edit_category.html.twig');
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('is_organization', 'checkbox', [
                 'label' => 'label.is_organization',
-                'required' => false
+                'required' => false,
+                'help' => 'help.is_organisation'
             ])
-            ->add('name', 'text', ['label' => 'label.name'])
+            ->add('name', 'text', [
+                'label' => 'label.name',
+            ])
             ->add('description', 'textarea', [
                 'label' => 'label.description',
-                'required' => false
+                'required' => false,
             ])
             ->add('logoStandard', 'sonata_type_admin', [
                 'label' => 'label.logo',
                 'required' => false,
-                'btn_add' => false
+                'btn_add' => false,
             ])
             ->add('phone', 'text', [
                 'label' => 'label.phone',
-                'required' => false
+                'required' => false,
             ])
             ->add('site', 'text', [
                 'label' => 'label.site',
-                'required' => false
+                'required' => false,
             ])
             ->add('children', 'sonata_type_collection', [
                 'by_reference' => false,
                 'required' => false,
-                'label' => 'label.children_categories'
+                'label' => 'label.children_categories',
+                'help' => 'help.children_categories'
             ], [
                 'edit' => 'inline',
                 'inline' => 'table',
@@ -54,7 +62,8 @@ class CatalogueCategoryAdmin extends Admin
             ->add('objects', 'sonata_type_collection', [
                 'by_reference' => false,
                 'required' => false,
-                'label' => 'label.children_objects'
+                'label' => 'label.children_objects',
+                'help' => 'help.children_objects'
             ], [
                 'edit' => 'inline',
                 'inline' => 'table',
@@ -72,12 +81,13 @@ class CatalogueCategoryAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('id')
+            ->addIdentifier('name', null, ['label' => 'label.name'])
             ->add('isOrganization', null, ['label' => 'label.is_organization'])
-            ->add('name', null, ['label' => 'label.name'])
             ->add('description', null, ['label' => 'label.description'])
             ->add('phone', null, ['label' => 'label.phone'])
-            ->add('site', null, ['label' => 'label.site']);
+            ->add('site', null, ['label' => 'label.site'])
+            ->add('id', null, ['label' => 'label.id'])
+        ;
     }
 
     public function prePersist($category)
