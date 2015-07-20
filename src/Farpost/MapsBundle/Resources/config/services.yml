@@ -4,4 +4,4 @@ parameters:
 services:
     farpost.maps.graph_importer:
         class: %farpost.maps.graph_importer.class%
-        arguments: [@doctrine]
+        arguments: [@doctrine, "%backup_database_user%"]

@@ -24,9 +24,12 @@ class GraphImporter
 
     private $doctrine;
 
-    public function __construct($doctrine)
+    private $owner;
+
+    public function __construct($doctrine, $owner)
     {
         $this->doctrine = $doctrine;
+        $this->owner = $owner;
     }
 
     public function clearMaps($em)
@@ -69,9 +72,8 @@ class GraphImporter
         $em->persist($version);
         $em->flush();
 
-        $owner = "dev";
         $backUpDatabase = "back_up_catalog";
-        system("/usr/bin/pg_restore --host=localhost -U $owner -c -O -d $backUpDatabase --schema=catalog $filename");
+        system("/usr/bin/pg_restore --host=localhost -U {$this->owner} -c -O -d $backUpDatabase --schema=catalog $filename");
 
         echo number_format(memory_get_usage()) . "\n";
         $this->clearMaps($em);
