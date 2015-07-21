@@ -25,8 +25,11 @@ class ImageManager {
 
     public function createImagesFromFile(UploadedFile $file)
     {
-        $tmpPath = $file->getPath();
         $clientExtension = $file->getClientOriginalExtension();
+
+        $file = $file->move('tmp', join('.', [$file->getClientOriginalName(), $file->getClientOriginalExtension()]));
+        $tmpPath = $file->getPath();
+
 
         $standardName = $file->getFilename();
         $standardFullPath = join('/', [$tmpPath, $standardName]);
