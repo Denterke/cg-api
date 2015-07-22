@@ -1,7 +1,15 @@
-farpost_maps_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: FarpostMapsBundle:Default:index }
-
 farpost_maps_import_graph:
     path:     /import/graph
     defaults: { _controller: FarpostMapsBundle:Import:graph }
+
+farpost_maps_editor:
+    path:     /maps
+    defaults: { _controller: FarpostMapsBundle:Editor:index }
+
+farpost_maps_editor_graph:
+    path:     /maps/graph
+    defaults: { _controller: FarpostMapsBundle:Editor:graph }
+
+farpost_maps_editor_objects_for_node:
+    path:     /maps/objects
+    defaults: { _controller: FarpostMapsBundle:Editor:getObjects }

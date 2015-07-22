@@ -52,4 +52,37 @@ class NodeRepository extends EntityRepository
         $src->clear();
         gc_collect_cycles();
     }
+
+    public function getNodesForLevel($level)
+    {
+        $this->_em->getConfiguration()->setSQLLogger(null);
+        gc_enable();
+        $it = $this->_em->createQuery('select n from FarpostMapsBundle:Node n where n.level = :level')
+            ->setParameter('level', $level)
+            ->iterate();
+        $batchSize = 20;
+        $i = 0;
+        $nodes = [];
+        foreach($it as $row) {
+            $node = $row[0];
+            $nodes[$node->getId()] = [
+                'lat' => $node->getLat(),
+                'lon' => $node->getLon(),
+                'alias' => $node->getAlias(),
+                'id' => $node->getId(),
+                'type' => [
+                    'alias' => $node->getType()->getAlias(),
+                    'id' => $node->getType()->getId()
+                ]
+            ];
+            unset($node);
+            if (++$i % $batchSize === 0) {
+                $this->_em->clear();
+                gc_collect_cycles();
+            }
+        }
+        $this->_em->clear();
+        gc_collect_cycles();
+        return $nodes;
+    }
 }

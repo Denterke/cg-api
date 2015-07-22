@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  *
  * @ORM\Table(name="catalogue_objects")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Farpost\CatalogueBundle\Entity\CatalogueObjectRepository")
  */
 
 class CatalogueObject

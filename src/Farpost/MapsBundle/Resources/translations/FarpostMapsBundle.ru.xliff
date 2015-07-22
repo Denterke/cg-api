@@ -6,6 +6,10 @@
                 <source>label.graph_import</source>
                 <target>Импорт графа планов</target>
             </trans-unit>
+            <trans-unit id="label.editor">
+                <source>label.editor</source>
+                <target>Редактор планов</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

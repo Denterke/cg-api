@@ -1,3 +1,15 @@
 farpost_export_catalogue:
     path:     /admin/export/catalogue
     defaults: { _controller: FarpostCatalogueBundle:Export:export }
+
+farpost_catalogue_get_objects:
+    path:     /admin/catalogue/objects
+    defaults: { _controller: FarpostCatalogueBundle:Default:getObjects }
+
+farpost_catalogue_attach_object_to_node:
+    path:     /admin/catalogue/objects/attach
+    defaults: { _controller: FarpostCatalogueBundle:Default:attachObject }
+
+farpost_catalogue_detach_object_from_node:
+    path:     /admin/catalogue/objects/detach
+    defaults: { _controller: FarpostCatalogueBundle:Default:detachObject }

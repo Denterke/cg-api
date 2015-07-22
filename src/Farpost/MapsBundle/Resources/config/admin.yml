@@ -4,3 +4,9 @@ services:
         arguments: [ "sonata.block.service.graph_importer", @templating, @doctrine.orm.entity_manager ]
         tags:
             - { name: sonata.block }
+
+    sonata.block.service.editor:
+        class: Farpost\MapsBundle\Block\EditorBlockService
+        arguments: [ "sonata.block.service.editor", @templating]
+        tags:
+            - { name: sonata.block }

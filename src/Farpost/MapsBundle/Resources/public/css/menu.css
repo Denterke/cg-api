@@ -1,0 +1,21 @@
+.menu-item {
+    color: #FFFFFF;
+}
+
+.menu-item input {
+    color: #000000;
+}
+
+h3.sidebar-title {
+    color: #FFFFFF;
+}
+
+#vertex-description {
+    margin-top: 20px;
+}
+
+#vertex-objects {
+    overflow: auto;
+    max-height: 500px;
+    margin-bottom: 10px;
+}

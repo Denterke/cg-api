@@ -12,4 +12,9 @@ use Doctrine\ORM\EntityRepository;
 
 class CatalogueCategoryEdgeRepository extends EntityRepository {
 
+    public function hasCycles($edge)
+    {
+//        $dfs = function()
+
+    }
 }
