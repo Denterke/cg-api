@@ -11,7 +11,7 @@ security:
             memory:
                 users:
                     user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    notanadmin: { password: 16ytu91ito, roles: [ 'ROLE_ADMIN' ] }
+                    notanadmin: { password: 16ytu91ito, roles: [ 'ROLE_ADMIN', 'ROLE_SONATA_ADMIN' ] }
                     nosecurity:  { password: nosecurity, roles: ['ROLE_MODERATOR'] }
 
     firewalls:
