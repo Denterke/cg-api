@@ -124,7 +124,7 @@ $(function () {
                 renderer: "canvas",
                 view: new ol.View({
                     minZoom: 17,
-                    maxZoom: 22,
+                    maxZoom: 21,
                     center: transform([131.893647,43.024502]),
                     zoom: 19
                 }),
