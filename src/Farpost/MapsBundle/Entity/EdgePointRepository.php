@@ -28,6 +28,12 @@ class EdgePointRepository extends EntityRepository
                 ->getRepository('FarpostMapsBundle:Edge')
                 ->findOneById($srcEdgePoint->getPathSegment()->getId())
             ;
+            if (!$edge) {
+                unset($edgePoint);
+                unset($edge);
+                unset($srcEdgePoint);
+                continue;
+            }
             $edgePoint->setId($srcEdgePoint->getId())
                 ->setLon($srcEdgePoint->getLon())
                 ->setLat($srcEdgePoint->getLat())

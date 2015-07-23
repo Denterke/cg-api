@@ -24,6 +24,10 @@ class EdgeRepository extends EntityRepository
         $i = 0;
         foreach($it as $row) {
             $srcEdge = $row[0];
+            if (!$srcEdge->getObjectFrom() || !$srcEdge->getObjectTo()) {
+                unset($srcEdge);
+                continue;
+            }
             $edge = new Edge();
             $edge->setId($srcEdge->getId())
                 ->setFromNode($this->_em->getReference('FarpostMapsBundle:Node', $srcEdge->getObjectFrom()->getId()))

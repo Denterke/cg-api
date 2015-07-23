@@ -34,7 +34,7 @@ class NodeType
                 'name' => 'alias',
                 'type' => 'VARCHAR',
                 'PK' => false,
-                'nullable' => false,
+                'nullable' => true,
                 'RK' => '',
                 'getter' => 'getAlias'
             ],
@@ -67,7 +67,7 @@ class NodeType
     /**
      * @var string
      *
-     * @ORM\Column(name="alias", type="string", length=255)
+     * @ORM\Column(name="alias", type="string", length=255, nullable=true)
      */
     protected $alias;
 
