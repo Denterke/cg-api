@@ -152,5 +152,19 @@ class EdgeRepository extends EntityRepository
         }
         unset($processed);
         gc_collect_cycles();
+
+        //delete reverse edges
+        $sql = "
+          DELETE FROM
+            map_edges
+          WHERE
+            id in (
+              select DISTINCT GREATEST(e1.id, e2.id)
+                FROM map_edges e1
+                INNER JOIN map_edges e2 ON e1.node_from_id = e2.node_to_id and e1.node_to_id = e2.node_from_id
+            )
+         ";
+        $stmt = $this->_em->getConnection()->prepare($sql);
+        $stmt->execute();
     }
 }
