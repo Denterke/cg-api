@@ -2,9 +2,9 @@
  * Created by kalita on 21/07/15.
  */
 
-var MIN_LAYER_NUM = 1;
+var MIN_LAYER_NUM = 0;
 var MAX_LAYER_NUM = 12;
-var INITIAL_LAYER_NUM = 1;
+var INITIAL_LAYER_NUM = 0;
 
 var NT_GYM = 2,
     NT_RECTORATE = 3,
@@ -124,9 +124,9 @@ $(function () {
                 renderer: "canvas",
                 view: new ol.View({
                     minZoom: 17,
-                    maxZoom: 21,
+                    maxZoom: 22,
                     center: transform([131.893647,43.024502]),
-                    zoom: 18
+                    zoom: 19
                 }),
                 layers: layers,
                 target: target
@@ -263,19 +263,23 @@ $(function () {
                     var objectDiv = $('<div>')
                             .addClass('object-description input-group')
                             .data('id', object.id),
-                        nameInput = $('<input>')
+                        nameInput = $('<a>')
+                            .attr('href', '/admin/farpost/catalogue/catalogueobject/' + object.id + '/edit')
+                            .attr('target', '_blank')
                             .addClass('col-md-12 form-control')
-                            .val(object.name),
+                            .text(object.name),
                         span = $('<span>')
                             .addClass('input-group-btn'),
                         unattachBtn = $('<button>')
                             .addClass('btn btn-danger')
-                            .text('X')
                             .data('id', object.id)
                             .click(function() {
                                 detachObjectFunction(vertex, $(this).data('id'))
-                            })
+                            }),
+                        glyph = $('<span>')
+                            .addClass('glyphicon glyphicon-remove')
                     ;
+                    unattachBtn.append(glyph);
                     span.append(unattachBtn);
                     objectDiv
                         .append(nameInput)
@@ -349,8 +353,8 @@ $(function () {
             //setup view handlers
             view.sidebar.levelSelector.on('change', function(e) {
                 var level = $(e.target).val();
-                level = level < 1 ? 1 : level;
-                level = level > 12 ? 12 : level;
+                level = level < MIN_LAYER_NUM ? MIN_LAYER_NUM : level;
+                level = level > MAX_LAYER_NUM ? MAX_LAYER_NUM : level;
                 $(e.target).val(level);
                 describeVertexFunction(null);
                 setBaseLayer(map, source, level);
