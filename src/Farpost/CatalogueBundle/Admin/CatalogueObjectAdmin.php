@@ -15,6 +15,11 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class CatalogueObjectAdmin extends Admin
 {
+
+    public function configure() {
+        $this->setTemplate('edit', 'FarpostCatalogueBundle:CRUD:edit_object.html.twig');
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -54,6 +59,11 @@ class CatalogueObjectAdmin extends Admin
                 'edit' => 'inline',
                 'inline' => 'table',
                 'sortable' => 'id'
+            ])
+            ->add('node', 'sonata_type_admin', [
+                'label' => 'label.node',
+                'required' => false,
+                'btn_add' => false
             ]);
     }
 
@@ -77,12 +87,13 @@ class CatalogueObjectAdmin extends Admin
     public function prePersist($object)
     {
         $this->manageLogoImageAdmin($object);
+        $this->manageNode($object);
     }
 
     public function preUpdate($object)
     {
+        $this->manageNode($object);
         $params = $this->getRequest()->request->get($this->getUniqid());
-        echo json_encode($params);
 
         if (isset($params['logoStandard']) &&
         ($image = $params['logoStandard']) &&
@@ -92,6 +103,24 @@ class CatalogueObjectAdmin extends Admin
         } else {
             $this->manageLogoImageAdmin($object);
         }
+    }
+
+    protected function manageNode($object)
+    {
+        $params = $this->getRequest()->request->get($this->getUniqid());
+        if (!$object->getNode() || isset($params['node']['_delete']) || !$object->getNode()->getId()) {
+            $object->setNode(null);
+            return;
+        }
+        $nodeId = $object->getNode()->getId();//intval($params['node']);
+        $em = $this->getModelManager()->getEntityManager($this->getSubject());
+        $node = $em->getRepository('FarpostMapsBundle:Node')->findOneById($nodeId);
+
+        if (!$node) {
+            $object->setNode(null);
+            return;
+        }
+        $object->setNode($node);
     }
 
     protected function manageLogoImageAdmin($object)

@@ -10,6 +10,44 @@
                 <source>label.editor</source>
                 <target>Редактор планов</target>
             </trans-unit>
+            <trans-unit id="label.level">
+                <source>label.level</source>
+                <target>Уровень</target>
+            </trans-unit>
+            <trans-unit id="label.vertex">
+                <source>label.vertex</source>
+                <target>Вершина</target>
+            </trans-unit>
+            <trans-unit id="label.vertex_alias">
+                <source>label.vertex_alias</source>
+                <target>Название вершины</target>
+            </trans-unit>
+            <trans-unit id="label.vertex_type">
+                <source>label.vertex_type</source>
+                <target>Тип вершины</target>
+            </trans-unit>
+            <trans-unit id="label.objects">
+                <source>label.objects</source>
+                <target>Объекты справочника</target>
+            </trans-unit>
+            <trans-unit id="label.id">
+                <source>label.id</source>
+                <target>Идентификатор</target>
+            </trans-unit>
+            <trans-unit id="title.nodes">
+                <source>title.nodes</source>
+                <target>Вершины</target>
+            </trans-unit>
+
+
+            <trans-unit id="help.choose_object_to_attach">
+                <source>help.choose_object_to_attach</source>
+                <target>Выберите объект для прикрепления</target>
+            </trans-unit>
+            <trans-unit id="help.start_typing">
+                <source>help.start_typing</source>
+                <target>Начните печатать</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

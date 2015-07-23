@@ -10,3 +10,14 @@ services:
         arguments: [ "sonata.block.service.editor", @templating]
         tags:
             - { name: sonata.block }
+
+    sonata.admin.maps_node:
+        class: Farpost\MapsBundle\Admin\NodeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Maps", label: "title.nodes", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\MapsBundle\Entity\Node
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostMapsBundle] ]

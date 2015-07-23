@@ -23,6 +23,10 @@
                 <source>label.name</source>
                 <target>Название</target>
             </trans-unit>
+            <trans-unit id="label.node">
+                <source>label.node</source>
+                <target>Вершина</target>
+            </trans-unit>
             <trans-unit id="label.object">
                 <source>label.object</source>
                 <target>Объект справочника</target>

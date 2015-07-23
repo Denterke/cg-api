@@ -2,9 +2,9 @@
  * Created by kalita on 21/07/15.
  */
 
-var MIN_LAYER_NUM = 0;
+var MIN_LAYER_NUM = 1;
 var MAX_LAYER_NUM = 12;
-var INITIAL_LAYER_NUM = 0;
+var INITIAL_LAYER_NUM = 1;
 
 var NT_GYM = 2,
     NT_RECTORATE = 3,
@@ -307,7 +307,8 @@ $(function () {
                         $description: $('#vertex-objects-description'),
                         $objects: $('#vertex-objects'),
                         $selector: $('#object-selector'),
-                        $attach: $('#attach')
+                        $attach: $('#attach'),
+                        $createBtn: $('#create-new-object')
                     }
                 }
             };
@@ -419,6 +420,14 @@ $(function () {
                 }).fail(function(e) {
                     console.log(e);
                 });
+            });
+
+            view.sidebar.objects.$createBtn.click(function() {
+                var url = '/admin/farpost/catalogue/catalogueobject/create';
+                if (activeFeature) {
+                    url += '?node=' + activeFeature.get('vertex').id;
+                }
+                window.open(url, '_blank');
             });
 
             //set initial layer

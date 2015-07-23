@@ -24,7 +24,7 @@
                 <div class="col-md-12 menu-item">
                     <h3>{% trans %}label.level{% endtrans %}</h3>
                     <select id="select-level">
-                        {% for i in range(0, 12) %}
+                        {% for i in range(1, 12) %}
                             <option value="{{ i }}">{{ i }} {% trans %}label.level{% endtrans %}</option>
                         {% endfor %}
                     </select>
@@ -51,10 +51,10 @@
                         </span>
                     </div>
                     <div style="margin-top: 3px" class="form-group">
-                        <a class="btn btn-primary form-control" href="{{ path('admin_farpost_catalogue_catalogueobject_create') }}" target="_blank">
+                        <button id="create-new-object" class="btn btn-primary form-control">
                             <span class="glyphicon glyphicon-plus"></span>
                             Создать новый
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
