@@ -96,6 +96,8 @@ class Version
     public function __construct()
     {
         $this->isProcessing = false;
+        $this->versionNumber = -1;
+        $this->fileSize = 0;
     }
 
     /**
@@ -161,19 +163,27 @@ class Version
      *
      * @param string $base
      * @return Version
+     * @throws \Exception
      */
     public function setBase($base)
     {
         $this->base = $base;
 
-        $filePath = STATIC_DIR . "/$base";
+        return $this;
+    }
+
+    public function setBaseWithAttributes($base)
+    {
+        $this->base = $base;
+        //do smth with it, please
+        $filePath = self::getStaticDir() . "/$base";
         $fileSize = filesize($filePath);
         if (!$fileSize) {
             throw new \Exception("filesize($filePath) failed");
         }
         $this->setFileSize($fileSize)
-            ->setChecksum(md5_file($filePath))
-        ;
+            ->setChecksum(md5_file($filePath));
+
         return $this;
     }
 
@@ -324,7 +334,7 @@ class Version
     public function getFullPath()
     {
         $fileName = $this->getBase();
-        return STATIC_DIR . "/$fileName";
+        return self::getStaticDir() . "/$fileName";
     }
 
     /**
@@ -348,5 +358,10 @@ class Version
     public function getChecksum()
     {
         return $this->checksum;
+    }
+
+    static public function getStaticDir()
+    {
+        return dirname(__FILE__) . "/../../../../web/static";
     }
 }

@@ -10,25 +10,27 @@ namespace Farpost\CatalogueBundle\Services;
 
 use Farpost\StoreBundle\Services\SQLiteManager;
 use Farpost\StoreBundle\Entity\Version;
+use Farpost\StoreBundle\Services\VersionManager;
 
 class CatalogueExporter {
 
     private $doctrine;
     private $sqliteManager;
+    private $versionManager;
 
-    public function __construct($doctrine, SQLiteManager $sqliteManager)
+    public function __construct($doctrine, SQLiteManager $sqliteManager, VersionManager $versionManager)
     {
         $this->doctrine = $doctrine;
         $this->sqliteManager = $sqliteManager;
+        $this->versionManager = $versionManager;
     }
 
     public function export()
     {
         $em = $this->doctrine->getManager();
 
-        $version = $this->createVersion($em);
-
         list($sqliteDb, $dt, $sqliteDbName) = $this->sqliteManager->createDb();
+        $version = $this->createVersion($em, $sqliteDbName);
 
         $tableMap = [
             [
@@ -93,22 +95,25 @@ class CatalogueExporter {
         }
 
         $version->setIsProcessing(false)
-            ->setBase($sqliteDbName);
+            ->setBaseWithAttributes($sqliteDbName);
         $em->merge($version);
         $em->flush();
+
+        $this->versionManager->zipLikeMapsVL();
     }
 
     /**
      * @param $em
+     * @param $base
      * @return Version
      */
-    private function createVersion(&$em)
+    private function createVersion(&$em, $base)
     {
         $version = new Version();
         $dt = new \DateTime();
         $version->setType(Version::CATALOG_V2)
             ->setVDatetime($dt->getTimestamp())
-            ->setBase('')
+            ->setBase($base)
             ->setIsProcessing(true);
         $em->persist($version);
         $em->flush();

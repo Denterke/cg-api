@@ -9,4 +9,4 @@ services:
 
     farpost_catalogue.catalogue_exporter:
         class: %farpost_catalogue.catalogue_exporter.class%
-        arguments: [@doctrine, @sqlite_manager]
+        arguments: [@doctrine, @sqlite_manager, @farpost_store.version_manager]
