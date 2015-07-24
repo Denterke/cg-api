@@ -39,3 +39,8 @@ div.object-description button {
 .typeahead.dropdown-menu li a {
     white-space: normal;
 }
+
+ul.typeahead.dropdown-menu {
+    max-height: 250px;
+    overflow-y: auto;
+}
