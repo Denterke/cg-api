@@ -46,12 +46,9 @@ class DatabaseConverter
    public function AddDb($type, $dbname)
    {
       switch ($type) {
-         case -20:
+         case Version::CATALOG:
             $this->ConvertDb($dbname);
             break;
-         // case -59:
-            // $this->AddMap($dbname);
-            // break;
          default:
             $this->AddPlan($dbname, $type);
             break;
@@ -126,7 +123,7 @@ class DatabaseConverter
       $db_sqlite->close();
       $timestamp = $dt->getTimestamp();
       $version = new Version();
-      $version->setVDateTime($timestamp)->setBase($db_sqlite_name)->setType(-20);
+      $version->setVDateTime($timestamp)->setBase($db_sqlite_name)->setType(Version::CATALOG);
       $em_ba->persist($version);
       $em_ba->flush();
       // $dt = new \Datetime();
@@ -140,7 +137,7 @@ class DatabaseConverter
       }
       $dt = new \DateTime();
       $timestamp = date('dmY_Gis', $dt->getTimestamp());
-      $new_name = ($level == -59 ? "map_" : "plan_{$level}_") . $timestamp . '.mbtiles';
+      $new_name = ($level == Version::MAP ? "map_" : "plan_{$level}_") . $timestamp . '.mbtiles';
       $timestamp = $dt->getTimestamp();
       $path = dirname(__FILE__) . '/../../../../web/static/';
       if (!copy($dbname, $path . $new_name)) {
@@ -153,7 +150,7 @@ class DatabaseConverter
       $em->flush();
       $zipName = $this->zipifyLast($timestamp, $em);
       $version = new Version();
-      $version->setVDateTime($timestamp)->setBase($zipName)->setType(-58);
+      $version->setVDateTime($timestamp)->setBase($zipName)->setType(Version::ZIP_PLANS);
       $em->persist($version);
       $em->flush();
    }

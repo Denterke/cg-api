@@ -31,7 +31,7 @@ class APIV1Controller extends Controller
                 'study_type_id'     => 1,
                 'school_id'         => 1,
                 'specialization_id' => 1
-        ]));
+            ]));
     }
 
     /**
@@ -72,9 +72,9 @@ class APIV1Controller extends Controller
         $result = $em->getRepository('FarpostStoreBundle:Group')
             ->getList($t);
         return $response->setContent(json_encode([
-                        'groups' => $result,
-                        'timestamp' => $helper->getTimestamp()
-                ]))
+            'groups' => $result,
+            'timestamp' => $helper->getTimestamp()
+        ]))
             ->setStatusCode(200);
     }
 
@@ -185,10 +185,13 @@ class APIV1Controller extends Controller
         $helper = $this->get('api_helper');
         $response = $helper->create404();
         $result = [
-           'update' =>  $this->getDoctrine()->getManager()
+            'update' =>  $this->getDoctrine()->getManager()
                 ->getRepository('FarpostStoreBundle:Version')
-                ->getBases($request->getHost())
-            ];
+                ->getBases($request->getHost()),
+            'maps' => $this->getDoctrine()->getManager()
+                ->getRepository('FarpostStoreBundle:Version')
+                ->getBasesLikeMapsVL($request->getHost())
+        ];
         return $response->setStatusCode(200)
             ->setContent(json_encode($result));
     }
@@ -206,7 +209,7 @@ class APIV1Controller extends Controller
         $response = $helper->create404();
         if (!$request->query->has('school') || (!$request->get('school'))) {
             return $response;
-        }            
+        }
         $result = $this->getDoctrine()
             ->getRepository('FarpostStoreBundle:Department')
             ->createQueryBuilder('d')
@@ -215,7 +218,7 @@ class APIV1Controller extends Controller
             ->getQuery()
             ->getArrayResult();
         if (!empty($result)) {
-           $response->setStatusCode(200)->setContent(json_encode($result));
+            $response->setStatusCode(200)->setContent(json_encode($result));
         }
         return $response;
     }
@@ -270,11 +273,11 @@ class APIV1Controller extends Controller
                 ->getForGroup($gId);
         }
         $result['lesson_types'] = $em->getRepository('FarpostStoreBundle:LessonType')
-                ->createQueryBuilder('a')
-                ->getQuery()
-                ->getArrayResult();
+            ->createQueryBuilder('a')
+            ->getQuery()
+            ->getArrayResult();
         $result['schedule'] = $em->getRepository('FarpostStoreBundle:Schedule')
-                ->getScheduleRendered($gId);
+            ->getScheduleRendered($gId);
         $result['timestamp'] = $helper->getTimestamp();
         return $response->setStatusCode(200)
             ->setContent(json_encode($result));

@@ -1,3 +1,7 @@
+farpost_catalogue_upload_version:
+    path:    /admin/version/upload
+    defaults: { _controller: FarpostCatalogueBundle:Default:uploadVersion }
+
 farpost_export_catalogue:
     path:     /admin/export/catalogue
     defaults: { _controller: FarpostCatalogueBundle:Export:export }
