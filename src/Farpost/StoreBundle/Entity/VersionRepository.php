@@ -222,7 +222,7 @@ class VersionRepository extends EntityRepository
                 ->getSingleResult()
             ;
         }
-        catch (NoResultException) {
+        catch (NoResultException $e) {
             return null;
         }
     }
