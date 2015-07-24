@@ -3,6 +3,7 @@ namespace Farpost\WebBundle\Controller;
 
 use Farpost\StoreBundle\Daemons\Astarot;
 use Farpost\StoreBundle\Entity\Document;
+use Farpost\StoreBundle\Entity\Version;
 use Farpost\WebBundle\Form\DepartmentType;
 use Farpost\WebBundle\Form\SchoolType;
 use Farpost\WebBundle\Form\SpecializationViewType;
@@ -142,7 +143,7 @@ class AdminController extends Controller
         $dt = new \DateTime();
         $promt = $request->query->get('id') == -20
         ? 'Файл каталога организаций'
-        : ($request->query->get('id') == -59
+        : ($request->query->get('id') == Version::MAP
             ? 'Файл карты ДВФУ'
             : 'Файл плана уровня ' . $request->query->get('id'));
         // echo $request->query->get('id');

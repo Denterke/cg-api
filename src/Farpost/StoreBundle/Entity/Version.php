@@ -13,12 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Version
 {
-    const MAP = -59;
     const ZIP_PLANS = -58;
+    const ZIP_LIKE_MAPS_VL = -57;
+
     const CATALOG_V2 = -21;
     const CATALOG = -20;
+
     const GRAPH_DUMP = -19;
     //the shittiest shit ever
+    const MAP = 1000;
     const LEVEL_0 = 0;
     const LEVEL_1 = 1;
     const LEVEL_2 = 2;
@@ -32,34 +35,34 @@ class Version
     const LEVEL_10 = 10;
     const LEVEL_11 = 11;
     const LEVEL_12 = 12;
-   /**
-    * @var integer
-    *
-    * @ORM\Column(name="id", type="integer")
-    * @ORM\Id
-    * @ORM\GeneratedValue(strategy="IDENTITY")
-    */
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /**
-    * @var date
-    *
-    * @ORM\Column(name="v_datetime", type="integer")
-    */
+     * @var date
+     *
+     * @ORM\Column(name="v_datetime", type="integer")
+     */
     protected $v_datetime;
 
     /**
-    * @var string
-    *
-    * @ORM\Column(name="base", type="string")
-    */
+     * @var string
+     *
+     * @ORM\Column(name="base", type="string")
+     */
     protected $base;
 
     /**
-    * @var integer
-    *
-    * @ORM\Column(name="type", type="integer")
-    */
+     * @var integer
+     *
+     * @ORM\Column(name="type", type="integer")
+     */
     protected $type;
 
     /**
@@ -69,36 +72,71 @@ class Version
      */
     protected $isProcessing;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="version_number", type="integer", options={"default" = 0})
+     */
+    protected $versionNumber;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="file_size", type="float", options={"default" = 0}, nullable=true)
+     */
+    protected $fileSize;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="checksum", type="string", nullable=true)
+     */
+    protected $checksum;
+
     public function __construct()
     {
         $this->isProcessing = false;
     }
 
-   /**
-    * Get id
-    *
-    * @return integer
-    */
-   public function getId()
-   {
-       return $this->id;
-   }
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-   public function setId($id)
-   {
-       $this->id = $id;
-   }
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
-   public function isPlan()
-   {
-       return $this->type >= 0;
-   }
+    public function isPlan()
+    {
+        return $this->type >= 0;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMbtiles()
+    {
+        $mbtileTypes = [
+            Version::LEVEL_0, Version::LEVEL_1, Version::LEVEL_2, Version::LEVEL_3,
+            Version::LEVEL_4, Version::LEVEL_5, Version::LEVEL_6, Version::LEVEL_7,
+            Version::LEVEL_8, Version::LEVEL_9, Version::LEVEL_10, Version::LEVEL_11,
+            Version::LEVEL_12, Version::MAP
+        ];
+        return in_array($this->getType(), $mbtileTypes);
+    }
 
 
     /**
      * Set v_datetime
      *
-     * @param \DateTime $vDatetime
+     * @param integer $vDatetime
      * @return Version
      */
     public function setVDatetime($vDatetime)
@@ -111,7 +149,7 @@ class Version
     /**
      * Get v_datetime
      *
-     * @return \DateTime
+     * @return integer
      */
     public function getVDatetime()
     {
@@ -128,6 +166,14 @@ class Version
     {
         $this->base = $base;
 
+        $filePath = STATIC_DIR . "/$base";
+        $fileSize = filesize($filePath);
+        if (!$fileSize) {
+            throw new \Exception("filesize($filePath) failed");
+        }
+        $this->setFileSize($fileSize)
+            ->setChecksum(md5_file($filePath))
+        ;
         return $this;
     }
 
@@ -175,6 +221,8 @@ class Version
                 return 'Справочник';
             case self::ZIP_PLANS:
                 return 'Архивированные тайлы';
+            case self::ZIP_LIKE_MAPS_VL:
+                return 'Архив как на картах VL';
             case self::GRAPH_DUMP:
                 return 'Дамп базы картографов';
             case self::LEVEL_0:
@@ -217,10 +265,88 @@ class Version
     /**
      * Get isProcessing
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsProcessing()
     {
         return $this->isProcessing;
+    }
+
+    /**
+     * Set versionNumber
+     *
+     * @param integer $versionNumber
+     * @return Version
+     */
+    public function setVersionNumber($versionNumber)
+    {
+        $this->versionNumber = $versionNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get versionNumber
+     *
+     * @return integer
+     */
+    public function getVersionNumber()
+    {
+        return $this->versionNumber;
+    }
+
+    /**
+     * Set fileSize
+     *
+     * @param float $fileSize
+     * @return Version
+     */
+    public function setFileSize($fileSize)
+    {
+        $this->fileSize = $fileSize;
+
+        return $this;
+    }
+
+    /**
+     * Get fileSize
+     *
+     * @return float
+     */
+    public function getFileSize()
+    {
+        return $this->fileSize;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullPath()
+    {
+        $fileName = $this->getBase();
+        return STATIC_DIR . "/$fileName";
+    }
+
+    /**
+     * Set checksum
+     *
+     * @param string $checksum
+     * @return Version
+     */
+    public function setChecksum($checksum)
+    {
+        $this->checksum = $checksum;
+
+        return $this;
+    }
+
+    /**
+     * Get checksum
+     *
+     * @return string 
+     */
+    public function getChecksum()
+    {
+        return $this->checksum;
     }
 }

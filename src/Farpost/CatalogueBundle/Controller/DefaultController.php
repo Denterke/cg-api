@@ -69,4 +69,13 @@ class DefaultController extends Controller
 
         return new JsonResponse($payload, 200);
     }
+
+    public function uploadVersionAction(Request $request)
+    {
+        $fileType = intval($request->request->get('version_type'));
+        $file = $request->files->get('file');
+
+        $this->get('farpost_store.version_manager')->createVersion($fileType, $file);
+        return $this->redirect($this->generateUrl('sonata_admin_dashboard'));
+    }
 }

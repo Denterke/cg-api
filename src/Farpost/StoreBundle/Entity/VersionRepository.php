@@ -81,45 +81,105 @@ class VersionRepository extends EntityRepository
     private function _finalizeWeb(&$recs)
     {
         $result = [];
-        $used = [
-            Version::CATALOG => 0,
-            Version::MAP => 0,
-            Version::ZIP_PLANS => 0,
-            Version::CATALOG_V2 => 0,
-            Version::LEVEL_0 => 0,
-            Version::LEVEL_1 => 0,
-            Version::LEVEL_2 => 0,
-            Version::LEVEL_3 => 0,
-            Version::LEVEL_4 => 0,
-            Version::LEVEL_5 => 0,
-            Version::LEVEL_6 => 0,
-            Version::LEVEL_7 => 0,
-            Version::LEVEL_8 => 0,
-            Version::LEVEL_9 => 0,
-            Version::LEVEL_10 => 0,
-            Version::LEVEL_11 => 0,
-            Version::LEVEL_12 => 0,
-            Version::GRAPH_DUMP => 0
+        $versions = [
+            Version::CATALOG => [
+                'used' => 0,
+                'class' => 'download'
+            ],
+            Version::MAP => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::ZIP_PLANS => [
+                'used' => 0,
+                'class' => 'download'
+            ],
+            Version::CATALOG_V2 => [
+                'used' => 0,
+                'class' => 'download'
+            ],
+            Version::LEVEL_0 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_1 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_2 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_3 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_4 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_5 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_6 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_7 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_8 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_9 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_10 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_11 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::LEVEL_12 => [
+                'used' => 0,
+                'class' => 'upload'
+            ],
+            Version::GRAPH_DUMP => [
+                'used' => 0,
+                'class' => 'download'
+            ],
+            Version::ZIP_LIKE_MAPS_VL => [
+                'used' => 0,
+                'class' => 'download'
+            ]
         ];
         foreach ($recs as &$rec) {
             $dt = date('d-m-Y, G:i:s', $rec['v_datetime']);
-            $used[$rec['type']] = 1;
+            $versions[$rec['type']]['used'] = 1;
             $elem = [
                 'version' => $dt,
                 'type' => Version::typeToString($rec['type']),
-                'type_id' => $rec['type']
+                'type_id' => $rec['type'],
+                'class' => $versions[$rec['type']]['class']
             ];
             array_push($result, $elem);
         }
-        foreach($used as $type => $isUsed) {
-            if ($isUsed) {
+        foreach($versions as $type => $settings) {
+            if ($settings['used']) {
                 continue;
             }
-            $used[$type] = 1;
+            $versions[$type]['used'] = 1;
             $elem = [
                 'version' => 'Нет базы',
                 'type' => Version::typeToString($type),
-                'type_id' => $type
+                'type_id' => $type,
+                'class' => $versions[$type]['class']
             ];
             array_push($result, $elem);
         }
@@ -145,6 +205,21 @@ class VersionRepository extends EntityRepository
         return $this->_finalizeNames($recs);
     }
 
+    public function getLastVersions()
+    {
+        return $this->_prepareQB()->getQuery()->getResult();
+    }
+
+    public function getLastVersionOfType($type)
+    {
+        return $this->_prepareQB()
+            ->andWhere('v.type = :type')
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
+
     public function getProcessingEntitiesCount($type)
     {
         return $this->_em->createQueryBuilder()
@@ -157,5 +232,28 @@ class VersionRepository extends EntityRepository
             ->getSingleScalarResult()
         ;
 
+    }
+
+    public function getBasesLikeMapsVL($hostname)
+    {
+        $mapsZip = $this->_prepareQB()
+            ->andWhere('v.type = :type')
+            ->setParameter('type', Version::ZIP_LIKE_MAPS_VL)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+        $result = [];
+        if ($mapsZip) {
+            $result[] = [
+                'id' => 200, //hardcode
+                'name' => 'Карта с уровнями и справочником',
+                'version' => $mapsZip->getVersionNumber(),
+                'url' => "http://$hostname/update/" . $mapsZip->getBase(),
+                'size' => $mapsZip->getFileSize(),
+                'checksum' => $mapsZip->getChecksum()
+            ];
+        }
+
+        return $result;
     }
 }
