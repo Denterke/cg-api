@@ -2,6 +2,7 @@
 
 namespace Farpost\StoreBundle\Entity;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /*
  *VersionRepository
@@ -21,7 +22,8 @@ class VersionRepository extends EntityRepository
             ->andWhere('a.v_datetime > v.v_datetime')
         ;
         $qb->where('(' . $subquery->getDQL() . ') < 1')
-            ->andWhere('v.isProcessing = false');
+            ->andWhere('v.isProcessing = false')
+            ->orderBy('v.type', 'ASC');
         return $qb;
     }
 
@@ -212,12 +214,17 @@ class VersionRepository extends EntityRepository
 
     public function getLastVersionOfType($type)
     {
-        return $this->_prepareQB()
-            ->andWhere('v.type = :type')
-            ->setParameter('type', $type)
-            ->getQuery()
-            ->getSingleResult()
-        ;
+        try {
+            return $this->_prepareQB()
+                ->andWhere('v.type = :type')
+                ->setParameter('type', $type)
+                ->getQuery()
+                ->getSingleResult()
+            ;
+        }
+        catch (NoResultException) {
+            return null;
+        }
     }
 
     public function getProcessingEntitiesCount($type)
