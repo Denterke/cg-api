@@ -32,7 +32,7 @@ class VersionRepository extends EntityRepository
         $result = [];
         foreach($recs as &$rec) {
             if ($rec->isPlan()) {
-                array_push($result, STATIC_DIR . "/" . $rec->getBase());
+                array_push($result, Version::getStaticDir() . "/" . $rec->getBase());
             }
         }
         return $result;

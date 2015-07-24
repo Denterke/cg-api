@@ -61,7 +61,7 @@ class VersionManager
         }
         $versions = $this->getLastVersions();
         $archiveName = "plans_zip_{$timestamp}.zip";
-        $zip = $this->createZipArchive(STATIC_DIR . "/$archiveName");
+        $zip = $this->createZipArchive(Version::getStaticDir() . "/$archiveName");
         $idx = 0;
         foreach ($versions as $version) {
             if ($version->isMbtiles()) {
@@ -105,9 +105,8 @@ class VersionManager
         }
         $lastMapsZipVersion++;
         $archiveName = "200_$lastMapsZipVersion.db";
-        $fullArchiveName = STATIC_DIR . "/$archiveName";
+        $fullArchiveName = Version::getStaticDir() . "/$archiveName";
         $zip = $this->createZipArchive($fullArchiveName);
-        var_dump($filesForZip);
         foreach($filesForZip as $fileForZip) {
             $zip->addFile($fileForZip['path'], $fileForZip['name']);
         }
@@ -119,7 +118,7 @@ class VersionManager
         }
         $zipSize = $zipSize / 1024 / 1024;
         $mapsZipVersion = new Version();
-        $mapsZipVersion->setBase($archiveName)
+        $mapsZipVersion->setBaseWithAttributes($archiveName)
             ->setVDatetime((new \DateTime())->getTimestamp())
             ->setVersionNumber($lastMapsZipVersion)
             ->setType(Version::ZIP_LIKE_MAPS_VL)
@@ -149,7 +148,7 @@ class VersionManager
 
         $formattedDate = date('Ymd_Gis', $dt->getTimestamp());
         $newName = ($fileType == Version::MAP ? "map_" : "plan_{$fileType}_") . $formattedDate . '.mbtiles';
-        $file->move(STATIC_DIR, $newName);
+        $file->move(Version::getStaticDir(), $newName);
 
         $lastVersionOfThisType = $this->em
             ->getRepository('FarpostStoreBundle:Version')
@@ -157,7 +156,7 @@ class VersionManager
         ;
         $lastVersionNumber = $lastVersionOfThisType ? $lastVersionOfThisType->getVersionNumber() : 0;
 
-        $version->setBase($newName)
+        $version->setBaseWithAttributes($newName)
             ->setVersionNumber(++$lastVersionNumber)
         ;
         $this->em->persist($version);
