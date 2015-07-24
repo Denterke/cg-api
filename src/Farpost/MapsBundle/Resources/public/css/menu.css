@@ -22,6 +22,7 @@ h3.sidebar-title {
 
 div.object-description a.form-control.multiline {
     height: auto;
+    display: block !important;
 }
 
 div.object-description span.multiline {
