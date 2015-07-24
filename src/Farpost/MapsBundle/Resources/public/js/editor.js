@@ -6,6 +6,8 @@ var MIN_LAYER_NUM = 1;
 var MAX_LAYER_NUM = 12;
 var INITIAL_LAYER_NUM = 1;
 
+var REFRESH_TIMEOUT = 1000;
+
 var NT_GYM = 2,
     NT_RECTORATE = 3,
     NT_STUDY_OFFICE = 4,
@@ -19,7 +21,7 @@ var NT_GYM = 2,
     NT_ATM = 18,
     NT_STAND = 19,
     NT_CHAIR = 20
-;
+    ;
 
 var NORMAL_NODE_TYPES = [
     NT_GYM, NT_RECTORATE, NT_STUDY_OFFICE, NT_LAB, NT_AUDITORY, NT_FOOD, NT_TOILETS,
@@ -43,7 +45,7 @@ $(function () {
             }
             var fillColor = [],
                 strokeColor = []
-            ;
+                ;
             switch (name) {
                 case 'inactive':
                     fillColor = [0, 0, 255, 0.75];
@@ -99,7 +101,7 @@ $(function () {
                     source: source,
                     style: stylishFunction
                 })
-            ;
+                ;
             vectorLayer.set('level', 'top')
             vectorLayer.setVisible(true);
 
@@ -149,15 +151,23 @@ $(function () {
          * @param source
          * @param error
          * @param graph
+         * @param activeFeature = null
          */
-        function fillSource(source, error, graph) {
+        function fillSource(source, selectedFeatureGetter, error, graph) {
+            console.log('fill source start');
+            console.log('active feature:', selectedFeatureGetter
+                    ? selectedFeatureGetter()
+                    ? selectedFeatureGetter().get('vertex').id
+                    : null
+                    : null
+            );
             if (error) {
                 console.log(error);
                 return;
             }
             source.clear();
-            for (vertexId in graph.vertices) {
-                vertex = graph.vertices[vertexId];
+            for (var vertexId in graph.vertices) {
+                var vertex = graph.vertices[vertexId];
                 if (typeof vertex.lat === 'undefined' || typeof vertex.lon === 'undefined') {
                     return;
                 }
@@ -165,11 +175,16 @@ $(function () {
                     transform([vertex.lon, vertex.lat]),
                     1
                 );
+                var selected = selectedFeatureGetter &&
+                        selectedFeatureGetter() &&
+                        selectedFeatureGetter().get('vertex').id === vertex.id
+                    ;
                 var feature = new ol.Feature({
                     geometry: point,
                     name: vertexId,
                     vertex: vertex,
-                    'class': 'inactive'
+                    'class': 'inactive',
+                    selected: selected
                 });
                 source.addFeature(feature);
             }
@@ -197,15 +212,20 @@ $(function () {
             }
         }
 
+        function redrawGraph(levelGetter, force, source, selectedFeatureGetter) {
+            loadGraph(levelGetter(), force, fillSource.bind(null, source, selectedFeatureGetter));
+        }
+
         /**
          * Делает указанный слой базовым
          * @param {Number} level
          */
-        function setBaseLayer(map, source, level) {
+        function setBaseLayer(map, source, levelGetter) {
             var layers = map.getLayers(),
                 baseLayer = null,
-                vectorLayer = null
-            ;
+                vectorLayer = null,
+                level = levelGetter()
+                ;
 
             layers.forEach(function (layer) {
                 if (layer.get('level') === 'top') {
@@ -225,7 +245,9 @@ $(function () {
             layers.remove(vectorLayer);
             layers.insertAt(1, vectorLayer);
             layers.insertAt(0, baseLayer);
-            loadGraph(level, false, fillSource.bind(null, source));
+            redrawGraph(levelGetter, true, source, null);
+
+            return levelGetter();
         }
 
         /**
@@ -282,7 +304,7 @@ $(function () {
                             }),
                         glyph = $('<span>')
                             .addClass('glyphicon glyphicon-remove')
-                    ;
+                        ;
                     unattachBtn.append(glyph);
                     span.append(unattachBtn);
                     objectDiv
@@ -317,13 +339,17 @@ $(function () {
                 }
             };
 
+            var featuresUpdateTimerId = null;
+
             var featureStylishFunction = function(feature, resolution) {
                 var vertex = feature.get('vertex'),
                     selected = feature.get('selected'),
                     styleName = ''
-                ;
+                    ;
                 if (selected) {
                     styleName = 'active';
+                } else if (vertex.objects.length > 0) {
+                    styleName = 'has_objects'
                 } else if (NORMAL_NODE_TYPES.indexOf(vertex.type.id) !== -1) {
                     styleName = 'inactive';
                 }
@@ -337,8 +363,18 @@ $(function () {
                 vectorLayer = resource.vectorLayer,
                 map = resource.map,
                 activeFeature = null,
-                selectedObjectId = null;
+                selectedObjectId = null,
+                currentLevel = INITIAL_LAYER_NUM;
             ;
+
+            var activeFeatureGetter = function() {
+                return activeFeature;
+            }
+
+            var currentLevelGetter = function() {
+                return currentLevel;
+            }
+
 
             var describeVertexFunction = describeVertex.bind(
                 null,
@@ -360,9 +396,12 @@ $(function () {
                 var level = $(e.target).val();
                 level = level < MIN_LAYER_NUM ? MIN_LAYER_NUM : level;
                 level = level > MAX_LAYER_NUM ? MAX_LAYER_NUM : level;
+                currentLevel = level;
                 $(e.target).val(level);
                 describeVertexFunction(null);
-                setBaseLayer(map, source, level);
+                clearInterval(featuresUpdateTimerId);
+                currentLevel = setBaseLayer(map, source, currentLevelGetter);
+                featuresUpdateTimerId = setInterval(redrawGraph.bind(null, currentLevelGetter, true, source, activeFeatureGetter), REFRESH_TIMEOUT);
                 return false;
             });
 
@@ -370,14 +409,18 @@ $(function () {
             map.on('click', function(event) {
                 if (activeFeature) {
                     activeFeature.set('selected', false)
+                    activeFeature = null;
                 }
                 var feature = map.forEachFeatureAtPixel(event.pixel, function(feature, layer) { return feature; });
                 if (feature) {
+                    //clearInterval(featuresUpdateTimerId);
                     activeFeature = feature;
+                    //featuresUpdateTimerId = setInterval(redrawGraph.bind(null, currentLevelGetter, true, source, activeFeatureGetter), REFRESH_TIMEOUT);
                     feature.set('selected', true);
                     var vertex = feature.get('vertex');
                     loadObjects(vertex, describeVertexFunction.bind(null, vertex));
                 } else {
+                    activeFeature = null;
                     describeVertexFunction(null);
                 }
             });
@@ -434,8 +477,10 @@ $(function () {
                 window.open(url, '_blank');
             });
 
+            featuresUpdateTimerId = setInterval(redrawGraph.bind(null, currentLevelGetter, true, source, activeFeatureGetter), REFRESH_TIMEOUT);
+
             //set initial layer
-            setBaseLayer(map, source, INITIAL_LAYER_NUM);
+            currentLevel = setBaseLayer(map, source, currentLevelGetter);
         }
 
 

@@ -56,6 +56,7 @@ class NodeRepository extends EntityRepository
     public function getNodesForLevel($level)
     {
         $this->_em->getConfiguration()->setSQLLogger(null);
+        $objectRepository = $this->_em->getRepository('FarpostCatalogueBundle:CatalogueObject');
         gc_enable();
         $it = $this->_em->createQuery('select n from FarpostMapsBundle:Node n where n.level = :level')
             ->setParameter('level', $level)
@@ -73,7 +74,8 @@ class NodeRepository extends EntityRepository
                 'type' => [
                     'alias' => $node->getType()->getAlias(),
                     'id' => $node->getType()->getId()
-                ]
+                ],
+                'objects' => $objectRepository->serialize($node->getObjects())
             ];
             unset($node);
             if (++$i % $batchSize === 0) {
