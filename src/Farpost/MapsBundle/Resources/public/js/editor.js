@@ -53,6 +53,10 @@ $(function () {
                     fillColor = [255, 0, 0, 1];
                     strokeColor = [0, 0, 0, 1];
                     break;
+                case 'has_objects':
+                    fillColor = [0, 255, 0, 1];
+                    strokeColor = [0, 0, 0, 1];
+                    break;
                 default:
                     fillColor = [200, 200, 200, 0.75];
                     strokeColor = [0, 0, 0, 1];
@@ -266,12 +270,12 @@ $(function () {
                         nameInput = $('<a>')
                             .attr('href', '/admin/farpost/catalogue/catalogueobject/' + object.id + '/edit')
                             .attr('target', '_blank')
-                            .addClass('col-md-12 form-control')
+                            .addClass('col-md-12 form-control multiline')
                             .text(object.name),
                         span = $('<span>')
-                            .addClass('input-group-btn'),
+                            .addClass('input-group-btn multiline'),
                         unattachBtn = $('<button>')
-                            .addClass('btn btn-danger')
+                            .addClass('btn btn-danger multiline')
                             .data('id', object.id)
                             .click(function() {
                                 detachObjectFunction(vertex, $(this).data('id'))

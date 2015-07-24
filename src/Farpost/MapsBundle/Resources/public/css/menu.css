@@ -16,6 +16,25 @@ h3.sidebar-title {
 
 #vertex-objects {
     overflow: auto;
-    max-height: 500px;
+    max-height: 300px;
     margin-bottom: 10px;
+}
+
+div.object-description a.form-control.multiline {
+    height: auto;
+}
+
+div.object-description span.multiline {
+    padding: 0;
+    margin: 0;
+}
+
+div.object-description button {
+    padding: 0 6px;
+    height: 100%;
+    border: 0;
+}
+
+.typeahead.dropdown-menu li a {
+    white-space: normal;
 }
