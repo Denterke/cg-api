@@ -181,6 +181,7 @@ class Version
         if (!$fileSize) {
             throw new \Exception("filesize($filePath) failed");
         }
+        $fileSize = $fileSize / 1024 / 1024;
         $this->setFileSize($fileSize)
             ->setChecksum(md5_file($filePath));
 

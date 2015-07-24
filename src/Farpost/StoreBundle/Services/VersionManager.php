@@ -88,7 +88,7 @@ class VersionManager
                 //..
                 //MAP => 159
                 $type = abs($version->getType());
-                $name = '1' . ($type > 10 ? $type : "0$type") . '_' . $version->getVersionNumber() . '.db';
+                $name = '1' . ($type >= 10 ? $type : "0$type") . '_' . $version->getVersionNumber() . '.db';
                 $filesForZip[] = [
                     'name' => $name,
                     'path' => $version->getFullPath()
@@ -116,7 +116,6 @@ class VersionManager
         if (!$zipSize) {
             throw new \Exception("filesize($fullArchiveName) failed");
         }
-        $zipSize = $zipSize / 1024 / 1024;
         $mapsZipVersion = new Version();
         $mapsZipVersion->setBaseWithAttributes($archiveName)
             ->setVDatetime((new \DateTime())->getTimestamp())
