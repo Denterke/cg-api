@@ -408,19 +408,24 @@ $(function () {
             //setup map interaction handlers
             map.on('click', function(event) {
                 if (activeFeature) {
-                    activeFeature.set('selected', false)
+                    activeFeature.set('selected', false);
+                    //source.removeFeature(activeFeature);
+                    //source.addFeature(activeFeature);
                     activeFeature = null;
                 }
                 var feature = map.forEachFeatureAtPixel(event.pixel, function(feature, layer) { return feature; });
                 if (feature) {
                     //clearInterval(featuresUpdateTimerId);
                     activeFeature = feature;
+                    activeFeature.set('selected', true);
+                    
+                    console.log('CLICK - set active feature = ' + feature.get('vertex').id);
                     //featuresUpdateTimerId = setInterval(redrawGraph.bind(null, currentLevelGetter, true, source, activeFeatureGetter), REFRESH_TIMEOUT);
-                    feature.set('selected', true);
                     var vertex = feature.get('vertex');
                     loadObjects(vertex, describeVertexFunction.bind(null, vertex));
                 } else {
-                    activeFeature = null;
+                    console.log('CLICK - disable active feature');
+                    //activeFeature = null;
                     describeVertexFunction(null);
                 }
             });
