@@ -44,3 +44,6 @@ ul.typeahead.dropdown-menu {
     max-height: 250px;
     overflow-y: auto;
 }
+.spin {
+    -webkit-animation: spin 1s infinite linear;
+}

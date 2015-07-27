@@ -29,6 +29,12 @@
                         {% endfor %}
                     </select>
                 </div>
+                <div style="margin-top: 5px" class="col-md-12 menu-item">
+                    <button type="button" id="refresh-graph-btn" class="btn btn-success">
+                        {% trans %}label.refresh{% endtrans %}
+                        <span id="refresh-graph-spinner" class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                </div>
                 <div style="display: none" class="form-group col-md-12 menu-item" id="vertex-description">
                     <h3>{% trans %}label.vertex{% endtrans %}</h3>
                     <label for="vertex-alias">{% trans %}label.vertex_alias{% endtrans %}</label>

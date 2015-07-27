@@ -153,14 +153,7 @@ $(function () {
          * @param graph
          * @param activeFeature = null
          */
-        function fillSource(source, selectedFeatureGetter, error, graph) {
-            console.log('fill source start');
-            console.log('active feature:', selectedFeatureGetter
-                    ? selectedFeatureGetter()
-                    ? selectedFeatureGetter().get('vertex').id
-                    : null
-                    : null
-            );
+        function fillSource(source, error, graph) {
             if (error) {
                 console.log(error);
                 return;
@@ -175,19 +168,16 @@ $(function () {
                     transform([vertex.lon, vertex.lat]),
                     1
                 );
-                var selected = selectedFeatureGetter &&
-                        selectedFeatureGetter() &&
-                        selectedFeatureGetter().get('vertex').id === vertex.id
-                    ;
                 var feature = new ol.Feature({
                     geometry: point,
                     name: vertexId,
                     vertex: vertex,
                     'class': 'inactive',
-                    selected: selected
+                    selected: false
                 });
                 source.addFeature(feature);
             }
+            $('#refresh-graph-spinner').removeClass('spin');
         }
 
         /**
@@ -212,20 +202,19 @@ $(function () {
             }
         }
 
-        function redrawGraph(levelGetter, force, source, selectedFeatureGetter) {
-            loadGraph(levelGetter(), force, fillSource.bind(null, source, selectedFeatureGetter));
+        function redrawGraph(level, force, source) {
+            loadGraph(level, force, fillSource.bind(null, source));
         }
 
         /**
          * Делает указанный слой базовым
          * @param {Number} level
          */
-        function setBaseLayer(map, source, levelGetter) {
+        function setBaseLayer(map, source, level) {
+            $('#refresh-graph-spinner').addClass('spin');
             var layers = map.getLayers(),
                 baseLayer = null,
-                vectorLayer = null,
-                level = levelGetter()
-                ;
+                vectorLayer = null;
 
             layers.forEach(function (layer) {
                 if (layer.get('level') === 'top') {
@@ -245,9 +234,7 @@ $(function () {
             layers.remove(vectorLayer);
             layers.insertAt(1, vectorLayer);
             layers.insertAt(0, baseLayer);
-            redrawGraph(levelGetter, true, source, null);
-
-            return levelGetter();
+            redrawGraph(level, false, source);
         }
 
         /**
@@ -324,6 +311,8 @@ $(function () {
             var view = {
                 sidebar: {
                     levelSelector: $('#select-level'),
+                    $graphRefreshBtn: $('#refresh-graph-btn'),
+                    $graphRefreshSpinner: $('#refresh-graph-spinner'),
                     vertex: {
                         $description: $('#vertex-description'),
                         $alias: $('#vertex-alias'),
@@ -338,8 +327,6 @@ $(function () {
                     }
                 }
             };
-
-            var featuresUpdateTimerId = null;
 
             var featureStylishFunction = function(feature, resolution) {
                 var vertex = feature.get('vertex'),
@@ -367,15 +354,6 @@ $(function () {
                 currentLevel = INITIAL_LAYER_NUM;
             ;
 
-            var activeFeatureGetter = function() {
-                return activeFeature;
-            }
-
-            var currentLevelGetter = function() {
-                return currentLevel;
-            }
-
-
             var describeVertexFunction = describeVertex.bind(
                 null,
                 function(vertex, objectId) {
@@ -399,9 +377,7 @@ $(function () {
                 currentLevel = level;
                 $(e.target).val(level);
                 describeVertexFunction(null);
-                clearInterval(featuresUpdateTimerId);
-                currentLevel = setBaseLayer(map, source, currentLevelGetter);
-                featuresUpdateTimerId = setInterval(redrawGraph.bind(null, currentLevelGetter, true, source, activeFeatureGetter), REFRESH_TIMEOUT);
+                setBaseLayer(map, source, level);
                 return false;
             });
 
@@ -409,23 +385,15 @@ $(function () {
             map.on('click', function(event) {
                 if (activeFeature) {
                     activeFeature.set('selected', false);
-                    //source.removeFeature(activeFeature);
-                    //source.addFeature(activeFeature);
                     activeFeature = null;
                 }
                 var feature = map.forEachFeatureAtPixel(event.pixel, function(feature, layer) { return feature; });
                 if (feature) {
-                    //clearInterval(featuresUpdateTimerId);
                     activeFeature = feature;
                     activeFeature.set('selected', true);
-                    
-                    console.log('CLICK - set active feature = ' + feature.get('vertex').id);
-                    //featuresUpdateTimerId = setInterval(redrawGraph.bind(null, currentLevelGetter, true, source, activeFeatureGetter), REFRESH_TIMEOUT);
                     var vertex = feature.get('vertex');
                     loadObjects(vertex, describeVertexFunction.bind(null, vertex));
                 } else {
-                    console.log('CLICK - disable active feature');
-                    //activeFeature = null;
                     describeVertexFunction(null);
                 }
             });
@@ -482,10 +450,17 @@ $(function () {
                 window.open(url, '_blank');
             });
 
-            featuresUpdateTimerId = setInterval(redrawGraph.bind(null, currentLevelGetter, true, source, activeFeatureGetter), REFRESH_TIMEOUT);
-
+            view.sidebar.$graphRefreshBtn.click(function() {
+                view.sidebar.$graphRefreshSpinner.addClass('spin');
+                describeVertexFunction(null);
+                if (activeFeature) {
+                    activeFeature.set('selected', false);
+                }
+                activeFeature = null;
+                redrawGraph(currentLevel, true, source);
+            });
             //set initial layer
-            currentLevel = setBaseLayer(map, source, currentLevelGetter);
+            setBaseLayer(map, source, currentLevel);
         }
 
 

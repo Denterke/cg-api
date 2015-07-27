@@ -34,6 +34,10 @@
                 <source>label.id</source>
                 <target>Идентификатор</target>
             </trans-unit>
+            <trans-unit id="label.refresh">
+                <source>label.refresh</source>
+                <target>Обновить</target>
+            </trans-unit>
             <trans-unit id="title.nodes">
                 <source>title.nodes</source>
                 <target>Вершины</target>
