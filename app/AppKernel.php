@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new Farpost\CatalogueBundle\FarpostCatalogueBundle(),
             new Gregwar\ImageBundle\GregwarImageBundle(),
             new Farpost\MapsBundle\FarpostMapsBundle(),
+            new Farpost\NewsBundle\FarpostNewsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

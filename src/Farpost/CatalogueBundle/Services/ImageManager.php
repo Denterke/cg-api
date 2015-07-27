@@ -10,7 +10,6 @@ namespace Farpost\CatalogueBundle\Services;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
-use Farpost\CatalogueBundle\Entity\CatalogueImage;
 
 class ImageManager {
 
@@ -23,41 +22,68 @@ class ImageManager {
         $this->imageHandling = $imageHandling;
     }
 
-    public function createImagesFromFile(UploadedFile $file)
+    public function createImages(UploadedFile $file, $params)
     {
         $clientExtension = $file->getClientOriginalExtension();
 
-        $file = $file->move('tmp', join('.', [$file->getClientOriginalName(), $file->getClientOriginalExtension()]));
+        $file = $file->move('tmp', join('.', [uniqid('', true), $clientExtension]));
         $tmpPath = $file->getPath();
 
+        $originalName = $file->getFilename();
+        $originalFullPath = join('/', [$tmpPath, $originalName]);
 
-        $standardName = $file->getFilename();
-        $standardFullPath = join('/', [$tmpPath, $standardName]);
-
-        $thumbnailName = join('.', [uniqid('', true), $clientExtension]);
-        $thumbnailFullPath = join('/', [$tmpPath, $thumbnailName]);
-
-        $this->imageHandling->open($standardFullPath)
-            ->resize(100, 100)
-            ->save($thumbnailFullPath)
-        ;
-
-        $standardFile = new File($standardFullPath);
-        $thumbnailFile = new File($thumbnailFullPath);
-
-        $standard = new CatalogueImage();
-        $standard->setFile($standardFile)
-            ->refreshUpdated()
-        ;
-        $thumbnail = new CatalogueImage();
-        $thumbnail->setFile($thumbnailFile)
-            ->refreshUpdated()
-        ;
-
-        return [
-            'standard' => $standard,
-            'thumbnail' => $thumbnail
+        $processedImages = [
+            'original' => new File($originalFullPath)
         ];
+
+        foreach($params as $imageParams) {
+            $processedImageName = join('.', [uniqid('', true), $clientExtension]);
+            $processedImageFullPath = join('/', [$tmpPath, $processedImageName]);
+            $this->imageHandling->open($originalFullPath)
+                ->resize($imageParams['width'], $imageParams['height'])
+                ->save($processedImageFullPath)
+            ;
+            $processedImages[$imageParams['name']] = new File($processedImageFullPath);
+        }
+
+        return $processedImages;
     }
+
+//    public function createImagesFromFile(UploadedFile $file)
+//    {
+//        $clientExtension = $file->getClientOriginalExtension();
+//
+//        $file = $file->move('tmp', join('.', [$file->getClientOriginalName(), $file->getClientOriginalExtension()]));
+//        $tmpPath = $file->getPath();
+//
+//
+//        $standardName = $file->getFilename();
+//        $standardFullPath = join('/', [$tmpPath, $standardName]);
+//
+//        $thumbnailName = join('.', [uniqid('', true), $clientExtension]);
+//        $thumbnailFullPath = join('/', [$tmpPath, $thumbnailName]);
+//
+//        $this->imageHandling->open($standardFullPath)
+//            ->resize(100, 100)
+//            ->save($thumbnailFullPath)
+//        ;
+//
+//        $standardFile = new File($standardFullPath);
+//        $thumbnailFile = new File($thumbnailFullPath);
+//
+//        $standard = new CatalogueImage();
+//        $standard->setFile($standardFile)
+//            ->refreshUpdated()
+//        ;
+//        $thumbnail = new CatalogueImage();
+//        $thumbnail->setFile($thumbnailFile)
+//            ->refreshUpdated()
+//        ;
+//
+//        return [
+//            'standard' => $standard,
+//            'thumbnail' => $thumbnail
+//        ];
+//    }
 
 }
