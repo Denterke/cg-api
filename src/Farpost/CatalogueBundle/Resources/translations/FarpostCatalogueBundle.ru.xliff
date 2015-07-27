@@ -147,6 +147,15 @@
                 <target>Список категорий, из которых можно сюда перейти</target>
             </trans-unit>
 
+            <trans-unit id="text.start_catalogue_export">
+                <source>text.start_catalogue_export</source>
+                <target>Начать генерацию справочника</target>
+            </trans-unit>
+            <trans-unit id="text.catalogue_generation_in_process">
+                <source>text.catalogue_generation_in_process</source>
+                <target>Генерация справочника уже идет</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>
