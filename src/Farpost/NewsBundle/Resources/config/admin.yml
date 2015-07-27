@@ -1,0 +1,22 @@
+services:
+    sonata.admin.news_article:
+        class: Farpost\NewsBundle\Admin\ArticleAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "News", label: "title.articles" }
+        arguments:
+            - ~
+            - Farpost\NewsBundle\Entity\Article
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostNewsBundle] ]
+
+    sonata.admin.news_imageset:
+        class: Farpost\NewsBundle\Admin\ImageSetAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "News", label: "title.image_sets", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\NewsBundle\Entity\ImageSet
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostNewsBundle] ]
