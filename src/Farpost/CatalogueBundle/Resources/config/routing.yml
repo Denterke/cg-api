@@ -17,3 +17,7 @@ farpost_catalogue_attach_object_to_node:
 farpost_catalogue_detach_object_from_node:
     path:     /admin/catalogue/objects/detach
     defaults: { _controller: FarpostCatalogueBundle:Default:detachObject }
+
+farpost_catalogue_rescue:
+    path:     /admin/catalogue/rescue
+    defaults: { _controller: FarpostCatalogueBundle:Export:rescue }
