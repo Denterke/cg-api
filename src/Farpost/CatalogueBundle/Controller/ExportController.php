@@ -33,4 +33,21 @@ class ExportController extends Controller
         $content = $output->fetch();
         return new Response($content);
     }
+
+    public function warnAction()
+    {
+        $kernel = $this->get('kernel');
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'catalogue:warn'
+        ]);
+
+        $output = new BufferedOutput();
+        $application->run($input, $output);
+
+        $content = $output->fetch();
+        return new Response($content);
+    }
 }
