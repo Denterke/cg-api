@@ -8,6 +8,7 @@
 
 namespace Farpost\NewsBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator as Assert;
 
@@ -16,7 +17,7 @@ use Symfony\Component\Validator as Assert;
  * @package Farpost\NewsBundle\Entity
  *
  * @ORM\Table(name="news_articles")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Farpost\NewsBundle\Entity\ArticleRepository")
  */
 class Article
 {
@@ -59,13 +60,11 @@ class Article
     protected $published;
 
     /**
-     * @var ImageSet
+     * @var ArrayCollection
      *
-     * @ORM\OneToOne(targetEntity="ImageSet", mappedBy="article", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="main_image_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="ArticleImage", mappedBy="article", cascade={"persist"})
      */
-    protected $imageSet;
-
+    protected $images;
 
     /**
      * Get id
@@ -190,5 +189,48 @@ class Article
     public function getImageSet()
     {
         return $this->imageSet;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
+
+    /**
+     * Add images
+     *
+     * @param \Farpost\NewsBundle\Entity\ArticleImage $image
+     * @return Article
+     */
+    public function addImage(\Farpost\NewsBundle\Entity\ArticleImage $image)
+    {
+        $image->setArticle($this);
+        $this->images[] = $image;
+
+        return $this;
+    }
+
+    /**
+     * Remove images
+     *
+     * @param \Farpost\NewsBundle\Entity\ArticleImage $image
+     */
+    public function removeImage(\Farpost\NewsBundle\Entity\ArticleImage $image)
+    {
+        $image->setArticle(null);
+        $this->images->removeElement($image);
+    }
+
+    /**
+     * Get images
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getImages()
+    {
+        return $this->images;
     }
 }

@@ -10,6 +10,17 @@ services:
         calls:
             - [ setTranslationDomain, [FarpostNewsBundle] ]
 
+    sonata.admin.news_images:
+        class: Farpost\NewsBundle\Admin\ArticleImageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "News", label: "title.article_images", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\NewsBundle\Entity\ArticleImage
+            - ~
+        calls:
+            - [setTranslationDomain, [FarpostNewsBundle] ]
+
     sonata.admin.news_imageset:
         class: Farpost\NewsBundle\Admin\ImageSetAdmin
         tags:
