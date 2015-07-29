@@ -42,16 +42,29 @@ class CatalogueRescueCommand extends ContainerAwareCommand
         $relations = $sqliteBase->query('SELECT _id, object_id, category_id FROM categories_objects');
         while ($row = $relations->fetchArray()) {
             $categoryObjectEdge = $categoryObjectEdgeRepository->findOneBy(['id' => $row['_id']]);
+            $found = true;
             if (!$categoryObjectEdge) {
+                $found = false;
                 $categoryObjectEdge = new CatalogueCategoryObjectEdge();
+//                $em->persist($categoryObjectEdge);
             }
             $object = $objectRepository->findOneBy(['id' => $row['object_id']]);
-            $category =$objectRepository->findOneBy(['id' => $row['category_id']]);
-            if ($object && $category) {
-                echo "<p>Rescue CategoryObjectEdge: ($row[object_id], $row[category_id])</p>";
-                $categoryObjectEdge->setObject($object)
-                    ->setCategory($category);
-                $em->merge($categoryObjectEdge);
+            $category =$categoryRepository->findOneBy(['id' => $row['category_id']]);
+            if ($object && $category && !$found) {
+                $categoryObjectEdgeDuplicate = $categoryObjectEdgeRepository->findOneBy(['object' => $object, 'category' => $category]);
+                if ($categoryObjectEdgeDuplicate == null) {
+                    echo "<p>Rescue CategoryObjectEdge: ($row[object_id], $row[category_id])</p>";
+                    $categoryObjectEdge->setObject($object)
+                        ->setCategory($category);
+                    $em->merge($categoryObjectEdge);
+                    $em->flush();
+                    $em->clear();
+                } else {
+                    echo "<p>Skipping duplicate</p>";
+                }
+            } else if ($object == null && $category == null) {
+                echo "<p>Removing null/null category object edge</p>";
+                $em->remove($categoryObjectEdge);
                 $em->flush();
                 $em->clear();
             } else {
