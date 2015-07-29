@@ -92,7 +92,7 @@ class APIV2Controller extends APIV1Controller
         $result = $this->getDoctrine()
             ->getManager()
             ->getRepository('FarpostStoreBundle:News')
-            ->getNews($newsId, $count, $this->getRequest()->getHost());
+            ->getNews($newsId, $count, $request->getHost());
         if ($result === null) {
             return $response;
         }

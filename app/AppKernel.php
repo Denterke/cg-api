@@ -31,6 +31,11 @@ class AppKernel extends Kernel
             new Gregwar\ImageBundle\GregwarImageBundle(),
             new Farpost\MapsBundle\FarpostMapsBundle(),
             new Farpost\NewsBundle\FarpostNewsBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
+            new Sonata\MediaBundle\SonataMediaBundle(),
+            new Application\Sonata\MediaBundle\ApplicationSonataMediaBundle(),
+            new Sonata\IntlBundle\SonataIntlBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
