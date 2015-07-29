@@ -80,6 +80,13 @@ class VersionManager
         foreach($versions as $version) {
             if ($version->getType() === Version::ZIP_LIKE_MAPS_VL) {
                 $lastMapsZipVersion = $version->getVersionNumber();
+                break;
+            }
+        }
+        $lastMapsZipVersion++;
+        foreach($versions as $version) {
+            if ($version->getType() === Version::ZIP_LIKE_MAPS_VL) {
+//                $lastMapsZipVersion = $version->getVersionNumber();
                 continue;
             }
             if ($version->isMbtiles()) {
@@ -88,7 +95,11 @@ class VersionManager
                 //..
                 //MAP => 159
                 $type = abs($version->getType());
-                $name = '1' . ($type >= 10 ? $type : "0$type") . '_' . $version->getVersionNumber() . '.db';
+                if ($type === Version::MAP) {
+                    $name = "1000_$lastMapsZipVersion.db";
+                } else {
+                    $name = '1' . ($type >= 10 ? $type : "0$type") . "_$lastMapsZipVersion.db";
+                }
                 $filesForZip[] = [
                     'name' => $name,
                     'path' => $version->getFullPath()
@@ -103,7 +114,6 @@ class VersionManager
                 continue;
             }
         }
-        $lastMapsZipVersion++;
         $archiveName = "200_$lastMapsZipVersion.db";
         $fullArchiveName = Version::getStaticDir() . "/$archiveName";
         $zip = $this->createZipArchive($fullArchiveName);
