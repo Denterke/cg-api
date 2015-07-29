@@ -2,6 +2,6 @@ parameters:
 #    farpost_news.example.class: Farpost\NewsBundle\Example
 
 services:
-#    farpost_news.example:
-#        class: %farpost_news.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    farpost_news.serializer.article:
+        class: Farpost\NewsBundle\Serializer\ArticleSerializer
+        arguments: [@sonata.media.provider.image]

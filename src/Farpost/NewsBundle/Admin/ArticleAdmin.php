@@ -21,12 +21,6 @@ class ArticleAdmin extends Admin
             ->add('title', 'text', [
                 'label' => 'label.title'
             ])
-//            ->add('imageSet', 'sonata_type_admin', [
-//                'label' => 'label.logo',
-//                'required' => false,
-//                'btn_add' => false,
-//                'btn_delete' => false
-//            ])
             ->add('images', 'sonata_type_collection', [
                 'label' => 'label.media'
             ], [
