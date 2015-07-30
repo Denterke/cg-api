@@ -39,7 +39,7 @@ class ArticleImage
     /**
      * @var Media
      *
-     * @ORM\ManyToOne(targetEntity="\Application\Sonata\MediaBundle\Entity\Media", inversedBy="possibleArticles", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="\Application\Sonata\MediaBundle\Entity\Media", cascade={"persist"})
      * @ORM\JoinColumn(name="media_id", referencedColumnName="id")
      */
     protected $media;

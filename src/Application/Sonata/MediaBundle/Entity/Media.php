@@ -41,13 +41,6 @@ class Media extends BaseMedia
         return $this->id;
     }
 
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="ArticleImage", mappedBy="media")
-     */
-    protected $possibleArticles;
-
     public function __construct()
     {
         $this->possibleArticles = new ArrayCollection();
