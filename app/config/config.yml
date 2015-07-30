@@ -107,12 +107,9 @@ doctrine:
                     FarpostCatalogueBundle: ~
                     FarpostStoreBundle: ~
                     FarpostMapsBundle: ~
-<<<<<<< Updated upstream
-=======
                     FarpostNewsBundle: ~
                     SonataMediaBundle: ~
                     ApplicationSonataMediaBundle: ~
->>>>>>> Stashed changes
             back_up:
                 connection: back_up
                 mappings:

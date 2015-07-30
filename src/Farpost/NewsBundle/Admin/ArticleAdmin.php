@@ -58,7 +58,7 @@ class ArticleAdmin extends Admin
     {
         $this->attachImages($article);
     }
-
+    
     public function attachImages($article)
     {
         foreach($article->getImages() as $image) {
