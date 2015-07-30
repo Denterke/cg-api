@@ -3,7 +3,6 @@ imports:
     - { resource: security.yml }
     - { resource: @FarpostCatalogueBundle/Resources/config/admin.yml }
     - { resource: @FarpostMapsBundle/Resources/config/admin.yml }
-    - { resource: @FarpostNewsBundle/Resources/config/admin.yml }
 
 services:
     entity_dispatcher:
@@ -108,9 +107,12 @@ doctrine:
                     FarpostCatalogueBundle: ~
                     FarpostStoreBundle: ~
                     FarpostMapsBundle: ~
+<<<<<<< Updated upstream
+=======
                     FarpostNewsBundle: ~
                     SonataMediaBundle: ~
                     ApplicationSonataMediaBundle: ~
+>>>>>>> Stashed changes
             back_up:
                 connection: back_up
                 mappings:

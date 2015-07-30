@@ -30,12 +30,16 @@ class AppKernel extends Kernel
             new Farpost\CatalogueBundle\FarpostCatalogueBundle(),
             new Gregwar\ImageBundle\GregwarImageBundle(),
             new Farpost\MapsBundle\FarpostMapsBundle(),
+<<<<<<< Updated upstream
+=======
             new Farpost\NewsBundle\FarpostNewsBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
             new Sonata\MediaBundle\SonataMediaBundle(),
             new Application\Sonata\MediaBundle\ApplicationSonataMediaBundle(),
             new Sonata\IntlBundle\SonataIntlBundle()
+
+>>>>>>> Stashed changes
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
