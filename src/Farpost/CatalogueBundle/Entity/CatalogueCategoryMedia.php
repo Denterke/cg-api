@@ -10,16 +10,15 @@ namespace Farpost\CatalogueBundle\Entity;
 
 use Application\Sonata\MediaBundle\Entity\Media;
 use Doctrine\ORM\Mapping as ORM;
-use Sonata\MediaBundle\Provider\ImageProvider;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="catalogue_object_media")
+ * @ORM\Table(name="catalogue_category_media")
  */
-class CatalogueObjectMedia
+class CatalogueCategoryMedia
 {
     static public $sqliteAnnotations = [
-        'table' => 'objects_images',
+        'table' => 'categories_images',
         'fields' => [
             [
                 'name' => '_id',
@@ -34,8 +33,8 @@ class CatalogueObjectMedia
                 'type' => 'INTEGER',
                 'PK' => false,
                 'nullable' => false,
-                'RK' => 'objects',
-                'getter' => 'getObject',
+                'RK' => 'categories',
+                'getter' => 'getCategory',
             ],
             [
                 'name' => 'standard_url',
@@ -74,10 +73,10 @@ class CatalogueObjectMedia
     /**
      * @var CatalogueObject
      *
-     * @ORM\ManyToOne(targetEntity="CatalogueObject", inversedBy="images")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CatalogueCategory", inversedBy="images")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
-    protected $object;
+    protected $category;
 
     /**
      * @var Media
@@ -86,7 +85,6 @@ class CatalogueObjectMedia
      * @ORM\JoinColumn(name="media_id", referencedColumnName="id")
      */
     protected $media;
-
 
     /**
      * Get id
@@ -99,33 +97,33 @@ class CatalogueObjectMedia
     }
 
     /**
-     * Set object
+     * Set category
      *
-     * @param \Farpost\CatalogueBundle\Entity\CatalogueObject $object
-     * @return CatalogueMedia
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategory $category
+     * @return CatalogueCategoryMedia
      */
-    public function setObject(\Farpost\CatalogueBundle\Entity\CatalogueObject $object = null)
+    public function setCategory(\Farpost\CatalogueBundle\Entity\CatalogueCategory $category = null)
     {
-        $this->object = $object;
+        $this->category = $category;
 
         return $this;
     }
 
     /**
-     * Get object
+     * Get category
      *
-     * @return \Farpost\CatalogueBundle\Entity\CatalogueObject 
+     * @return \Farpost\CatalogueBundle\Entity\CatalogueCategory 
      */
-    public function getObject()
+    public function getCategory()
     {
-        return $this->object;
+        return $this->category;
     }
 
     /**
      * Set media
      *
      * @param \Application\Sonata\MediaBundle\Entity\Media $media
-     * @return CatalogueMedia
+     * @return CatalogueCategoryMedia
      */
     public function setMedia(\Application\Sonata\MediaBundle\Entity\Media $media = null)
     {
@@ -137,7 +135,7 @@ class CatalogueObjectMedia
     /**
      * Get media
      *
-     * @return \Farpost\CatalogueBundle\Entity\Media 
+     * @return \Application\Sonata\MediaBundle\Entity\Media 
      */
     public function getMedia()
     {

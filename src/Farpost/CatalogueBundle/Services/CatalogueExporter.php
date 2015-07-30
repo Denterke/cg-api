@@ -11,18 +11,21 @@ namespace Farpost\CatalogueBundle\Services;
 use Farpost\StoreBundle\Services\SQLiteManager;
 use Farpost\StoreBundle\Entity\Version;
 use Farpost\StoreBundle\Services\VersionManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CatalogueExporter {
 
     private $doctrine;
     private $sqliteManager;
     private $versionManager;
+    private $container;
 
-    public function __construct($doctrine, SQLiteManager $sqliteManager, VersionManager $versionManager)
+    public function __construct($doctrine, SQLiteManager $sqliteManager, VersionManager $versionManager, ContainerInterface $container)
     {
         $this->doctrine = $doctrine;
         $this->sqliteManager = $sqliteManager;
         $this->versionManager = $versionManager;
+        $this->container = $container;
     }
 
     public function export()
@@ -51,7 +54,9 @@ class CatalogueExporter {
                     'categories_tree' => 'CatalogueCategoryEdge',
                     'categories_objects' => 'CatalogueCategoryObjectEdge',
                     'objects' => 'CatalogueObject',
-                    'objects_schedule' => 'CatalogueObjectSchedule'
+                    'objects_schedule' => 'CatalogueObjectSchedule',
+                    'objects_images' => 'CatalogueObjectMedia',
+                    'categories_images' => 'CatalogueCategoryMedia'
                 ]
             ]
         ];
@@ -76,7 +81,17 @@ class CatalogueExporter {
                     $object = $row[0];
                     $record = [];
                     foreach($annotations['fields'] as $fieldInfo) {
-                        $value = $object->$fieldInfo['getter']();
+                        if (array_key_exists('injections', $fieldInfo)) {
+                            $injections = [];
+                            foreach($fieldInfo['injections'] as $serviceName) {
+                                echo $serviceName . "\n";
+                                $injections[] = $this->container->get($serviceName);
+                            }
+                            echo count($injections);
+                            $value = $object->$fieldInfo['getter']($injections);
+                        } else {
+                            $value = $object->$fieldInfo['getter']();
+                        }
                         if ($fieldInfo['RK']) {
                             $value = $value ? $value->getId() : null;
                         }

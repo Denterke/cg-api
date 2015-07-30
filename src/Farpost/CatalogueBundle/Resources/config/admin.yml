@@ -65,13 +65,24 @@ services:
         calls:
             - [ setTranslationDomain, [FarpostCatalogueBundle] ]
 
-    sonata.admin.catalogue_media:
+    sonata.admin.catalogue__object_media:
         class: Farpost\CatalogueBundle\Admin\CatalogueObjectMediaAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue__object_media", show_in_dashboard: false }
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_object_media", show_in_dashboard: false }
         arguments:
             - ~
             - Farpost\CatalogueBundle\Entity\CatalogueObjectMedia
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue__category_media:
+        class: Farpost\CatalogueBundle\Admin\CatalogueCategoryMediaAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_category_media", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueCategoryMedia
             - ~
         calls:
             - [ setTranslationDomain, [FarpostCatalogueBundle] ]

@@ -79,7 +79,15 @@ class CatalogueCategoryAdmin extends Admin
                 'edit' => 'inline',
                 'inline' => 'table',
                 'sortable' => 'id'
-            ]);
+            ])
+            ->add('images', 'sonata_type_collection', [
+                'label' => 'label.media',
+                'by_reference' => false
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table'
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

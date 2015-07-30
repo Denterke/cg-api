@@ -70,7 +70,7 @@ class SQLiteManager {
             $virtualName = $table['virtual_table'];
             $virtualFields = [];
             foreach($table['fields'] as $field) {
-                if (array_key_exists('virtual', $field) && $field['virtual']) {
+                if (array_key_exists('virtual', $field) && $field['virtual'] && !$field['PK']) {
                     $virtualFields[] = $field['name'];
                 }
             }
@@ -315,10 +315,13 @@ class SQLiteManager {
         if (array_key_exists('virtual_table', $table)) {
             $virtualTable = [
                 'table' => $table['virtual_table'],
-                'fields' => []
+                'fields' => [],
             ];
             foreach($table['fields'] as $field) {
                 if (array_key_exists('virtual', $field) && $field['virtual']) {
+                    if ($field['PK']) {
+                        $field['name'] = 'docid';
+                    }
                     $virtualTable['fields'][] = $field;
                 }
             }
@@ -329,7 +332,9 @@ class SQLiteManager {
             $this->insert($table, $item, $stmt, $db);
             $stmt->execute();
             if ($virtualTable) {
-                $this->insert($virtualTable, $item, $virtualStmt, $db, true);
+                $item['docid'] = $item['_id'];
+                unset($item['_id']);
+                $this->insert($virtualTable, $item, $virtualStmt, $db, true);;
                 $virtualStmt->execute();
             }
         }
