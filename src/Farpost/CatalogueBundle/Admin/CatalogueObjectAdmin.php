@@ -16,6 +16,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class CatalogueObjectAdmin extends Admin
 {
+    protected $formOptions = [
+        'cascade_validation' => true
+    ];
 
     public function configure() {
         $this->setTemplate('edit', 'FarpostCatalogueBundle:CRUD:edit_object.html.twig');
@@ -60,6 +63,13 @@ class CatalogueObjectAdmin extends Admin
                 'edit' => 'inline',
                 'inline' => 'table',
                 'sortable' => 'id'
+            ])
+            ->add('images', 'sonata_type_collection', [
+                'label' => 'label.media',
+                'by_reference' => false
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table'
             ])
             ->add('node', 'sonata_type_admin', [
                 'label' => 'label.node',
@@ -158,7 +168,4 @@ class CatalogueObjectAdmin extends Admin
             }
         }
     }
-
-
-
 }

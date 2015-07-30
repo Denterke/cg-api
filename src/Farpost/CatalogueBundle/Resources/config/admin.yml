@@ -65,6 +65,17 @@ services:
         calls:
             - [ setTranslationDomain, [FarpostCatalogueBundle] ]
 
+    sonata.admin.catalogue_media:
+        class: Farpost\CatalogueBundle\Admin\CatalogueObjectMediaAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue__object_media", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueObjectMedia
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
 
     sonata.block.service.versions:
         class: Farpost\CatalogueBundle\Block\VersionBlockService

@@ -25,7 +25,8 @@ class ArticleAdmin extends Admin
                 'label' => 'label.body'
             ])
             ->add('images', 'sonata_type_collection', [
-                'label' => 'label.media'
+                'label' => 'label.media',
+                'by_reference' => false
             ], [
                 'edit' => 'inline',
                 'inline' => 'table'
@@ -54,7 +55,9 @@ class ArticleAdmin extends Admin
 
     public function preUpdate($article)
     {
-        $this->attachImages($article);
+//        var_dump($this->getRequest()->request->get($this->getUniqid()));
+//        $this->adsfadsfa();
+//        $this->attachImages($article);
 //        $this->getConfigurationPool()->getAdminByAdminCode('sonata.admin.news_imageset')->preUpdate($article->getImageSet());
 
 //        $params = $this->getRequest()->request->get($this->getUniqid());
@@ -66,7 +69,7 @@ class ArticleAdmin extends Admin
 
     public function prePersist($article)
     {
-        $this->attachImages($article);
+//        $this->attachImages($article);
 //        $this->getConfigurationPool()->getAdminByAdminCode('sonata.admin.news_imageset')->prePersist($article->getImageSet());
 
 //        if (!isset($params['imageSet']) && !$article->getImageSet()) {

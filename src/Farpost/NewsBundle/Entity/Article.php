@@ -62,7 +62,7 @@ class Article
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="ArticleImage", mappedBy="article", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="ArticleImage", mappedBy="article", cascade={"all"}, orphanRemoval=true)
      */
     protected $images;
 
