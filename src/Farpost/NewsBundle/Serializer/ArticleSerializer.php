@@ -11,14 +11,17 @@ namespace Farpost\NewsBundle\Serializer;
 
 use Sonata\MediaBundle\Entity\MediaManager;
 use Sonata\MediaBundle\Provider\ImageProvider;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ArticleSerializer extends Serializer
 {
     private $imageProvider;
+    private $container;
 
-    public function __construct(ImageProvider $imageProvider)
+    public function __construct(ContainerInterface $container, ImageProvider $imageProvider)
     {
         $this->imageProvider = $imageProvider;
+        $this->container = $container;
     }
 
     public function serialize($objects)
@@ -43,14 +46,18 @@ class ArticleSerializer extends Serializer
         $images = [];
         foreach($object->getImages() as $imageAssociation) {
             $media = $imageAssociation->getMedia();
-            $preview = $this->imageProvider->getFormatName($media, 'preview');
-            $small = $this->imageProvider->getFormatName($media, 'small');
+            $src = $this->imageProvider->getFormatName($media, 'reference');
             $big = $this->imageProvider->getFormatName($media, 'big');
+            $small = $this->imageProvider->getFormatName($media, 'small');
+            $prefix = "http://" . join(':', [$this->container->get('request')->getHost(), $this->container->get('request')->getPort()]);
+            $srcProperties = $this->imageProvider->getHelperProperties($media, 'reference');
             $images[] =
                 [
-                    'src' => $this->imageProvider->generatePublicUrl($media, $preview),
-                    'src_big' => $this->imageProvider->generatePublicUrl($media, $small),
-                    'src_small' => $this->imageProvider->generatePublicUrl($media, $big)
+                    'src' => $prefix . $this->imageProvider->generatePublicUrl($media, $src),
+                    'src_big' => $prefix . $this->imageProvider->generatePublicUrl($media, $big),
+                    'src_small' => $prefix . $this->imageProvider->generatePublicUrl($media, $small),
+                    'width' => $srcProperties['width'],
+                    'height' => $srcProperties['height']
                 ];
         }
         $result['images'] = $images;

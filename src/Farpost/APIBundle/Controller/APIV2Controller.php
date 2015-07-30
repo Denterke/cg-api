@@ -2,8 +2,8 @@
 
 namespace Farpost\APIBundle\Controller;
 
-use Farpost\APIBundle\Controller\APIV1Controller;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+//use Farpost\APIBundle\Controller\APIV1Controller;
+//use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class APIV2Controller extends APIV1Controller
@@ -87,15 +87,18 @@ class APIV2Controller extends APIV1Controller
     {
         $helper = $this->get('api_helper');
         $response = $helper->create404();
-        $newsId = $request->query->getInt('news_id', -1);
+        $baseTimestamp = $request->query->get('last_timestamp', null);
+        $baseDatetime = $baseTimestamp
+            ? (new \DateTime())->setTimestamp($baseTimestamp)
+            : null
+        ;
         $count = abs($request->query->getInt('count', 10));
-        $result = $this->getDoctrine()
+        $articles = $this->getDoctrine()
             ->getManager()
-            ->getRepository('FarpostStoreBundle:News')
-            ->getNews($newsId, $count, $request->getHost());
-        if ($result === null) {
-            return $response;
-        }
+            ->getRepository('FarpostNewsBundle:Article')
+            ->getList($baseDatetime, $count);
+        $result = $this->get('farpost_news.serializer.article')->serialize($articles);
+
         return $response->setContent(
             json_encode([
                 'news' => $result,

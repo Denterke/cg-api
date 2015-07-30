@@ -4,4 +4,4 @@ parameters:
 services:
     farpost_news.serializer.article:
         class: Farpost\NewsBundle\Serializer\ArticleSerializer
-        arguments: [@sonata.media.provider.image]
+        arguments: [@service_container, @sonata.media.provider.image]
