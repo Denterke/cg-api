@@ -21,6 +21,12 @@ class ArticleAdmin extends Admin
             ->add('title', 'text', [
                 'label' => 'label.title'
             ])
+//            ->add('imageSet', 'sonata_type_admin', [
+//                'label' => 'label.logo',
+//                'required' => false,
+//                'btn_add' => false,
+//                'btn_delete' => false
+//            ])
             ->add('images', 'sonata_type_collection', [
                 'label' => 'label.media'
             ], [
@@ -52,13 +58,25 @@ class ArticleAdmin extends Admin
     public function preUpdate($article)
     {
         $this->attachImages($article);
+//        $this->getConfigurationPool()->getAdminByAdminCode('sonata.admin.news_imageset')->preUpdate($article->getImageSet());
+
+//        $params = $this->getRequest()->request->get($this->getUniqid());
+//
+//        if (!isset($params['imageSet']) && !$article->getImageSet()) {
+//            throw new \Exception('No imageset found');
+//        }
     }
 
     public function prePersist($article)
     {
         $this->attachImages($article);
+//        $this->getConfigurationPool()->getAdminByAdminCode('sonata.admin.news_imageset')->prePersist($article->getImageSet());
+
+//        if (!isset($params['imageSet']) && !$article->getImageSet()) {
+//            throw new \Exception('No imageset found');
+//        }
     }
-    
+
     public function attachImages($article)
     {
         foreach($article->getImages() as $image) {

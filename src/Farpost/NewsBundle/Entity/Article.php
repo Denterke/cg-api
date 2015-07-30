@@ -190,7 +190,6 @@ class Article
     {
         return $this->imageSet;
     }
-
     /**
      * Constructor
      */
