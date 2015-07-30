@@ -8,6 +8,7 @@
 
 namespace Farpost\CatalogueBundle\Admin;
 
+use Farpost\CatalogueBundle\Entity\CatalogueImage;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -128,16 +129,32 @@ class CatalogueObjectAdmin extends Admin
         $image = $object->getLogoStandard();
         if ($image) {
             if ($image->getFile()) {
+                $params = [
+                    [
+                        'name' => 'thumbnail',
+                        'width' => 100,
+                        'height' => 100
+                    ]
+                ];
                 $images = $this->getConfigurationPool()
                     ->getContainer()
                     ->get('farpost_catalogue.image_manager')
-                    ->createImagesFromFile($image->getFile());
-                $object->setLogoStandard($images['standard'])
-                    ->setLogoThumbnail($images['thumbnail'])
+                    ->createImages($image->getFile(), $params);
+                $standardImage = new CatalogueImage();
+                $standardImage->setFile($images['original'])
+                    ->refreshUpdated();
+
+                $thumbnailImage = new CatalogueImage();
+                $thumbnailImage->setFile($images['thumbnail'])
+                    ->refreshUpdated();
+
+                $object->setLogoStandard($standardImage)
+                    ->setLogoThumbnail($thumbnailImage)
                 ;
             } elseif (!$image->getFile() && !$image->getFilename()) {
-                $object->setLogoStandard(null);
-                $object->setLogoThumbnail(null);
+                $object->setLogoStandard(null)
+                    ->setLogoThumbnail(null)
+                ;
             }
         }
     }

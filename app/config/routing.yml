@@ -1,3 +1,7 @@
+farpost_news:
+    resource: "@FarpostNewsBundle/Resources/config/routing.yml"
+    prefix:   /
+
 farpost_maps:
     resource: "@FarpostMapsBundle/Resources/config/routing.yml"
     prefix:   /admin/
@@ -5,6 +9,14 @@ farpost_maps:
 farpost_moderator:
     resource: "@FarpostModeratorBundle/Resources/config/routing.yml"
     prefix:   /moderator/
+
+gallery:
+    resource: '@SonataMediaBundle/Resources/config/routing/gallery.xml'
+    prefix: /media/gallery
+
+media:
+    resource: '@SonataMediaBundle/Resources/config/routing/media.xml'
+    prefix: /media
 
 #farpost_admin:
 #    resource: "@FarpostWebBundle/Resources/config/admin_routing.yml"

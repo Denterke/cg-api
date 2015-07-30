@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="ru" datatype="plaintext" original="FarpostNewsBundle.ru.xliff" >
+        <body>
+            <trans-unit id="title.articles">
+                <source>title.articles</source>
+                <target>Новости</target>
+            </trans-unit>
+            <trans-unit id="label.title">
+                <source>label.title</source>
+                <target>Заголовок</target>
+            </trans-unit>
+            <trans-unit id="label.media">
+                <source>label.media</source>
+                <target>Фотографии</target>
+            </trans-unit>
+            <trans-unit id="label.body">
+                <source>label.body</source>
+                <target>Новость</target>
+            </trans-unit>
+            <trans-unit id="label.datetime">
+                <source>label.datetime</source>
+                <target>Время</target>
+            </trans-unit>
+            <trans-unit id="label.published">
+                <source>label.published</source>
+                <target>Опубликовать?</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

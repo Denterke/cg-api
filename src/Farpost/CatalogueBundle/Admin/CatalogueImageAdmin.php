@@ -48,7 +48,7 @@ class CatalogueImageAdmin extends Admin {
         $this->manageFileUpload($image);
     }
 
-    public function PreUpdate($image)
+    public function preUpdate($image)
     {
         $this->manageFileUpload($image);
     }

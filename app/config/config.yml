@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: @FarpostCatalogueBundle/Resources/config/admin.yml }
     - { resource: @FarpostMapsBundle/Resources/config/admin.yml }
+    - { resource: @FarpostNewsBundle/Resources/config/admin.yml }
 
 services:
     entity_dispatcher:
@@ -53,6 +54,7 @@ twig:
     form:
         resources:
             - 'SonataCoreBundle:Form:datepicker.html.twig'
+            - 'SonataMediaBundle:Form:media_widgets.html.twig'
 
 # Assetic Configuration
 assetic:
@@ -70,6 +72,8 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
+        types:
+            json: Sonata\Doctrine\Types\JsonType
         default_connection: default
         connections:
             default:
@@ -104,6 +108,9 @@ doctrine:
                     FarpostCatalogueBundle: ~
                     FarpostStoreBundle: ~
                     FarpostMapsBundle: ~
+                    FarpostNewsBundle: ~
+                    SonataMediaBundle: ~
+                    ApplicationSonataMediaBundle: ~
             back_up:
                 connection: back_up
                 mappings:
@@ -156,6 +163,36 @@ sonata_admin:
 sonata_doctrine_orm_admin:
     # default value is null, so doctrine uses the value defined in the configuration
     entity_manager: ~
+
+sonata_media:
+    default_context: default
+    db_driver: doctrine_orm
+    contexts:
+        default:
+            providers:
+                - sonata.media.provider.dailymotion
+                - sonata.media.provider.youtube
+                - sonata.media.provider.image
+                - sonata.media.provider.file
+            formats:
+                small: { width: 100, quality: 70 }
+                big:   { width: 500, quality: 70 }
+        news:
+            providers:
+                - sonata.media.provider.image
+            formats:
+                preview: { width: 100, quality: 100 }
+                small: { width: 100, quality: 100 }
+                big:   { width: 500, quality: 100 }
+
+    cdn:
+        server:
+            path: /uploads/media
+
+    filesystem:
+        local:
+            directory: %kernel.root_dir%/../web/uploads/media
+            create: true
 
 
 # Swiftmailer Configuration
