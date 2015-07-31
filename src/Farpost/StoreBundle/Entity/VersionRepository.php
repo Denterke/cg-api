@@ -163,6 +163,9 @@ class VersionRepository extends EntityRepository
         ];
         foreach ($recs as &$rec) {
             $dt = date('d-m-Y, G:i:s', $rec['v_datetime']);
+            if (!array_key_exists($rec['type'], $versions)) {
+                continue;
+            }
             $versions[$rec['type']]['used'] = 1;
             $elem = [
                 'version' => $dt,
