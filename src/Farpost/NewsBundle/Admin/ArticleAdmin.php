@@ -32,7 +32,7 @@ class ArticleAdmin extends Admin
             ])
             ->add('dt', 'sonata_type_datetime_picker', [
                 'label' => 'label.datetime',
-                'format' => 'dd-MM-YYYY HH:mm'
+                'format' => 'dd-MM-yyyy HH:mm'
             ])
             ->add('published', 'checkbox', [
                 'label' => 'label.published',
