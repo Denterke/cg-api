@@ -2,6 +2,7 @@
 
 namespace Farpost\CatalogueBundle\Entity;
 
+use Application\Sonata\MediaBundle\Entity\Media;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 /**
@@ -153,6 +154,13 @@ class CatalogueObject
      * @ORM\JoinColumn(name="node_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     protected $node;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="CatalogueObjectMedia", mappedBy="object", cascade={"all"}, orphanRemoval=true)
+     */
+    protected $images;
 
     public function __construct()
     {
@@ -433,5 +441,42 @@ class CatalogueObject
         return $this->logoThumbnail
             ? $this->logoThumbnail->getWebPath()
             : null;
+    }
+
+    /**
+     * Add images
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueObjectMedia $image
+     * @return CatalogueObject
+     */
+    public function addImage(\Farpost\CatalogueBundle\Entity\CatalogueObjectMedia $image)
+    {
+        $image->setObject($this);
+        $this->images[] = $image;
+
+        return $this;
+    }
+
+    /**
+     * Remove images
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueMedia $image
+     */
+    public function removeImage(\Farpost\CatalogueBundle\Entity\CatalogueObjectMedia $image)
+    {
+        $image->setObject($this);
+        $this->images->removeElement($image);
+
+        return $this;
+    }
+
+    /**
+     * Get images
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getImages()
+    {
+        return $this->images;
     }
 }

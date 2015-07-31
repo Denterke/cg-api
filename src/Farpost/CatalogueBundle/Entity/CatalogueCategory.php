@@ -180,11 +180,13 @@ class CatalogueCategory
      */
     protected $isRoot;
 
-
     /**
-     * color of graph vertex, using for detecting cycles in graph
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="CatalogueCategoryMedia", mappedBy="category", cascade={"all"}, orphanRemoval=true)
      */
-    private $color;
+    protected $images;
+
 
     public function __construct()
     {
@@ -489,8 +491,37 @@ class CatalogueCategory
     }
 
     /**
-     * set color
+     * Add images
      *
-     * @param
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryMedia $image
+     * @return CatalogueCategory
      */
+    public function addImage(\Farpost\CatalogueBundle\Entity\CatalogueCategoryMedia $image)
+    {
+        $image->setCategory($this);
+        $this->images[] = $image;
+
+        return $this;
+    }
+
+    /**
+     * Remove images
+     *
+     * @param \Farpost\CatalogueBundle\Entity\CatalogueCategoryMedia $image
+     */
+    public function removeImage(\Farpost\CatalogueBundle\Entity\CatalogueCategoryMedia $image)
+    {
+        $image->setCategory(null);
+        $this->images->removeElement($image);
+    }
+
+    /**
+     * Get images
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
 }

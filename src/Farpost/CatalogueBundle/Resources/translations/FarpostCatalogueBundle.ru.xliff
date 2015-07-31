@@ -156,6 +156,11 @@
                 <target>Генерация справочника уже идет</target>
             </trans-unit>
 
+            <trans-unit id="label.media">
+                <source>label.media</source>
+                <target>Фотографии</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>
