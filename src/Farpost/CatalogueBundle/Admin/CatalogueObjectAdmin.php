@@ -30,7 +30,10 @@ class CatalogueObjectAdmin extends Admin
             ->add('name', 'text', ['label' => 'label.name'])
             ->add('description', 'textarea', [
                 'label' => 'label.description',
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'rows' => 6
+                ]
             ])
             ->add('logoStandard', 'sonata_type_admin', [
                 'label' => 'label.logo',
