@@ -1,6 +1,7 @@
 parameters:
     farpost_catalogue.image_manager.class: Farpost\CatalogueBundle\Services\ImageManager
     farpost_catalogue.catalogue_exporter.class: Farpost\CatalogueBundle\Services\CatalogueExporter
+    farpost_catalogue.catalogue_importer.class: Farpost\CatalogueBundle\Services\CatalogueImporter
 
 services:
     farpost_catalogue.image_manager:
@@ -10,3 +11,7 @@ services:
     farpost_catalogue.catalogue_exporter:
         class: %farpost_catalogue.catalogue_exporter.class%
         arguments: [@doctrine, @sqlite_manager, @farpost_store.version_manager, @service_container]
+
+    farpost_catalogue.catalogue_importer:
+        class: %farpost_catalogue.catalogue_importer.class%
+        arguments: ["%default_database_name%", "%default_database_user%"]
