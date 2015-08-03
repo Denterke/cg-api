@@ -20,7 +20,8 @@ class ArticleImageAdmin extends Admin
             ->add('media', 'sonata_media_type', [
                 'provider' => 'sonata.media.provider.image',
                 'context' => 'news',
-                'required' => false
+                'required' => false,
+                'empty_on_new' => false
             ])
         ;
     }

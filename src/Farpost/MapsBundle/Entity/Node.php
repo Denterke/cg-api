@@ -338,4 +338,14 @@ class Node {
     {
         return $this->objects;
     }
+
+    /**
+     * Stringifies entity
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return join(' - ', [$this->alias, $this->getType()->getAlias()]);
+    }
 }

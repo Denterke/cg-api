@@ -4,6 +4,7 @@ imports:
     - { resource: @FarpostCatalogueBundle/Resources/config/admin.yml }
     - { resource: @FarpostMapsBundle/Resources/config/admin.yml }
     - { resource: @FarpostNewsBundle/Resources/config/admin.yml }
+    - { resource: @FarpostPOIBundle/Resources/config/admin.yml }
 
 services:
     entity_dispatcher:
@@ -55,6 +56,8 @@ twig:
         resources:
             - 'SonataCoreBundle:Form:datepicker.html.twig'
             - 'SonataMediaBundle:Form:media_widgets.html.twig'
+#    form_themes:
+#        - 'FarpostMapsBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
@@ -109,6 +112,7 @@ doctrine:
                     FarpostStoreBundle: ~
                     FarpostMapsBundle: ~
                     FarpostNewsBundle: ~
+                    FarpostPOIBundle: ~
                     SonataMediaBundle: ~
                     ApplicationSonataMediaBundle: ~
             back_up:
@@ -184,6 +188,11 @@ sonata_media:
                 preview: { width: 100, quality: 100 }
                 small: { width: 100, quality: 100 }
                 big:   { width: 500, quality: 100 }
+        icons:
+            providers:
+                - sonata.media.provider.image
+            formats:
+                icon: { width: 75, quality: 100 }
 
     cdn:
         server:

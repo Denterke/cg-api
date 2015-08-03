@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="ru" datatype="plaintext" original="FarpostPOIBundle.ru.xliff" >
+        <body>
+            <trans-unit id="error.poi_not_attached">
+                <source>error.poi_not_attached</source>
+                <target>Точка интереса должна быть прикреплена к вершине графа, либо к набору (широта, долгота, уровень)</target>
+            </trans-unit>
+            
+            <trans-unit id="description.point.general">
+                <source>description.point.general</source>
+                <target>Основная информация</target>
+            </trans-unit>
+
+            <trans-unit id="label.label">
+                <source>label.label</source>
+                <target>Лэйбл</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -4,7 +4,11 @@ namespace Farpost\APIBundle\Controller;
 
 //use Farpost\APIBundle\Controller\APIV1Controller;
 //use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Farpost\POIBundle\Serializer\GroupSerializer;
+use Farpost\POIBundle\Serializer\PointSerializer;
+use Farpost\POIBundle\Serializer\TypeSerializer;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class APIV2Controller extends APIV1Controller
 {
@@ -105,5 +109,103 @@ class APIV2Controller extends APIV1Controller
                 'timestamp' => $helper->getTimestamp()
             ])
         )->setStatusCode(200);
+    }
+
+    /**
+     * Returns poi type groups
+     * Added [3.0]
+     * Required [Client 3.0]
+     * @param Request $request
+     * @return Response
+     */
+    public function getPOIGroupsAction(Request $request)
+    {
+        $helper = $this->get('api_helper');
+        $response = $helper->create404();
+
+        $groupsRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('FarpostPOIBundle:Group')
+        ;
+
+        $id = $request->query->get('id', null);
+
+        $groups = $id
+            ? $groupsRepository->findBy(['id' => $id])
+            : $groupsRepository->findAll()
+        ;
+
+        $result = $this->get('farpost_poi.serializer.group')->serialize($groups, GroupSerializer::FULL_CARD);
+
+        return $response->setContent(json_encode($result))->setStatusCode(200);
+    }
+
+    /**
+     * Returns poi types
+     * Added [3.0]
+     * Required [Client 3.0]
+     * @param Request $request
+     * @return Response
+     */
+    public function getPOITypesAction(Request $request)
+    {
+        $helper = $this->get('api_helper');
+        $response = $helper->create404();
+
+        $typesRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('FarpostPOIBundle:Type')
+        ;
+
+        $id = $request->query->get('id', null);
+        $groupId = $request->query->get('groupId', null);
+
+        $types = $id
+            ? $typesRepository->findBy(['id' => $id])
+            : ($groupId
+                ? $typesRepository->findBy(['group' => $groupId])
+                : $typesRepository->findAll()
+            )
+        ;
+
+        $result = $this->get('farpost_poi.serializer.type')->serialize($types, TypeSerializer::FULL_CARD);
+
+        return $response->setContent(json_encode($result))->setStatusCode(200);
+    }
+
+    /**
+     * Returns pois
+     * Added [3.0]
+     * Required [Client 3.0]
+     * @param Request $request
+     * @return Response
+     */
+    public function getPOIPointsAction(Request $request)
+    {
+        $helper = $this->get('api_helper');
+        $response = $helper->create404();
+
+        $pointsRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('FarpostPOIBundle:Point')
+        ;
+        $id = $request->query->get('id', null);
+        $typeId = $request->query->get('typeId', null);
+        $groupId = $request->query->get('groupId', null);
+
+        $points = $id
+            ? $pointsRepository->findBy(['id' => $id])
+            : ($typeId
+                ? $pointsRepository->findBy(['type' => $typeId])
+                : ($groupId
+                    ? $pointsRepository->findByTypeGroup($groupId)
+                    : $pointsRepository->findAll()
+                )
+            )
+        ;
+
+        $result = $this->get('farpost_poi.serializer.point')->serialize($points, PointSerializer::FULL_CARD);
+
+        return $response->setContent(json_encode($result))->setStatusCode(200);
     }
 }
