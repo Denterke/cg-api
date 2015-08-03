@@ -1,0 +1,10 @@
+services:
+    farpost_poi.serializer.group:
+        class: Farpost\POIBundle\Serializer\GroupSerializer
+
+    farpost_poi.serializer.type:
+        class: Farpost\POIBundle\Serializer\TypeSerializer
+        arguments: [@sonata.media.provider.image]
+
+    farpost_poi.serializer.point:
+        class: Farpost\POIBundle\Serializer\PointSerializer

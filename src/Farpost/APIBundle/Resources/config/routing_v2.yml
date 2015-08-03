@@ -21,3 +21,15 @@ farpost_api2_get_news:
 farpost_api2_full_schedule:
    path:    /full.schedule.get.json
    defaults: { _controller: FarpostAPIBundle:APIV2:getFullSchedule }
+
+farpost_api2_poi_groups:
+  path:     /poi/groups
+  defaults:  { _controller: FarpostAPIBundle:APIV2:getPOIGroups }
+
+farpost_api2_poi_types:
+  path:     /poi/types
+  defaults:  { _controller: FarpostAPIBundle:APIV2:getPOITypes }
+
+farpost_api2_poi_points:
+  path:     /poi/points
+  defaults:  { _controller: FarpostAPIBundle:APIV2:getPOIPoints }

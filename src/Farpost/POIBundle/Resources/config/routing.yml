@@ -1,0 +1,3 @@
+farpost_poi_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: FarpostPOIBundle:Default:index }

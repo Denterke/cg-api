@@ -22,12 +22,46 @@ class NodeAdmin extends Admin
                 'label' => 'label.id',
                 'required' => false
             ])
+            ->add('alias', 'text', [
+                'label' => 'label.alias',
+                'required' => false
+            ])
+        ;
+    }
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->addIdentifier('alias', null, [
+                'label' => 'label.alias'
+            ])
+            ->add('type.alias', null, [
+                'label' => 'label.type'
+            ])
+            ->add('level.alias', null, [
+                'label' => 'label.alias'
+            ])
+            ->add('building.alias', null, [
+                'label' => 'label.building'
+            ])
+            ->addIdentifier('id', null, [
+                'label' => 'label.id'
+            ])
         ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, ['label' => 'label.name']);
+            ->add('alias', null, ['label' => 'label.alias'])
+            ->add('type', null, ['label' => 'label.type'], null, [
+                'multiple' => true,
+                'property' => 'alias'
+            ])
+            ->add('building', null, ['label' => 'label.building'], null, [
+                'multiple' => true,
+                'property' => 'number'
+            ])
+        ;
     }
 }
