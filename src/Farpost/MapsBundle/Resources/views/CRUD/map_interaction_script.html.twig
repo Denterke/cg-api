@@ -1,0 +1,20 @@
+{% autoescape false %}
+
+<script type="text/javascript">
+    var start_field_dialog_goto_map_{{ id }} = function(event) {
+
+        var nodeId = $('#{{ id }}').val();
+        var params = ["node=" + nodeId, "id={{ id }}"];
+        var title = params.join(',');
+        var query = '/admin/maps?' + params.join('&');
+        var subwindow = window.open(query, title);
+        return false;
+    };
+
+    var set_node_{{ id }} = function(nodeId) {
+        $('#{{ id }}').val(nodeId);
+        $('#{{ id }}').trigger('change');
+    }
+</script>
+
+{% endautoescape %}

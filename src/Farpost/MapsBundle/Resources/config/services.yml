@@ -5,3 +5,8 @@ services:
     farpost.maps.graph_importer:
         class: %farpost.maps.graph_importer.class%
         arguments: [@doctrine, "%backup_database_user%"]
+
+    farpost.maps.form.type.sonata_type_model_list_with_map:
+        class: Farpost\MapsBundle\Form\Type\ModelTypeListWithMap
+        tags:
+            - { name: form.type, alias: sonata_type_model_list_with_map }

@@ -1,5 +1,4 @@
 {% block sonata_type_model_list_with_map_widget %}
-    A LOT OF FUN
     <div id="field_container_{{ id }}" class="field-container">
         <span id="field_actions_{{ id }}" class="field-actions">
             <span id="field_widget_{{ id }}" class="field-short-description">
@@ -26,6 +25,16 @@
                             >
                         <i class="fa fa-list"></i>
                         {{ btn_list|trans({}, btn_catalogue) }}
+                    </a>
+                {% endif %}
+
+                {% if btn_map %}
+                    <a href=""
+                       onclick="return start_field_dialog_goto_map_{{ id }}(this);"
+                       class="btn btn-sm btn-outline sonata-ba-action btn-primary"
+                       title="{{ btn_map|trans({}, btn_catalogue) }}">
+                        <i class="fa fa-globe"></i>
+                        {{ btn_map|trans({}, btn_catalogue) }}
                     </a>
                 {% endif %}
 
@@ -75,4 +84,5 @@
     </div>
 
     {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
+    {% include 'FarpostMapsBundle:CRUD:map_interaction_script.html.twig' %}
 {% endblock %}

@@ -84,9 +84,12 @@ class PointAdmin extends Admin
                     'placeholder' => 'text.start_typing',
                     'minimum_input_length' => 1
                 ])
-                ->add('node', 'sonata_type_model_list', [
+                ->add('node', 'sonata_type_model_list_with_map', [
                     'label' => 'label.node',
                     'btn_add' => false,
+                    'model_manager' => $this->getModelManager(),
+                    'class' => $this->getClass(),
+                    'btn_map' => 'btn.map'
 //                    'btn_list' => 'button.list',
 //                    'btn_delete' => 'button.delete'
                 ])

@@ -56,8 +56,7 @@ twig:
         resources:
             - 'SonataCoreBundle:Form:datepicker.html.twig'
             - 'SonataMediaBundle:Form:media_widgets.html.twig'
-#    form_themes:
-#        - 'FarpostMapsBundle:Form:fields.html.twig'
+            - 'FarpostMapsBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:

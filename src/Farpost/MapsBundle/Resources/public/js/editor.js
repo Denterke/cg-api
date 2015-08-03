@@ -32,6 +32,24 @@ var _graphCache = {};
 var _stylesCache = {};
 
 $(function () {
+    if(!window.location.query) {
+        window.location.query = function(source){
+            var map = {};
+            source = source || this.search;
+
+            if ("" != source) {
+                var groups = source.substr(1).split("&"), i;
+
+                for (i in groups) {
+                    i = groups[i].split("=");
+                    map[decodeURIComponent(i[0])] = decodeURIComponent(i[1]);
+                }
+            }
+
+            return map;
+        };
+    }
+
     require(['ol', 'map-config'], function (ol, config) {
 
         /**
@@ -308,6 +326,21 @@ $(function () {
          */
         function main() {
             // cache DOM elements
+            var getUrlParameter = function getUrlParameter(sParam) {
+                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i;
+
+                for (i = 0; i < sURLVariables.length; i++) {
+                    sParameterName = sURLVariables[i].split('=');
+
+                    if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : sParameterName[1];
+                    }
+                }
+            };
+
             var view = {
                 sidebar: {
                     levelSelector: $('#select-level'),
@@ -389,6 +422,12 @@ $(function () {
                 }
                 var feature = map.forEachFeatureAtPixel(event.pixel, function(feature, layer) { return feature; });
                 if (feature) {
+                    if (getUrlParameter('id')) {
+                        if (window.opener) {
+                            window.opener['set_node_' + getUrlParameter('id')](feature.get('vertex').id);
+                            window.close();
+                        }
+                    }
                     activeFeature = feature;
                     activeFeature.set('selected', true);
                     var vertex = feature.get('vertex');
