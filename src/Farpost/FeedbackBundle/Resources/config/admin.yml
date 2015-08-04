@@ -1,0 +1,11 @@
+services:
+    sonata.admin.feedback_feedback:
+        class: Farpost\FeedbackBundle\Admin\FeedbackAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Feedback", label: "title.feedbacks", show_in_dashboard: true }
+        arguments:
+            - ~
+            - Farpost\FeedbackBundle\Entity\Feedback
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostFeedbackBundle] ]

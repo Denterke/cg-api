@@ -38,6 +38,7 @@ class AppKernel extends Kernel
             new Sonata\IntlBundle\SonataIntlBundle()
 ,
             new Farpost\POIBundle\FarpostPOIBundle(),
+            new Farpost\FeedbackBundle\FarpostFeedbackBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

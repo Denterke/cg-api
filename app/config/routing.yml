@@ -1,3 +1,7 @@
+farpost_feedback:
+    resource: "@FarpostFeedbackBundle/Resources/config/routing.yml"
+    prefix:   /
+
 farpost_poi:
     resource: "@FarpostPOIBundle/Resources/config/routing.yml"
     prefix:   /

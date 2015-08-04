@@ -4,6 +4,7 @@ namespace Farpost\APIBundle\Controller;
 
 //use Farpost\APIBundle\Controller\APIV1Controller;
 //use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Farpost\FeedbackBundle\Entity\Feedback;
 use Farpost\POIBundle\Serializer\GroupSerializer;
 use Farpost\POIBundle\Serializer\PointSerializer;
 use Farpost\POIBundle\Serializer\TypeSerializer;
@@ -207,5 +208,36 @@ class APIV2Controller extends APIV1Controller
         $result = $this->get('farpost_poi.serializer.point')->serialize($points, PointSerializer::FULL_CARD);
 
         return $response->setContent(json_encode($result))->setStatusCode(200);
+    }
+
+    /**
+     * Add feedback
+     * Added [3.0]
+     * Required [Client 3.0]
+     * @param Request $request
+     * @return Response
+     */
+    public function addFeedbackAction(Request $request)
+    {
+        $helper = $this->get('api_helper');
+        $response = $helper->create404();
+
+        $username = trim($request->request->get('username'));
+        $phone = trim($request->request->get('phone'));
+        $message = trim($request->request->get('message'));
+
+        if ($username || $phone || $message) {
+            $feedback = new Feedback();
+            $feedback
+                ->setUsername($username)
+                ->setMessage($message)
+                ->setPhone($phone)
+            ;
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($feedback);
+            $em->flush();
+        }
+
+        return $response->setStatusCode(200)->setContent(json_encode(['status' => 'ok']));
     }
 }

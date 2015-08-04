@@ -5,6 +5,7 @@ imports:
     - { resource: @FarpostMapsBundle/Resources/config/admin.yml }
     - { resource: @FarpostNewsBundle/Resources/config/admin.yml }
     - { resource: @FarpostPOIBundle/Resources/config/admin.yml }
+    - { resource: @FarpostFeedbackBundle/Resources/config/admin.yml }
 
 services:
     entity_dispatcher:
@@ -112,6 +113,7 @@ doctrine:
                     FarpostMapsBundle: ~
                     FarpostNewsBundle: ~
                     FarpostPOIBundle: ~
+                    FarpostFeedbackBundle: ~
                     SonataMediaBundle: ~
                     ApplicationSonataMediaBundle: ~
             back_up:
