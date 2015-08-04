@@ -21,13 +21,14 @@ function setNodeIdIfReferal() {
     if (!nodeId) {
         return;
     }
-    $('input[name*="[node][id]"]').val(nodeId);
+    nodeSetter(nodeId);
+    //$('input[name*="[node][id]"]').val(nodeId);
 
 }
 
 $(function() {
     //only if we come here from maps page, and want to create object and attach it to node
-    var $node = $('input[name*="[node][id]"]');
-    $node.closest('.form-group').hide();
+    //var $node = $('input[name*="[node][id]"]');
+    //$node.closest('.form-group').hide();
     setNodeIdIfReferal();
 });

@@ -77,4 +77,21 @@
     <h1>{% trans %}label.editor{% endtrans %}</h1>
     <div id="map" class="col-md-12">
     </div>
+    <div id="choose-node-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{% trans %}label.choose_node.title{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans %}label.choose_node.text{% endtrans %}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}btn.close{% endtrans %}</button>
+                    <button type="button" id="choose-node-modal-choose" class="btn btn-primary">{% trans %}btn.choose_node{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

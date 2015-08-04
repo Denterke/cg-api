@@ -141,4 +141,9 @@ class Level {
     {
         return $this->alias;
     }
+
+    public function __toString()
+    {
+        return $this->getAlias();
+    }
 }

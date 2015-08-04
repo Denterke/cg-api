@@ -2,6 +2,7 @@
 
 namespace Farpost\MapsBundle\Controller;
 
+use Farpost\MapsBundle\Serializer\NodeSerializer;
 use Sonata\AdminBundle\Controller\CoreController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +26,7 @@ class EditorController extends CoreController
         $payload = [
             'vertices' => $nodes
         ];
+
         return new JsonResponse($payload, 200);
     }
 
@@ -42,6 +44,25 @@ class EditorController extends CoreController
         $payload = [
             'objects' => $objects
         ];
+
+        return new JsonResponse($payload, 200);
+    }
+
+    public function getNodeAction(Request $request)
+    {
+        $nodeId = $request->query->get('id', null);
+        if ($nodeId !== null) {
+            $node = $this->get('doctrine')->getManager()->getRepository('FarpostMapsBundle:Node')
+                ->findOneBy(['id' => $nodeId]);
+            $node = $this->get('farpost.maps.serializer.node')->serializeOne($node, NodeSerializer::POSITION_CARD);
+        } else {
+            $node = null;
+        }
+
+        $payload = [
+            'node' => $node
+        ];
+
         return new JsonResponse($payload, 200);
     }
 }

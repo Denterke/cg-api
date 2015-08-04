@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 class CatalogueObjectAdmin extends Admin
 {
     protected $formOptions = [
-        'cascade_validation' => true
+//        'cascade_validation' => true
     ];
 
     public function configure() {
@@ -74,11 +74,14 @@ class CatalogueObjectAdmin extends Admin
                 'edit' => 'inline',
                 'inline' => 'table'
             ])
-            ->add('node', 'sonata_type_admin', [
+            ->add('node', 'sonata_type_model_list_with_map', [
                 'label' => 'label.node',
-                'required' => false,
-                'btn_add' => false
-            ]);
+                'btn_add' => false,
+                'model_manager' => $this->getModelManager(),
+                'class' => 'Farpost\MapsBundle\Entity\Node',
+                'btn_map' => 'btn.map'
+            ])
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -101,12 +104,12 @@ class CatalogueObjectAdmin extends Admin
     public function prePersist($object)
     {
         $this->manageLogoImageAdmin($object);
-        $this->manageNode($object);
+//        $this->manageNode($object);
     }
 
     public function preUpdate($object)
     {
-        $this->manageNode($object);
+//        $this->manageNode($object);
         $params = $this->getRequest()->request->get($this->getUniqid());
 
         if (isset($params['logoStandard']) &&
@@ -121,20 +124,20 @@ class CatalogueObjectAdmin extends Admin
 
     protected function manageNode($object)
     {
-        $params = $this->getRequest()->request->get($this->getUniqid());
-        if (!$object->getNode() || isset($params['node']['_delete']) || !$object->getNode()->getId()) {
-            $object->setNode(null);
-            return;
-        }
-        $nodeId = $object->getNode()->getId();//intval($params['node']);
-        $em = $this->getModelManager()->getEntityManager($this->getSubject());
-        $node = $em->getRepository('FarpostMapsBundle:Node')->findOneById($nodeId);
-
-        if (!$node) {
-            $object->setNode(null);
-            return;
-        }
-        $object->setNode($node);
+//        $params = $this->getRequest()->request->get($this->getUniqid());
+//        if (!$object->getNode() || isset($params['node']['_delete']) || !$object->getNode()->getId()) {
+//            $object->setNode(null);
+//            return;
+//        }
+//        $nodeId = $object->getNode()->getId();//intval($params['node']);
+//        $em = $this->getModelManager()->getEntityManager($this->getSubject());
+//        $node = $em->getRepository('FarpostMapsBundle:Node')->findOneById($nodeId);
+//
+//        if (!$node) {
+//            $object->setNode(null);
+//            return;
+//        }
+//        $object->setNode($node);
     }
 
     protected function manageLogoImageAdmin($object)

@@ -20,6 +20,8 @@ class PointAdmin extends Admin
 
     public function validate(ErrorElement $errorElement, $point)
     {
+//        var_dump($point->getNode());
+//        $asdf->asdf();
         if (!$point->getNode() && (!$point->getLevel() || !$point->getLat() || !$point->getLon())) {
             $errorElement->addViolation('error.poi_not_attached');
         }
@@ -74,27 +76,36 @@ class PointAdmin extends Admin
                     'label' => 'label.lon',
                     'required' => false
                 ])
-                ->add('level', 'sonata_type_model_autocomplete', [
+                ->add('level', 'sonata_type_model_list', [
                     'label' => 'label.level',
                     'required' => false,
-                    'property' => 'alias',
-                    'to_string_callback' => function($entity, $property) {
-                        return $entity->getAlias();
-                    },
-                    'placeholder' => 'text.start_typing',
-                    'minimum_input_length' => 1
+                    'btn_add' => false
                 ])
+//                ->add('level', 'sonata_type_model_autocomplete', [
+//                    'label' => 'label.level',
+//                    'required' => false,
+//                    'property' => 'alias',
+//                    'to_string_callback' => function($entity, $property) {
+//                        return $entity->getAlias();
+//                    },
+//                    'placeholder' => 'text.start_typing',
+//                    'minimum_input_length' => 1
+//                ])
                 ->add('node', 'sonata_type_model_list_with_map', [
                     'label' => 'label.node',
                     'btn_add' => false,
                     'model_manager' => $this->getModelManager(),
-                    'class' => $this->getClass(),
+                    'class' => 'Farpost\MapsBundle\Entity\Node',//$this->getClass(),
                     'btn_map' => 'btn.map'
 //                    'btn_list' => 'button.list',
 //                    'btn_delete' => 'button.delete'
                 ])
+//                ->add('node', 'sonata_type_model_list')
             ->end()
         ;
+
+//        var_dump($this->getClass());
+//        $asdf->asdf();
     }
 
     public function preUpdate($point)

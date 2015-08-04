@@ -10,3 +10,6 @@ services:
         class: Farpost\MapsBundle\Form\Type\ModelTypeListWithMap
         tags:
             - { name: form.type, alias: sonata_type_model_list_with_map }
+
+    farpost.maps.serializer.node:
+        class: Farpost\MapsBundle\Serializer\NodeSerializer

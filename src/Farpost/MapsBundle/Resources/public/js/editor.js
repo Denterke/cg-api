@@ -137,6 +137,13 @@ $(function () {
 
             layers.push(vectorLayer);
 
+            var view = new ol.View({
+                minZoom: 17,
+                maxZoom: 21,
+                center: transform([131.893647,43.024502]),
+                zoom: 19
+            });
+
             var map = new ol.Map({
                 controls: ol.control.defaults().extend([
                     new ol.control.FullScreen(),
@@ -146,12 +153,7 @@ $(function () {
                     new ol.interaction.DragRotateAndZoom()
                 ]),
                 renderer: "canvas",
-                view: new ol.View({
-                    minZoom: 17,
-                    maxZoom: 21,
-                    center: transform([131.893647,43.024502]),
-                    zoom: 19
-                }),
+                view: view,
                 layers: layers,
                 target: target
             });
@@ -159,7 +161,8 @@ $(function () {
                 layers: layers,
                 vectorLayer: vectorLayer,
                 source: source,
-                map: map
+                map: map,
+                view: view
             };
         }
 
@@ -321,26 +324,26 @@ $(function () {
             }
         }
 
+        function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
         /**
          * Entry point
          */
         function main() {
             // cache DOM elements
-            var getUrlParameter = function getUrlParameter(sParam) {
-                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-                    sURLVariables = sPageURL.split('&'),
-                    sParameterName,
-                    i;
-
-                for (i = 0; i < sURLVariables.length; i++) {
-                    sParameterName = sURLVariables[i].split('=');
-
-                    if (sParameterName[0] === sParam) {
-                        return sParameterName[1] === undefined ? true : sParameterName[1];
-                    }
-                }
-            };
-
             var view = {
                 sidebar: {
                     levelSelector: $('#select-level'),
@@ -357,6 +360,12 @@ $(function () {
                         $selector: $('#object-selector'),
                         $attach: $('#attach'),
                         $createBtn: $('#create-new-object')
+                    }
+                },
+                modals: {
+                    chooseNode: {
+                        $modal: $('#choose-node-modal'),
+                        $okBtn: $('#choose-node-modal-choose')
                     }
                 }
             };
@@ -384,8 +393,18 @@ $(function () {
                 map = resource.map,
                 activeFeature = null,
                 selectedObjectId = null,
-                currentLevel = INITIAL_LAYER_NUM;
+                currentLevel = INITIAL_LAYER_NUM,
+                openerId = getUrlParameter('id'),
+                openerVertexId = getUrlParameter('node');
             ;
+
+            if (openerId) {
+                view.modals.chooseNode.$okBtn.click(function() {
+                    var vertexId = $(this).data('vertex-id');
+                    window.opener['set_node_' + getUrlParameter('id')](vertexId);
+                    window.close();
+                });
+            }
 
             var describeVertexFunction = describeVertex.bind(
                 null,
@@ -422,11 +441,9 @@ $(function () {
                 }
                 var feature = map.forEachFeatureAtPixel(event.pixel, function(feature, layer) { return feature; });
                 if (feature) {
-                    if (getUrlParameter('id')) {
-                        if (window.opener) {
-                            window.opener['set_node_' + getUrlParameter('id')](feature.get('vertex').id);
-                            window.close();
-                        }
+                    if (openerId) {
+                        view.modals.chooseNode.$okBtn.data('vertex-id', feature.get('vertex').id);
+                        view.modals.chooseNode.$modal.modal('show');
                     }
                     activeFeature = feature;
                     activeFeature.set('selected', true);
@@ -499,7 +516,26 @@ $(function () {
                 redrawGraph(currentLevel, true, source);
             });
             //set initial layer
-            setBaseLayer(map, source, currentLevel);
+            if (openerId && openerVertexId) {
+                $.ajax(
+                    '/admin/maps/node?id=' + openerVertexId
+                ).done(function(data) {
+                    var vertex = data.node;
+                    if (!vertex) {
+                        setBaseLayer(map, source, currentLevel);
+                        return;
+                    }
+                    currentLevel = vertex.level;
+                    setBaseLayer(map, source, vertex.level);
+                    var mapView = map.getView();
+                    mapView.setZoom(21);
+                    mapView.setCenter(transform([vertex.lon, vertex.lat]));
+                }).fail(function(e) {
+                    console.log(e);
+                })
+            } else {
+                setBaseLayer(map, source, currentLevel);
+            }
         }
 
 

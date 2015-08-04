@@ -13,3 +13,7 @@ farpost_maps_editor_graph:
 farpost_maps_editor_objects_for_node:
     path:     /maps/objects
     defaults: { _controller: FarpostMapsBundle:Editor:getObjects }
+
+farpost_maps_editor_node:
+    path:     /maps/node
+    defaults: { _controller: FarpostMapsBundle:Editor:getNode }
