@@ -42,6 +42,43 @@
                 <source>title.nodes</source>
                 <target>Вершины</target>
             </trans-unit>
+            <trans-unit id="title.levels">
+                <source>title.levels</source>
+                <target>Уровни</target>
+            </trans-unit>
+
+            <trans-unit id="label.alias">
+                <source>label.alias</source>
+                <target>Название</target>
+            </trans-unit>
+            <trans-unit id="label.type">
+                <source>label.type</source>
+                <target>Тип</target>
+            </trans-unit>
+            <trans-unit id="label.building">
+                <source>label.building</source>
+                <target>Здание</target>
+            </trans-unit>
+            <trans-unit id="Maps">
+                <source>Maps</source>
+                <target>Карты</target>
+            </trans-unit>
+            <trans-unit id="label.choose_node.title">
+                <source>label.choose_node.title</source>
+                <target>Подтверждение выбора вершины</target>
+            </trans-unit>
+            <trans-unit id="label.choose_node.text">
+                <source>label.choose_node.text</source>
+                <target>Подтвердите выбор вершины</target>
+            </trans-unit>
+            <trans-unit id="btn.close">
+                <source>btn.close</source>
+                <target>Отмена</target>
+            </trans-unit>
+            <trans-unit id="btn.choose_node">
+                <source>btn.choose_node</source>
+                <target>ОК</target>
+            </trans-unit>
 
 
             <trans-unit id="help.choose_object_to_attach">

@@ -31,7 +31,6 @@ class PointAdmin extends Admin
     {
         $formMapper
             ->with('point.tabs.general', [
-                'description' => 'description.point.general',
                 'translation_domain' => 'FarpostPOIBundle'
             ])
                 ->add('label', 'text', [
@@ -46,16 +45,7 @@ class PointAdmin extends Admin
                 ->add('type', 'sonata_type_model_list', [
                     'label' => 'label.type'
                 ])
-//                ->add('type', 'sonata_type_model_autocomplete', [
-//                    'label' => 'label.type',
-//                    'property' => 'name',
-//                    'to_string_callback' => function($entity, $property) {
-//                        return join(' - ', [$entity->getName(), $entity->getAlias()]);
-//                    },
-//                    'placeholder' => 'text.start_typing',
-//                    'minimum_input_length' => 3
-//                ])
-            ->add('startAt', 'sonata_type_datetime_picker', [
+                ->add('startAt', 'sonata_type_datetime_picker', [
                     'label' => 'label.startAt',
                     'format' => 'dd-MM-yyyy HH:mm'
                 ])
@@ -65,7 +55,6 @@ class PointAdmin extends Admin
                 ])
             ->end()
             ->with('point.tabs.position', [
-                'description' => 'description.point.position',
                 'translation_domain' => 'FarpostPOIBundle'
             ])
                 ->add('lat', null, [
@@ -81,26 +70,13 @@ class PointAdmin extends Admin
                     'required' => false,
                     'btn_add' => false
                 ])
-//                ->add('level', 'sonata_type_model_autocomplete', [
-//                    'label' => 'label.level',
-//                    'required' => false,
-//                    'property' => 'alias',
-//                    'to_string_callback' => function($entity, $property) {
-//                        return $entity->getAlias();
-//                    },
-//                    'placeholder' => 'text.start_typing',
-//                    'minimum_input_length' => 1
-//                ])
                 ->add('node', 'sonata_type_model_list_with_map', [
                     'label' => 'label.node',
                     'btn_add' => false,
                     'model_manager' => $this->getModelManager(),
-                    'class' => 'Farpost\MapsBundle\Entity\Node',//$this->getClass(),
+                    'class' => 'Farpost\MapsBundle\Entity\Node',
                     'btn_map' => 'btn.map'
-//                    'btn_list' => 'button.list',
-//                    'btn_delete' => 'button.delete'
                 ])
-//                ->add('node', 'sonata_type_model_list')
             ->end()
         ;
 
