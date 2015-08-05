@@ -13,13 +13,40 @@ use Doctrine\ORM\EntityRepository;
 
 class PointRepository extends EntityRepository
 {
-    public function findByTypeGroup($groupId)
+    protected function getActualQB()
     {
         $qb = $this->createQueryBuilder('p')
+            ->where('p.startAt <= CURRENT_TIMESTAMP()')
+            ->andWhere('p.endAt >= CURRENT_TIMESTAMP()')
+        ;
+
+        return $qb;
+    }
+
+    public function findActualByTypeGroup($groupId)
+    {
+        $qb = $this->getActualQB()
             ->innerJoin('FarpostPOIBundle:Type', 't', 'WITH', 'p.type = t.id')
             ->where('t.group = :group')
             ->setParameter('group', $groupId)
         ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findActualByType($typeId)
+    {
+        $qb = $this->getActualQB()
+            ->where('p.type = :type')
+            ->setParameter('type', $typeId)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findActualAll()
+    {
+        $qb = $this->getActualQB();
 
         return $qb->getQuery()->getResult();
     }

@@ -190,6 +190,7 @@ class APIV2Controller extends APIV1Controller
             ->getManager()
             ->getRepository('FarpostPOIBundle:Point')
         ;
+
         $id = $request->query->get('id', null);
         $typeId = $request->query->get('typeId', null);
         $groupId = $request->query->get('groupId', null);
@@ -197,10 +198,10 @@ class APIV2Controller extends APIV1Controller
         $points = $id
             ? $pointsRepository->findBy(['id' => $id])
             : ($typeId
-                ? $pointsRepository->findBy(['type' => $typeId])
+                ? $pointsRepository->findActualByType($typeId)
                 : ($groupId
-                    ? $pointsRepository->findByTypeGroup($groupId)
-                    : $pointsRepository->findAll()
+                    ? $pointsRepository->findActualByTypeGroup($groupId)
+                    : $pointsRepository->findActualAll()
                 )
             )
         ;
