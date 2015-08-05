@@ -70,7 +70,7 @@ class Point
      * @var Node
      *
      * @ORM\ManyToOne(targetEntity="\Farpost\MapsBundle\Entity\Node")
-     * @ORM\JoinColumn(name="node_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="node_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     protected $node;
 

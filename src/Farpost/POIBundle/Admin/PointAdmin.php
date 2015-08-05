@@ -9,6 +9,7 @@
 namespace Farpost\POIBundle\Admin;
 
 
+use Farpost\POIBundle\Entity\Point;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -87,11 +88,26 @@ class PointAdmin extends Admin
     public function preUpdate($point)
     {
         $point->setVisible(true);
+        $this->managePosition($point);
     }
 
     public function prePersist($point)
     {
         $point->setVisible(true);
+        $this->managePosition($point);
+    }
+
+    /**
+     * @param Point $point
+     */
+    public function managePosition(Point $point)
+    {
+        if ($node = $point->getNode()) {
+            $point->setLat($node->getLat())
+                ->setLon($node->getLon())
+                ->setLevel($node->getLevel())
+            ;
+        }
     }
 
     public function configureListFields(ListMapper $listMapper)
