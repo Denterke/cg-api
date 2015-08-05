@@ -137,6 +137,7 @@ sonata_block:
         sonata.block.service.versions: ~
         sonata.block.service.graph_importer: ~
         sonata.block.service.editor: ~
+        sonata.block.service.graph: ~
         # Your other blocks
 
 sonata_admin:
@@ -160,6 +161,7 @@ sonata_admin:
     dashboard:
         blocks:
             - { position: left, type: sonata.admin.block.admin_list }
+            - { position: right, type: sonata.block.service.graph }
             - { position: right, type: sonata.block.service.graph_importer }
             - { position: right, type: sonata.block.service.versions }
             - { position: left, type: sonata.block.service.editor }
