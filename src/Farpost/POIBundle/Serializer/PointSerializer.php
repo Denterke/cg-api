@@ -51,7 +51,7 @@ class PointSerializer
             'lon' => $object->getRealLon(),
             'lat' => $object->getRealLat(),
             'level' => $object->getRealLevel(),
-            'nodeId' => $object->getNode() ? $object->getNode()->getId() : null,
+            'nodeId' => $object->getNode() ? $object->getNode()->getId() : -1,
             'visible' => $object->getVisible()
         ];
     }
