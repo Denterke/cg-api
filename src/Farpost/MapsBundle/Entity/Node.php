@@ -57,6 +57,14 @@ class Node {
                 'getter' => 'getAlias'
             ],
             [
+                'name' => 'alias_lowercase',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getLowerAlias'
+            ],
+            [
                 'name' => 'lat',
                 'type' => 'DOUBLE',
                 'PK' => false,
@@ -347,5 +355,15 @@ class Node {
     public function __toString()
     {
         return join(' - ', [$this->alias, $this->getType()->getAlias()]);
+    }
+
+    /**
+     * Return alias in lowercase
+     *
+     * @return string
+     */
+    public function getLowerAlias()
+    {
+        return mb_strtolower($this->alias, 'UTF-8');
     }
 }

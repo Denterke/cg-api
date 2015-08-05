@@ -8,15 +8,20 @@
 
 namespace Farpost\CatalogueBundle\Services;
 
+use Farpost\StoreBundle\Entity\Image;
+use Gregwar\ImageBundle\Services\ImageHandling;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 
 class ImageManager {
 
     private $doctrine;
+    /**
+     * @var ImageHandling
+     */
     private $imageHandling;
 
-    public function __construct($imageHandling, $doctrine)
+    public function __construct(ImageHandling $imageHandling, $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->imageHandling = $imageHandling;
