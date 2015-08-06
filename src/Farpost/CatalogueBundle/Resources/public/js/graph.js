@@ -322,6 +322,7 @@ GraphCreator.prototype.circleMouseUp = function(d3node, d){
         });
         if (!filtRes[0].length){
             thisGraph.edges.push(newEdge);
+
             thisGraph.updateGraph();
         }
     } else{
@@ -513,6 +514,8 @@ GraphCreator.prototype.updateWindow = function(svg){
     svg.attr("width", x).attr("height", y);
 };
 
+
+
 function Node(node) {
     this.name = node.name;
     this.id = node.id;
@@ -551,16 +554,6 @@ Node.prototype.appendParent = function(node) {
     }
     node.appendChild(this);
 };
-
-//function Edge(source, target) {
-//    if (!source instanceof Node || !target instanceof Node) {
-//        console.error(source);
-//        console.error(target);
-//        throw 'Either source or target is not instance of Node';
-//    }
-//    this.source = source;
-//    this.target = target;
-//}
 
 function Graph() {
     this.nodesMap = {};
