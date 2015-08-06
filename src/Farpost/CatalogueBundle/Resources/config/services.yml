@@ -18,3 +18,6 @@ services:
 
     farpost_catalogue.serializer.category:
         class: Farpost\CatalogueBundle\Serializer\CategorySerializer
+
+    farpost_catalogue.serializer.object:
+        class: Farpost\CatalogueBundle\Serializer\ObjectSerializer

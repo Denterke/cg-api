@@ -3,6 +3,7 @@
 namespace Farpost\CatalogueBundle\Controller;
 
 use Farpost\CatalogueBundle\Serializer\CategorySerializer;
+use Farpost\CatalogueBundle\Serializer\ObjectSerializer;
 use Sonata\AdminBundle\Controller\CoreController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,9 +24,17 @@ class EditorController extends CoreController
         $categoryRepository = $this->getDoctrine()->getManager()
             ->getRepository('FarpostCatalogueBundle:CatalogueCategory')
         ;
+        $objectRepository = $this->getDoctrine()->getManager()
+            ->getRepository('FarpostCatalogueBundle:CatalogueObject')
+        ;
 
         $categories = $categoryRepository->findAll();
-        $nodes = $this->get('farpost_catalogue.serializer.category')->serialize($categories, CategorySerializer::EDITOR_CARD);
+        $categoryNodes = $this->get('farpost_catalogue.serializer.category')->serialize($categories, CategorySerializer::EDITOR_CARD);
+
+        $objects = $objectRepository->findAll();
+        $objectNodes = $this->get('farpost_catalogue.serializer.object')->serialize($objects, ObjectSerializer::EDITOR_CARD);
+
+        $nodes = array_merge($categoryNodes, $objectNodes);
 
         return new JsonResponse(['nodes' => $nodes]);
     }

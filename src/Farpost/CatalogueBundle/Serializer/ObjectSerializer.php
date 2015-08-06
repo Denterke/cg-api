@@ -2,16 +2,17 @@
 /**
  * Created by IntelliJ IDEA.
  * User: kalita
- * Date: 05/08/15
- * Time: 16:39
+ * Date: 06/08/15
+ * Time: 15:33
  */
 
 namespace Farpost\CatalogueBundle\Serializer;
 
 
-class CategorySerializer
+class ObjectSerializer
 {
     const EDITOR_CARD = 1;
+    const ID_MULTIPLYER = 100000;
     public function serialize($objects, $cardType)
     {
         $result = [];
@@ -34,21 +35,11 @@ class CategorySerializer
 
     public function editorCard($object)
     {
-        $ways = [];
-        foreach($object->getChildren() as $child) {
-            $ways[] = $child->getChild()->getId();
-        }
-
-        foreach ($object->getObjects() as $childObject) {
-            $ways[] = $childObject->getObject()->getId() * ObjectSerializer::ID_MULTIPLYER;
-        }
-
         return [
-            'id' => $object->getId(),
+            'id' => $object->getId() * self::ID_MULTIPLYER,
             'name' => $object->getName(),
-            'isRoot' => $object->getIsRoot(),
-            'ways' => $ways,
-            'type' => 'category'
+            'ways' => [],
+            'type' => 'object'
         ];
     }
 
