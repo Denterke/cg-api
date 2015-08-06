@@ -15,3 +15,6 @@ services:
     farpost_catalogue.catalogue_importer:
         class: %farpost_catalogue.catalogue_importer.class%
         arguments: ["%default_database_name%", "%default_database_user%"]
+
+    farpost_catalogue.serializer.category:
+        class: Farpost\CatalogueBundle\Serializer\CategorySerializer

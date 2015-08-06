@@ -25,3 +25,11 @@ farpost_catalogue_rescue:
 farpost_catalogue_warn:
     path:     /admin/catalogue/warn
     defaults: { _controller: FarpostCatalogueBundle:Export:warn }
+
+farpost_catalogue_editor:
+    path:     /admin/catalogue/editor
+    defaults: { _controller: FarpostCatalogueBundle:Editor:index }
+
+farpost_catalogue_graph:
+    path:     /admin/catalogue/graph
+    defaults: { _controller: FarpostCatalogueBundle:Editor:getGraph }

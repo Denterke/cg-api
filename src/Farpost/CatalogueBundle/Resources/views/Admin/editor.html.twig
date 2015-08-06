@@ -1,0 +1,29 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/farpostcatalogue/js/d3.v3.min.js') }}"></script>
+    <script src="{{ asset('bundles/farpostcatalogue/js/graph.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/farpostcatalogue/css/graph.css') }}">
+{% endblock %}
+
+{% trans_default_domain "FarpostCatalogueBundle" %}
+
+{% block sonata_left_side %}
+    {{ parent() }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a></li>
+    <li class="active">{% trans %}label.editor{% endtrans %}</li>
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans %}label.editor{% endtrans %}</h1>
+    <div id="graph" class="col-md-12">
+    </div>
+{% endblock %}
