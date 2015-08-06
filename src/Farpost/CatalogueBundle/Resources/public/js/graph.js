@@ -814,7 +814,8 @@ $(function() {
         var graphResult = graph.getGraph();
         /** MAIN SVG **/
         var svg = d3.select("#graph").append("svg")
-            .attr("width", $('#graph').width());
+            .attr("width", $('#graph').width())
+            .attr("height", window.innerHeight);
         var graph = new GraphCreator(svg, graphResult.nodes, graphResult.edges);
         graph.setIdCt(2);
         graph.updateGraph();
