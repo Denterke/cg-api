@@ -34,21 +34,24 @@ class CategorySerializer
 
     public function editorCard($object)
     {
-        $ways = [];
-        foreach($object->getChildren() as $child) {
-            $ways[] = $child->getChild()->getId();
-        }
-
-        foreach ($object->getObjects() as $childObject) {
-            $ways[] = $childObject->getObject()->getId() * ObjectSerializer::ID_MULTIPLYER;
-        }
+//        $ways = [];
+//        foreach($object->getChildren() as $child) {
+//            $ways[] = $child->getChild()->getId();
+//        }
+//
+//        foreach ($object->getObjects() as $childObject) {
+//            $ways[] = $childObject->getObject()->getId() * ObjectSerializer::ID_MULTIPLYER;
+//        }
 
         return [
-            'id' => $object->getId(),
-            'name' => $object->getName(),
-            'isRoot' => $object->getIsRoot(),
-            'ways' => $ways,
-            'type' => 'category'
+            'data' => [
+                'id' => 'c' . $object->getId(),
+                'realId' => $object->getId(),
+                'name' => $object->getName(),
+                'isRoot' => $object->getIsRoot(),
+    //            'ways' => $ways,
+                'type' => 'category'
+            ]
         ];
     }
 

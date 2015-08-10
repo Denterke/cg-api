@@ -92,4 +92,19 @@ class CatalogueObjectRepository extends EntityRepository
             'status' => 'ObjectDetached'
         ];
     }
+
+    /**
+     * @param integer $id
+     */
+    public function findByCategory($id)
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->innerJoin('FarpostCatalogueBundle:CatalogueCategoryObjectEdge', 'ce', 'WITH', 'o.id = ce.object')
+            ->where('ce.category = :categoryId')
+            ->setParameter('categoryId', $id)
+            ->distinct()
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }

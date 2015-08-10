@@ -2,8 +2,13 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('bundles/farpostcatalogue/js/d3.v3.min.js') }}"></script>
+    {#<script src="{{ asset('bundles/farpostcatalogue/js/d3.v3.min.js') }}"></script>#}
+    {#<script src="{{ asset('bundles/farpostcatalogue/js/fabric.min.js') }}"></script>#}
+    {#<script src="{{ asset('bundles/farpostcatalogue/js/fabricjs_viewport.js') }}"></script>#}
+    <script src="{{ asset('bundles/farpostcatalogue/js/cytoscape.js') }}"></script>
     <script src="{{ asset('bundles/farpostcatalogue/js/graph.js') }}"></script>
+
+
 {% endblock %}
 
 {% block stylesheets %}
@@ -24,6 +29,12 @@
 
 {% block content %}
     <h1>{% trans %}label.editor{% endtrans %}</h1>
-    <div id="graph" class="col-md-12">
-    </div>
+    <div id="graph-canvas" style="width: 1500px; height: 1000px"></div>
+    <ul oncontextmenu="return false;" id="context-menu" class="dropdown-menu">
+        <li><a href="#">Action</a></li>
+        <li><a href="#">Another action</a></li>
+        <li><a href="#">Something else here</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">Separated link</a></li>
+    </ul>
 {% endblock %}

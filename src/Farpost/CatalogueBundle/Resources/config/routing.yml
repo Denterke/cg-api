@@ -33,3 +33,7 @@ farpost_catalogue_editor:
 farpost_catalogue_graph:
     path:     /admin/catalogue/graph
     defaults: { _controller: FarpostCatalogueBundle:Editor:getGraph }
+
+farpost_catalogue_category_objects:
+    path:     /admin/catalogue/category
+    defaults: { _controller: FarpostCatalogueBundle:Editor:getCategoryObjects }
