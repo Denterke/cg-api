@@ -19,7 +19,12 @@ function Editor(id, cb) {
 
     this.urls = {
         categories: '/admin/catalogue/graph',
-        category: '/admin/catalogue/category'
+        category: '/admin/catalogue/category',
+        edge: {
+            create: '/admin/catalogue/editor/edge/create',
+            delete: '/admin/catalogue/editor/edge/delete',
+            revert: '/admin/catalogue/editor/edge/revert'
+        }
     };
 
     this.init(cb);
@@ -41,6 +46,12 @@ Editor.prototype.init = function(cb) {
                         'text-max-width': '90px',
                         'text-halign': 'center',
                         'text-valign': 'center'
+                    })
+                    .selector('node.source')
+                    .css({
+                        'background-color': '#FF0000',
+                        'border-style': 'double',
+                        'border-width': 30
                     })
                     .selector('node[selected="true"]')
                     .css({
@@ -83,36 +94,9 @@ Editor.prototype.init = function(cb) {
             });
 
             editor.cy.on('tap', 'node', { editor: editor }, editor.tapNodeHandler);
-            editor.cy.on('click', '*', { editor: editor }, editor.rightClickHandler);
+
+            editor.initContextMenus();
             editor.state.initialized = true;
-
-            var defaults = {
-                menuRadius: 100, // the radius of the circular menu in pixels
-                selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
-                commands: [ // an array of commands to list in the menu
-                    /*
-                     { // example command
-                     content: 'a command name', // html/text content to be displayed in the menu
-                     select: function(){ // a function to execute when the command is selected
-                     console.log( this.id() ) // `this` holds the reference to the active element
-                     }
-                     }
-                     */
-                ],
-                fillColor: 'rgba(0, 0, 0, 0.75)', // the background colour of the menu
-                activeFillColor: 'rgba(92, 194, 237, 0.75)', // the colour used to indicate the selected command
-                activePadding: 20, // additional size in pixels for the active command
-                indicatorSize: 24, // the size in pixels of the pointer to the active command
-                separatorWidth: 3, // the empty spacing in pixels between successive commands
-                spotlightPadding: 4, // extra spacing in pixels between the element and the spotlight
-                minSpotlightRadius: 24, // the minimum radius in pixels of the spotlight
-                maxSpotlightRadius: 38, // the maximum radius in pixels of the spotlight
-                itemColor: 'white', // the colour of text in the command's content
-                itemTextShadowColor: 'black', // the text shadow colour of the command's content
-                zIndex: 9999 // the z-index of the ui div
-            };
-
-            editor.cxtmenuApi = editor.cy.cxtmenu( defaults );
             if (cb) {
                 cb(null);
             }
@@ -124,21 +108,230 @@ Editor.prototype.init = function(cb) {
         });
 };
 
-Editor.prototype.rightClickHandler = function(e) {
-    var isRightMB;
-    e = e || window.event;
+Editor.prototype.gotoCataloguePage = function(node) {
+    if (!node) {
+        console.log('WARN: Node is not defined');
+    }
+    var prefix = '/admin/farpost/catalogue/',
+        suffix = '/edit';
+    if (node.data('type') === 'category') {
+        prefix += 'cataloguecategory/'
+    } else if (node.data('type') === 'object') {
+        prefix += 'catalogueobject/';
+    }
+    var url = prefix + node.data('realId') + suffix;
+    window.open(url, '_blank');
+};
 
-    if ("which" in e) {// Gecko (Firefox), WebKit (Safari/Chrome) & Opera
-        isRightMB = e.which == 3;
+Editor.prototype.resetSource = function(node) {
+    if (!node) {
+        console.log('WARN: Node is not defined');
     }
-    else if ("button" in e) { // IE, Opera
-        isRightMB = e.button == 2;
+    if (this.state.sourceNode) {
+        this.state.sourceNode.removeClass('source');
     }
-    if (!isRightMB) {
+    this.state.sourceNode = node;
+    node.addClass('source');
+};
+
+Editor.prototype.linkWithSource = function(node) {
+    this.linkNodes(this.state.sourceNode, node);
+};
+
+Editor.prototype.deleteEdge = function(edge) {
+    if (!edge) {
+        console.log('WARN: edge is not defined');
         return;
     }
-    console.log('menu');
-    //var editor = e.data.editor;
+
+    var editor = this;
+
+    $.ajax(this.urls.edge.delete, {
+        method: 'POST',
+        data: {
+            id: edge.data('realId'),
+            type: edge.data('type')
+        }
+    }).done(function(data) {
+        editor.cy.remove('edge#' + edge.id());
+    });
+};
+
+Editor.prototype.revertEdge = function(edge) {
+    if (!edge) {
+        console.log('WARN: edge is not defined');
+        return;
+    }
+
+    var editor = this;
+
+    $.ajax(this.urls.edge.revert, {
+        method: 'POST',
+        data: {
+            id: edge.data('realId')
+        }
+    }).done(function(data) {
+        editor.cy.remove('edge#' + edge.id());
+        editor.cy.add({
+            group: 'edges',
+            data: data.data
+        });
+        editor.applyStyleForSelected();
+    })
+};
+
+Editor.prototype.linkWithSelected = function(node) {
+    this.linkNodes(this.state.selectedNode, node);
+};
+
+Editor.prototype.linkNodes = function(source, target) {
+    if (!source) {
+        console.log('WARN: source is not defined');
+        return;
+    }
+    if (!target) {
+        console.log('WARN: target is not defined');
+        return;
+    }
+    if (this.cy.collection('edge[source="' + source.id() + '"][target="' + target.id() + '"]').length > 0) {
+        console.log('WARN: edge from source to target already exists');
+        return;
+    }
+    if (source.data('type') !== 'category') {
+        console.log('WARN: source is not category');
+        return;
+    }
+
+    var editor = this;
+
+    $.ajax(this.urls.edge.create, {
+        method: 'POST',
+        data: {
+            sourceId: source.data('realId'),
+            targetId: target.data('realId'),
+            targetType: target.data('type')
+        }
+    }).done(function(data) {
+        editor.cy.add({
+            group: 'edges',
+            data: data.data
+        });
+        editor.applyStyleForSelected();
+    });
+};
+
+Editor.prototype.applyStyleForSelected = function() {
+    if (!this.state.selectedNode) {
+        console.log('WARN: selectedNode is not defined');
+        return;
+    }
+
+    var connectedEdges = editor.cy.elements('edge[source="' + this.state.selectedNode.id() + '"]');
+    connectedEdges.addClass('selected');
+    connectedEdges.targets().addClass('inherits');
+};
+
+Editor.prototype.initContextMenus = function() {
+    var editor = this;
+    this.menus = {};
+
+    var settings = {
+        menuRadius: 100,
+        fillColor: 'rgba(0, 0, 0, 0.75)', // the background colour of the menu
+        activeFillColor: 'rgba(92, 194, 237, 0.75)', // the colour used to indicate the selected command
+        activePadding: 20, // additional size in pixels for the active command
+        indicatorSize: 24, // the size in pixels of the pointer to the active command
+        separatorWidth: 3, // the empty spacing in pixels between successive commands
+        spotlightPadding: 4, // extra spacing in pixels between the element and the spotlight
+        minSpotlightRadius: 24, // the minimum radius in pixels of the spotlight
+        maxSpotlightRadius: 38, // the maximum radius in pixels of the spotlight
+        itemColor: 'white', // the colour of text in the command's content
+        itemTextShadowColor: 'black', // the text shadow colour of the command's content
+        zIndex: 9999 // the z-index of the ui div
+    };
+
+    var categoryMenuSettings = settings;
+    categoryMenuSettings.selector = 'node[type="category"]';
+    categoryMenuSettings.commands = [
+        {
+            content: 'В справочник',
+            select: function() {
+                editor.gotoCataloguePage(this);
+            }
+        },
+        {
+            content: 'Пометить как источник',
+            select: function() {
+                editor.resetSource(this);
+            }
+        },
+        {
+            content: 'Связать с помеченным',
+            select: function() {
+                editor.linkWithSource(this);
+            }
+        },
+        {
+            content: 'Связать с открытым',
+            select: function() {
+                editor.linkWithSelected(this);
+            }
+        }
+    ];
+
+    this.menus.category = this.cy.cxtmenu(categoryMenuSettings);
+
+    var objectSettings = settings;
+    objectSettings.selector = 'node[type="object"]';
+    objectSettings.commands = [
+        {
+            content: 'В справочник',
+            select: function() {
+                editor.gotoCataloguePage(this);
+            }
+        },
+        {
+            content: 'Связать с помеченным',
+            select: function() {
+                editor.linkWithSource(this);
+
+            }
+        }
+    ];
+
+    this.menus.object = this.cy.cxtmenu(objectSettings);
+
+    var categoryEdgeSettings = settings;
+    categoryEdgeSettings.selector = 'edge[type="categoryedge"]';
+    categoryEdgeSettings.commands = [
+        {
+            content: 'Удалить',
+            select: function() {
+                editor.deleteEdge(this);
+            }
+        },
+        {
+            content: 'Перевернуть',
+            select: function() {
+                editor.revertEdge(this);
+            }
+        }
+    ];
+
+    this.menus.edge = this.cy.cxtmenu(categoryEdgeSettings);
+
+    var categoryNodeEdgeSettings = settings;
+    categoryNodeEdgeSettings.selector = 'edge[type="categorynodeedge"]';
+    categoryNodeEdgeSettings.commands = [
+        {
+            content: 'Удалить',
+            select: function() {
+                editor.deleteEdge(this);
+            }
+        }
+    ];
+
+    this.menus.nodeEdge = this.cy.cxtmenu(categoryNodeEdgeSettings);
 };
 
 Editor.prototype.tapNodeHandler = function(e) {
@@ -215,9 +408,7 @@ Editor.prototype.addElements = function(basic, edges, nodes) {
         });
     });
 
-    var connectedEdges = editor.cy.elements('edge[source="' + basic.id() + '"]');
-    connectedEdges.addClass('selected');
-    connectedEdges.targets().addClass('inherits');
+    editor.applyStyleForSelected();
 };
 
 Editor.prototype.loadCategoryItems = function(node, cb) {
@@ -242,7 +433,7 @@ Editor.prototype.endLoading = function() {
     var target = $('#' + this.id);
     target.removeClass('loading');
     console.log('STATUS: loading ended');
-}
+};
 
 Editor.prototype.clickNode = function(node) {
     if (!node) {
@@ -254,7 +445,7 @@ Editor.prototype.clickNode = function(node) {
             this.clickCategory(node);
             break;
         case 'object':
-            this.clickObject(node);
+            //this.clickObject(node);
             break;
         default:
             console.log('WARN: node type is unknown');

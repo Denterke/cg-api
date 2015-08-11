@@ -37,3 +37,15 @@ farpost_catalogue_graph:
 farpost_catalogue_category_objects:
     path:     /admin/catalogue/category
     defaults: { _controller: FarpostCatalogueBundle:Editor:getCategoryObjects }
+
+farpost_catalogue_create_edge:
+    path:     /admin/catalogue/editor/edge/create
+    defaults: { _controller: FarpostCatalogueBundle:Editor:createEdge }
+
+farpost_catalogue_delete_edge:
+    path:     /admin/catalogue/editor/edge/delete
+    defaults: { _controller: FarpostCatalogueBundle:Editor:deleteEdge }
+
+farpost_catalogue_revert_edge:
+    path:     /admin/catalogue/editor/edge/revert
+    defaults: { _controller: FarpostCatalogueBundle:Editor:revertEdge }
