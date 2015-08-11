@@ -26,12 +26,11 @@ class ArticleRepository extends EntityRepository
             ->setMaxResults(abs($count))
         ;
 
-        if ($baseDatetime == null) {
-            $qb->orderBy('a.dt', 'DESC');
-        } else {
+        if ($baseDatetime != null) {
             $qb->andWhere('a.dt < :baseDatetime')
                 ->setParameter('baseDatetime', $baseDatetime);
         }
+        $qb->orderBy('a.dt', 'DESC');
 
         return $qb->getQuery()->getResult();
     }
