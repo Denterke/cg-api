@@ -12,7 +12,6 @@ namespace Farpost\CatalogueBundle\Serializer;
 class ObjectSerializer
 {
     const EDITOR_CARD = 1;
-    const ID_MULTIPLYER = 100000;
     public function serialize($objects, $cardType)
     {
         $result = [];
@@ -36,10 +35,13 @@ class ObjectSerializer
     public function editorCard($object)
     {
         return [
-            'id' => $object->getId() * self::ID_MULTIPLYER,
-            'name' => $object->getName(),
-            'ways' => [],
-            'type' => 'object'
+            'data' => [
+                'realId' => $object->getId(),
+                'id' => 'o' . $object->getId(),
+                'name' => $object->getName(),
+    //            'ways' => [],
+                'type' => 'object'
+            ]
         ];
     }
 

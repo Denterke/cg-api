@@ -21,3 +21,9 @@ services:
 
     farpost_catalogue.serializer.object:
         class: Farpost\CatalogueBundle\Serializer\ObjectSerializer
+
+    farpost_catalogue.serializer.category_edge:
+            class: Farpost\CatalogueBundle\Serializer\CategoryEdgeSerializer
+
+    farpost_catalogue.serializer.category_node_edge:
+            class: Farpost\CatalogueBundle\Serializer\CategoryNodeEdgeSerializer

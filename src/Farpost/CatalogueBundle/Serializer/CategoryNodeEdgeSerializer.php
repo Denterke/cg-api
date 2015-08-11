@@ -2,14 +2,14 @@
 /**
  * Created by IntelliJ IDEA.
  * User: kalita
- * Date: 05/08/15
- * Time: 16:39
+ * Date: 07/08/15
+ * Time: 18:32
  */
 
 namespace Farpost\CatalogueBundle\Serializer;
 
 
-class CategorySerializer
+class CategoryNodeEdgeSerializer
 {
     const EDITOR_CARD = 1;
     public function serialize($objects, $cardType)
@@ -34,23 +34,13 @@ class CategorySerializer
 
     public function editorCard($object)
     {
-//        $ways = [];
-//        foreach($object->getChildren() as $child) {
-//            $ways[] = $child->getChild()->getId();
-//        }
-//
-//        foreach ($object->getObjects() as $childObject) {
-//            $ways[] = $childObject->getObject()->getId() * ObjectSerializer::ID_MULTIPLYER;
-//        }
-
         return [
             'data' => [
-                'id' => 'c' . $object->getId(),
                 'realId' => $object->getId(),
-                'name' => $object->getName(),
-                'isRoot' => $object->getIsRoot(),
-    //            'ways' => $ways,
-                'type' => 'category'
+                'id' => 'cne' . $object->getId(),
+                'source' => 'c' . $object->getCategory()->getId(),
+                'target' => 'o' . $object->getObject()->getId(),
+                'type' => 'categorynodeedge'
             ]
         ];
     }
