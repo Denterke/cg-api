@@ -6,7 +6,11 @@
                 <source>title.feedbacks</source>
                 <target>Отзывы</target>
             </trans-unit>
-            
+
+            <trans-unit id="label.id">
+                <source>label.id</source>
+                <target>Идентификатор</target>
+            </trans-unit>
             <trans-unit id="label.username">
                 <source>label.username</source>
                 <target>Имя пользователя</target>

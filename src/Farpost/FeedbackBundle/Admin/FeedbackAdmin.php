@@ -72,6 +72,12 @@ class FeedbackAdmin extends Admin
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->addIdentifier('id', null, [
+                'label' => 'label.id',
+                'route' => [
+                    'name' => 'show'
+                ]
+            ])
             ->addIdentifier('username', null, [
                 'label' => 'label.username',
                 'route' => [

@@ -46,6 +46,14 @@ class Building {
                 'getter' => 'getAlias'
             ],
             [
+                'name' => 'name',
+                'type' => 'VARCHAR',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'getter' => 'getName'
+            ],
+            [
                 'name' => 'lon',
                 'type' => 'DOUBLE',
                 'PK' => false,
@@ -213,5 +221,14 @@ class Building {
     public function getLat()
     {
         return $this->lat;
+    }
+
+    public function getName()
+    {
+        if ($this->number === 'outdoor') {
+            return 'Улица';
+        } else {
+            return "Корпус {$this->number}";
+        }
     }
 }

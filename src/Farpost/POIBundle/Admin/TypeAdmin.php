@@ -28,25 +28,16 @@ class TypeAdmin extends Admin
             ->add('group', 'sonata_type_model_list', [
                 'label' => 'label.group'
             ])
-//            ->add('group', 'sonata_type_model_autocomplete', [
-//                'label' => 'label.group',
-//                'property' => 'name',
-//                'to_string_callback' => function($entity, $property) {
-//                    return join(' - ', [$entity->getName(), $entity->getAlias()]);
-//                },
-//                'placeholder' => 'text.start_typing',
-//                'minimum_input_length' => 2
-//            ])
             ->add('visible', 'checkbox', [
                 'label' => 'label.visible',
                 'required' => false
             ])
-            ->add('icon', 'sonata_media_type', [
-                'label' => 'label.icon',
-                'required' => false,
-                'provider' => 'sonata.media.provider.image',
-                'context' => 'icons'
-            ])
+//            ->add('icon', 'sonata_media_type', [
+//                'label' => 'label.icon',
+//                'required' => false,
+//                'provider' => 'sonata.media.provider.image',
+//                'context' => 'icons'
+//            ])
         ;
     }
 

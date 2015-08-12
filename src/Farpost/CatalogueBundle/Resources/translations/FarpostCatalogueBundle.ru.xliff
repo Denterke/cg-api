@@ -160,6 +160,10 @@
                 <source>label.media</source>
                 <target>Фотографии</target>
             </trans-unit>
+            <trans-unit id="label.editor">
+                <source>label.editor</source>
+                <target>Редактор графа справочника</target>
+            </trans-unit>
 
         </body>
     </file>

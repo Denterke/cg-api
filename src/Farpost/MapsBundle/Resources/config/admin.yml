@@ -14,7 +14,7 @@ services:
     sonata.admin.maps_node:
         class: Farpost\MapsBundle\Admin\NodeAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Maps", label: "title.nodes", show_in_dashboard: true }
+            - { name: sonata.admin, manager_type: orm, group: "Maps", label: "title.nodes", show_in_dashboard: false }
         arguments:
             - ~
             - Farpost\MapsBundle\Entity\Node
@@ -25,7 +25,7 @@ services:
     sonata.admin.maps_level:
         class: Farpost\MapsBundle\Admin\LevelAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Maps", label: "title.levels", show_in_dashboard: true }
+            - { name: sonata.admin, manager_type: orm, group: "Maps", label: "title.levels", show_in_dashboard: false }
         arguments:
             - ~
             - Farpost\MapsBundle\Entity\Level
