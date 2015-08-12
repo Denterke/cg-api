@@ -58,6 +58,28 @@ class CatalogueObjectMedia
                 'injections' => [
                     'sonata.media.provider.image'
                 ]
+            ],
+            [
+                'name' => 'width',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'injections' => [
+                    'sonata.media.provider.image'
+                ],
+                'getter' => 'getWidth'
+            ],
+            [
+                'name' => 'height',
+                'type' => 'INTEGER',
+                'PK' => false,
+                'nullable' => true,
+                'RK' => '',
+                'injections' => [
+                    'sonata.media.provider.image'
+                ],
+                'getter' => 'getHeight'
             ]
         ]
     ];
@@ -162,5 +184,27 @@ class CatalogueObjectMedia
         }
         $format = $imageProvider->getFormatName($this->media, 'reference');
         return $imageProvider->generatePublicUrl($this->media, $format);
+    }
+
+    public function getWidth($injections)
+    {
+        $imageProvider = $injections[0];
+        if (!$this->getMedia()) {
+            return null;
+        }
+        $properties = $imageProvider->getHelperProperties($this->getMedia(), 'reference');
+
+        return $properties['width'];
+    }
+
+    public function getHeight($injections)
+    {
+        $imageProvider = $injections[0];
+        if (!$this->getMedia()) {
+            return null;
+        }
+        $properties = $imageProvider->getHelperProperties($this->getMedia(), 'reference');
+
+        return $properties['height'];
     }
 }
