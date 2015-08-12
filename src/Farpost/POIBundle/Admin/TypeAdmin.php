@@ -28,10 +28,10 @@ class TypeAdmin extends Admin
             ->add('group', 'sonata_type_model_list', [
                 'label' => 'label.group'
             ])
-            ->add('visible', 'checkbox', [
-                'label' => 'label.visible',
-                'required' => false
-            ])
+//            ->add('visible', 'checkbox', [
+//                'label' => 'label.visible',
+//                'required' => false
+//            ])
 //            ->add('icon', 'sonata_media_type', [
 //                'label' => 'label.icon',
 //                'required' => false,
@@ -53,9 +53,9 @@ class TypeAdmin extends Admin
             ->add('group.name', null, [
                 'label' => 'label.group'
             ])
-            ->add('visible', null, [
-                'label' => 'label.visible'
-            ])
+//            ->add('visible', null, [
+//                'label' => 'label.visible'
+//            ])
         ;
     }
 

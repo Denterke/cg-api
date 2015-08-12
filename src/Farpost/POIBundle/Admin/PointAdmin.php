@@ -54,6 +54,10 @@ class PointAdmin extends Admin
                     'label' => 'label.endAt',
                     'format' => 'dd-MM-yyyy HH:mm'
                 ])
+                ->add('visible', 'checkbox', [
+                    'label' => 'label.visible',
+                    'required' => false
+                ])
             ->end()
             ->with('point.tabs.position', [
                 'translation_domain' => 'FarpostPOIBundle'
@@ -87,13 +91,11 @@ class PointAdmin extends Admin
 
     public function preUpdate($point)
     {
-        $point->setVisible(true);
         $this->managePosition($point);
     }
 
     public function prePersist($point)
     {
-        $point->setVisible(true);
         $this->managePosition($point);
     }
 
@@ -124,6 +126,9 @@ class PointAdmin extends Admin
             ])
             ->add('endAt', null, [
                 'label' => 'label.endAt'
+            ])
+            ->add('visible', null, [
+                'label' => 'label.visible'
             ])
         ;
 
