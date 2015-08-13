@@ -55,6 +55,22 @@ class TypeSerializer
     }
 
     /**
+     * @param $object
+     * @return array
+     */
+    public function iconCard($object)
+    {
+        $format = $this->imageProvider->getFormatName($object->getIcon(), 'icon');
+        $properties = $this->imageProvider->getHelperProperties($object->getIcon(), $format);
+
+        return [
+            'icon' => $this->imageProvider->generatePublicUrl($object->getIcon(), $format),
+            'width' => $properties['width'],
+            'height' => $properties['height']
+        ];
+    }
+
+    /**
      *
      *
      * @param $object
@@ -62,19 +78,20 @@ class TypeSerializer
      */
     public function fullCard($object)
     {
-        $format = $this->imageProvider->getFormatName($object->getIcon(), 'icon');
-        $properties = $this->imageProvider->getHelperProperties($object->getIcon(), $format);
-//        var_dump($properties);
-        return [
+        if ($object->getIcon()) {
+            $iconCard = $this->iconCard($object);
+        } else {
+            $iconCard = [];
+        }
+        $objectCard = [
             'id' => $object->getId(),
             'groupId' => $object->getGroup()->getId(),
             'name' => $object->getName(),
             'alias' => $object->getAlias(),
             'visible' => $object->getVisible(),
-            'icon' => $this->imageProvider->generatePublicUrl($object->getIcon(), $format),
-            'width' => $properties['width'],
-            'height' => $properties['height']
         ];
+
+        return $iconCard + $objectCard;
     }
 
 }
