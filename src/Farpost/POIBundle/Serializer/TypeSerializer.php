@@ -55,13 +55,12 @@ class TypeSerializer
     }
 
     /**
-     *
-     *
      * @param $object
      * @return array
      */
-    public function fullCard($object)
+    public function iconCard($object)
     {
+
         $result = [
             'icon' => '',
             'width' => 0,
@@ -78,7 +77,21 @@ class TypeSerializer
             ];
         }
 
-        $result = $result + [
+        return $result;
+    }
+
+    /**
+     * @param $object
+     * @return array
+     */
+    public function fullCard($object)
+    {
+        if ($object->getIcon()) {
+            $iconCard = $this->iconCard($object);
+        } else {
+            $iconCard = [];
+        }
+        $objectCard = [
             'id' => $object->getId(),
             'groupId' => $object->getGroup()->getId(),
             'name' => $object->getName(),
@@ -86,7 +99,7 @@ class TypeSerializer
             'visible' => $object->getVisible(),
         ];
 
-        return $result;
+        return $iconCard + $objectCard;
     }
 
 }
