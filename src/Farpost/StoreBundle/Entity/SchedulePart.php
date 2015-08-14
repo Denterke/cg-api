@@ -68,6 +68,14 @@ class SchedulePart
      */
     protected $lessonType;
 
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="exam", type="boolean", nullable=true)
+     */
+    protected $exam;
+
     /**
      * Get id
      *
@@ -99,6 +107,29 @@ class SchedulePart
     public function getHours()
     {
         return $this->hours;
+    }
+
+    /**
+     * Set exam
+     *
+     * @param boolean $exam
+     * @return SchedulePart
+     */
+    public function setExam($exam)
+    {
+        $this->exam = $exam;
+
+        return $this;
+    }
+
+    /**
+     * Get exam
+     *
+     * @return boolean
+     */
+    public function getExam()
+    {
+        return $this->exam;
     }
 
     /**
@@ -214,5 +245,28 @@ class SchedulePart
     public function getLessonType()
     {
         return $this->lessonType;
+    }
+
+    /**
+     * Set reportType
+     *
+     * @param \Farpost\StoreBundle\Entity\LessonType $reportType
+     * @return SchedulePart
+     */
+    public function setReportType(\Farpost\StoreBundle\Entity\ReportType $reportType = null)
+    {
+        $this->reportType = $reportType;
+
+        return $this;
+    }
+
+    /**
+     * Get reportType
+     *
+     * @return \Farpost\StoreBundle\Entity\ReportType
+     */
+    public function getReportType()
+    {
+        return $this->reportType;
     }
 }
