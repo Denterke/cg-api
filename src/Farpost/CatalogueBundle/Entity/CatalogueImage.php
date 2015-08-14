@@ -71,7 +71,7 @@ class CatalogueImage
     public function getWebPath()
     {
         return $this->getFilename()
-            ? self::UPLOAD_ROOT_PATH . '/' . $this->getFilename()
+            ? '/' . self::UPLOAD_ROOT_PATH . '/' . $this->getFilename()
             : null;
     }
 

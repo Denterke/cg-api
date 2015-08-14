@@ -173,7 +173,8 @@ class CatalogueObjectMedia
             return null;
         }
         $format = $imageProvider->getFormatName($this->media, 'thumbnail');
-        return $imageProvider->generatePublicUrl($this->media, $format);
+
+        return '/' . $imageProvider->generatePublicUrl($this->media, $format);
     }
 
     public function getStandardUrl($injections)
@@ -183,7 +184,8 @@ class CatalogueObjectMedia
             return null;
         }
         $format = $imageProvider->getFormatName($this->media, 'reference');
-        return $imageProvider->generatePublicUrl($this->media, $format);
+
+        return '/' . $imageProvider->generatePublicUrl($this->media, $format);
     }
 
     public function getWidth($injections)
