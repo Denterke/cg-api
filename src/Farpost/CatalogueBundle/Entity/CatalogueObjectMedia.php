@@ -173,6 +173,7 @@ class CatalogueObjectMedia
             return null;
         }
         $format = $imageProvider->getFormatName($this->media, 'thumbnail');
+
         return $imageProvider->generatePublicUrl($this->media, $format);
     }
 
@@ -183,6 +184,7 @@ class CatalogueObjectMedia
             return null;
         }
         $format = $imageProvider->getFormatName($this->media, 'reference');
+
         return $imageProvider->generatePublicUrl($this->media, $format);
     }
 
