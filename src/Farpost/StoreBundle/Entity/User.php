@@ -59,6 +59,13 @@ class User
    /**
     * @var string
     *
+    * @ORM\Column(name="degree", type="string", length=400, nullable=true)
+    */
+   protected $degree;
+
+   /**
+    * @var string
+    *
     * @ORM\Column(name="salt", type="string", length=255, nullable=true)
     */
    protected $salt;
@@ -256,6 +263,27 @@ class User
    public function getSalt()
    {
       return $this->salt;
+   }
+   /**
+    * Set degree
+    *
+    * @param string $degree
+    * @return User
+    */
+   public function setDegree($degree)
+   {
+      $this->degree = $degree;
+      return $this;
+   }
+
+   /**
+    * Get degree
+    *
+    * @return string
+    */
+   public function getDegree()
+   {
+      return $this->degree;
    }
 
    /**
