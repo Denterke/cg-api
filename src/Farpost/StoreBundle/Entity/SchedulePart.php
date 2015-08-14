@@ -75,14 +75,6 @@ class SchedulePart
      */
     protected $reportType;
 
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="exam", type="boolean", nullable=true)
-     */
-    protected $exam;
-
     /**
      * Get id
      *
@@ -114,29 +106,6 @@ class SchedulePart
     public function getHours()
     {
         return $this->hours;
-    }
-
-    /**
-     * Set exam
-     *
-     * @param boolean $exam
-     * @return SchedulePart
-     */
-    public function setExam($exam)
-    {
-        $this->exam = $exam;
-
-        return $this;
-    }
-
-    /**
-     * Get exam
-     *
-     * @return boolean
-     */
-    public function getExam()
-    {
-        return $this->exam;
     }
 
     /**
@@ -253,6 +222,7 @@ class SchedulePart
     {
         return $this->lessonType;
     }
+<<<<<<< HEAD
 
     /**
 <<<<<<< HEAD
@@ -296,4 +266,6 @@ class SchedulePart
         return $this->reportType;
 >>>>>>> Добавил ученую степень и вид отчетсности
     }
+=======
+>>>>>>> Revert "Добавил ученую степень и вид отчетсности"
 }
