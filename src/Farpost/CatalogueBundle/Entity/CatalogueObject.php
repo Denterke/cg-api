@@ -42,7 +42,7 @@ class CatalogueObject
                 'PK' => false,
                 'nullable' => true,
                 'RK' => '',
-                'getter' => 'getDescription',
+                'getter' => 'getDescriptionWithNode',
                 'virtual' => true
             ],
             [
@@ -222,6 +222,16 @@ class CatalogueObject
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function getDescriptionWithNode()
+    {
+        $description = $this->description;
+        if ($this->getNode()) {
+            $description .= ' ' . $this->getNode()->getLowerAlias();
+        }
+
+        return $description;
     }
 
     /**
