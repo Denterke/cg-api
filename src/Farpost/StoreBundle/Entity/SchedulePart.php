@@ -67,6 +67,13 @@ class SchedulePart
      * @ORM\JoinColumn(name="lesson_type_id", referencedColumnName="id", nullable=true)
      */
     protected $lessonType;
+    /**
+     * @var ReportType
+     *
+     * @ORM\ManyToOne(targetEntity="ReportType")
+     * @ORM\JoinColumn(name="report_type_id", referencedColumnName="id", nullable=true)
+     */
+    protected $reportType;
 
     /**
      * Get id
@@ -214,5 +221,28 @@ class SchedulePart
     public function getLessonType()
     {
         return $this->lessonType;
+    }
+
+    /**
+     * Set ReportType
+     *
+     * @param \Farpost\StoreBundle\Entity\ReportType $reportType
+     * @return SchedulePart
+     */
+    public function setReportType(\Farpost\StoreBundle\Entity\ReportType $reportType = null)
+    {
+        $this->ReportType = $reportType;
+
+        return $this;
+    }
+
+    /**
+     * Get ReportType
+     *
+     * @return \Farpost\StoreBundle\Entity\ReportType 
+     */
+    public function getReportType()
+    {
+        return $this->ReportType;
     }
 }

@@ -72,6 +72,12 @@ class User
     * @ORM\OneToMany(targetEntity="AdminGroup", mappedBy="user")
     */
    protected $controlGroups;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="degree", type="string", length=400, nullable=true)
+     */
+    protected $degree;
 
    public function __construct()
    {
@@ -348,5 +354,28 @@ class User
     public function getControlGroups()
     {
         return $this->controlGroups;
+    }
+
+    /**
+     * Set degree
+     *
+     * @param string $degree
+     * @return User
+     */
+    public function setDegree($degree)
+    {
+        $this->degree = $degree;
+
+        return $this;
+    }
+
+    /**
+     * Get degree
+     *
+     * @return string 
+     */
+    public function getDegree()
+    {
+        return $this->degree;
     }
 }
