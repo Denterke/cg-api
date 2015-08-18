@@ -188,6 +188,10 @@
                 <source>label.without_subobjects</source>
                 <target>Без объектов/подкатегорий</target>
             </trans-unit>
+            <trans-unit id="label.isPrefix">
+                <source>label.isPrefix</source>
+                <target>Добавить к описанию объекта</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
