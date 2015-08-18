@@ -164,7 +164,14 @@
                 <source>label.editor</source>
                 <target>Редактор графа справочника</target>
             </trans-unit>
-
+            <trans-unit id="label.without_node">
+                <source>label.without_node</source>
+                <target>Без привязки к карте</target>
+            </trans-unit>
+            <trans-unit id="label.strange">
+                <source>label.strange</source>
+                <target>Подозрительные</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

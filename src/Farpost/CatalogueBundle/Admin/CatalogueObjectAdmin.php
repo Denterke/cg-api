@@ -89,6 +89,7 @@ class CatalogueObjectAdmin extends Admin
         $datagridMapper
             ->add('name', null, ['label' => 'label.name'])
             ->add('without_node', 'doctrine_orm_callback', [
+                'label' => 'label.without_node',
                 'callback' => function($queryBuilder, $alias, $field, $value) {
                     if (!$value['value']) {
                         return;
@@ -98,7 +99,24 @@ class CatalogueObjectAdmin extends Admin
                     return true;
                 },
                 'field_type' => 'checkbox'
-            ]);
+            ])
+            ->add('strange', 'doctrine_orm_callback', [
+                'label' => 'label.strange',
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+                    $queryBuilder->andWhere(sprintf('%s.node is NULL', $alias))
+                        ->andWhere(sprintf('%s.description is NULL', $alias))
+                        ->andWhere(sprintf('LENGTH(%s.name) <= 5', $alias))
+                        ->andWhere(sprintf('%s.phone is NULL', $alias))
+                        ->andWhere(sprintf('%s.site is NULL', $alias))
+                    ;
+                    return true;
+                },
+                'field_type' => 'checkbox'
+            ])
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
