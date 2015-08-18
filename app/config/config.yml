@@ -88,8 +88,8 @@ doctrine:
                 dbname:   "%default_database_name%"
                 user:     "%default_database_user%"
                 password: "%default_database_password%"
-                logging: false
-                profiling: false
+                logging: true
+                profiling: true
             back_up:
                 driver:   "%backup_database_driver%"
                 host:     "%backup_database_host%"

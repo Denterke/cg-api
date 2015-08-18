@@ -172,6 +172,22 @@
                 <source>label.strange</source>
                 <target>Подозрительные</target>
             </trans-unit>
+            <trans-unit id="label.without_objects">
+                <source>label.without_objects</source>
+                <target>Без объектов</target>
+            </trans-unit>
+            <trans-unit id="label.without_children">
+                <source>label.without_children</source>
+                <target>Без дочерних категорий</target>
+            </trans-unit>
+            <trans-unit id="label.without_parents">
+                <source>label.without_parents</source>
+                <target>Без родительских категорий</target>
+            </trans-unit>
+            <trans-unit id="label.without_subobjects">
+                <source>label.without_subobjects</source>
+                <target>Без объектов/подкатегорий</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
