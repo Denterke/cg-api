@@ -87,7 +87,18 @@ class CatalogueObjectAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, ['label' => 'label.name']);
+            ->add('name', null, ['label' => 'label.name'])
+            ->add('without_node', 'doctrine_orm_callback', [
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+                    $queryBuilder->andWhere(sprintf('%s.node is NULL', $alias));
+
+                    return true;
+                },
+                'field_type' => 'checkbox'
+            ]);
     }
 
     protected function configureListFields(ListMapper $listMapper)
