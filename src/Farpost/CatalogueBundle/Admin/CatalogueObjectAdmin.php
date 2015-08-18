@@ -116,6 +116,18 @@ class CatalogueObjectAdmin extends Admin
                 },
                 'field_type' => 'checkbox'
             ])
+            ->add('without_parents', 'doctrine_orm_callback', [
+                'label' => 'label.without_parents',
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+                    $queryBuilder->andWhere(sprintf('SIZE(%s.categories) = 0', $alias));
+
+                    return true;
+                },
+                'field_type' => 'checkbox'
+            ])
         ;
     }
 

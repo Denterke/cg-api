@@ -74,7 +74,7 @@ class CatalogueCategoryAdmin extends Admin
                 'sortable' => 'id'
             ])
             ->add('objects', 'sonata_type_collection', [
-                'by_reference' => false,
+                'by_reference' => true,
                 'required' => false,
                 'label' => 'label.children_objects',
                 'help' => 'help.children_objects'
@@ -97,7 +97,43 @@ class CatalogueCategoryAdmin extends Admin
     {
         $datagridMapper
             ->add('isOrganization', null, ['operator_type' => 'sonata_type_boolean', 'label' => 'label.is_organization'])
-            ->add('name', null, ['label' => 'label.name']);
+            ->add('name', null, ['label' => 'label.name'])
+            ->add('without_children', 'doctrine_orm_callback', [
+                'label' => 'label.without_children',
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+                    $queryBuilder->andWhere(sprintf('SIZE(%s.children) = 0', $alias))
+                    ;
+                    return true;
+                },
+                'field_type' => 'checkbox'
+            ])
+            ->add('without_objects', 'doctrine_orm_callback', [
+                'label' => 'label.without_objects',
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+                    $queryBuilder->andWhere(sprintf('SIZE(%s.objects) = 0', $alias));
+
+                    return true;
+                },
+                'field_type' => 'checkbox'
+            ])
+            ->add('without_parents', 'doctrine_orm_callback', [
+                'label' => 'label.without_parents',
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+                    $queryBuilder->andWhere(sprintf('SIZE(%s.parents) = 0', $alias));
+
+                    return true;
+                },
+                'field_type' => 'checkbox'
+            ]);
     }
 
     protected function configureListFields(ListMapper $listMapper)
