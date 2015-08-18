@@ -184,6 +184,10 @@
                 <source>label.without_parents</source>
                 <target>Без родительских категорий</target>
             </trans-unit>
+            <trans-unit id="label.without_subobjects">
+                <source>label.without_subobjects</source>
+                <target>Без объектов/подкатегорий</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

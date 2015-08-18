@@ -98,30 +98,31 @@ class CatalogueCategoryAdmin extends Admin
         $datagridMapper
             ->add('isOrganization', null, ['operator_type' => 'sonata_type_boolean', 'label' => 'label.is_organization'])
             ->add('name', null, ['label' => 'label.name'])
-            ->add('without_children', 'doctrine_orm_callback', [
-                'label' => 'label.without_children',
+            ->add('without_subobjects', 'doctrine_orm_callback', [
+                'label' => 'label.without_subobjects',
                 'callback' => function($queryBuilder, $alias, $field, $value) {
                     if (!$value['value']) {
                         return;
                     }
                     $queryBuilder->andWhere(sprintf('SIZE(%s.children) = 0', $alias))
+                        ->andWhere(sprintf('SIZE(%s.objects) = 0', $alias))
                     ;
                     return true;
                 },
                 'field_type' => 'checkbox'
             ])
-            ->add('without_objects', 'doctrine_orm_callback', [
-                'label' => 'label.without_objects',
-                'callback' => function($queryBuilder, $alias, $field, $value) {
-                    if (!$value['value']) {
-                        return;
-                    }
-                    $queryBuilder->andWhere(sprintf('SIZE(%s.objects) = 0', $alias));
-
-                    return true;
-                },
-                'field_type' => 'checkbox'
-            ])
+//            ->add('without_objects', 'doctrine_orm_callback', [
+//                'label' => 'label.without_objects',
+//                'callback' => function($queryBuilder, $alias, $field, $value) {
+//                    if (!$value['value']) {
+//                        return;
+//                    }
+//                    $queryBuilder->andWhere(sprintf('SIZE(%s.objects) = 0', $alias));
+//
+//                    return true;
+//                },
+//                'field_type' => 'checkbox'
+//            ])
             ->add('without_parents', 'doctrine_orm_callback', [
                 'label' => 'label.without_parents',
                 'callback' => function($queryBuilder, $alias, $field, $value) {
