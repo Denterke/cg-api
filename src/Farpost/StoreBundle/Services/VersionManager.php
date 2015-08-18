@@ -134,6 +134,8 @@ class VersionManager
         ;
         $this->em->persist($mapsZipVersion);
         $this->em->flush();
+
+        return $archiveName;
     }
 
     /**
@@ -171,7 +173,29 @@ class VersionManager
         $this->em->persist($version);
         $this->em->flush();
 
-        $this->zipLikeMapsVL();
+        $actualArchiveName = $this->zipLikeMapsVL();
+
+        $this->cleanup($actualArchiveName, Version::getStaticDir());
+    }
+
+    public function cleanup($neededFile, $dir)
+    {
+        $elements = scandir($dir);
+        if (!$elements) {
+            return;
+        }
+        foreach($elements as $element) {
+            if (!is_file("$dir/$element")) {
+                continue;
+            }
+            if (strpos($element, '200_') === false) {
+                continue;
+            }
+            if ($element === $neededFile) {
+                continue;
+            }
+            unlink("$dir/$element");
+        }
     }
 
 
