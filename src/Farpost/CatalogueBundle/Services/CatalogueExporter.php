@@ -98,8 +98,8 @@ class CatalogueExporter {
                             $value = $value ? $value->getId() : null;
                         }
                         if (array_key_exists('virtual', $fieldInfo) && $fieldInfo['virtual']) {
-                            if (array_key_exists('virtual_getter', $fieldInfo)) {
-                                $record['virtual'][$fieldInfo['name']] = $object->$fieldInfo['virtual_getter']();
+                            if (array_key_exists('virtualGetter', $fieldInfo)) {
+                                $record['virtual'][$fieldInfo['name']] = $object->$fieldInfo['virtualGetter']();
                             } else {
                                 $record['virtual'][$fieldInfo['name']] = $value;
                             }
