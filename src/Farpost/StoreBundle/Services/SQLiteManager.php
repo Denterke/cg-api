@@ -332,9 +332,9 @@ class SQLiteManager {
             $this->insert($table, $item, $stmt, $db);
             $stmt->execute();
             if ($virtualTable) {
-                $item['docid'] = $item['_id'];
-                unset($item['_id']);
-                $this->insert($virtualTable, $item, $virtualStmt, $db, true);;
+                $item['virtual']['docid'] = $item['virtual']['_id'];
+                unset($item['virtual']['_id']);
+                $this->insert($virtualTable, $item['virtual'], $virtualStmt, $db, true);;
                 $virtualStmt->execute();
             }
         }

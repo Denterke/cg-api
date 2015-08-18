@@ -42,7 +42,8 @@ class CatalogueObject
                 'PK' => false,
                 'nullable' => true,
                 'RK' => '',
-                'getter' => 'getDescriptionWithNode',
+                'getter' => 'getDescription',
+                'virtualGetter' => 'getDescriptionWithNode',
                 'virtual' => true
             ],
             [

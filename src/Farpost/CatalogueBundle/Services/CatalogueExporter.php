@@ -79,7 +79,9 @@ class CatalogueExporter {
                 $records = [];
                 foreach ($it as $row) {
                     $object = $row[0];
-                    $record = [];
+                    $record = [
+                        'virtual' => []
+                    ];
                     foreach($annotations['fields'] as $fieldInfo) {
                         if (array_key_exists('injections', $fieldInfo)) {
                             $injections = [];
@@ -87,13 +89,20 @@ class CatalogueExporter {
                                 echo $serviceName . "\n";
                                 $injections[] = $this->container->get($serviceName);
                             }
-                            echo count($injections);
+//                            echo count($injections);
                             $value = $object->$fieldInfo['getter']($injections);
                         } else {
                             $value = $object->$fieldInfo['getter']();
                         }
                         if ($fieldInfo['RK']) {
                             $value = $value ? $value->getId() : null;
+                        }
+                        if (array_key_exists('virtual', $fieldInfo) && $fieldInfo['virtual']) {
+                            if (array_key_exists('virtual_getter', $fieldInfo)) {
+                                $record['virtual'][$fieldInfo['name']] = $object->$fieldInfo['virtual_getter']();
+                            } else {
+                                $record['virtual'][$fieldInfo['name']] = $value;
+                            }
                         }
                         $record[$fieldInfo['name']] = $value;
                     }
