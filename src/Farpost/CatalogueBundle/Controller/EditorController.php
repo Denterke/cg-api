@@ -70,6 +70,17 @@ class EditorController extends CoreController
         ]);
     }
 
+    public function getObjectAction(Request $request)
+    {
+        $id = intval($request->query->get('id', 0));
+        $objectRepository = $this->getDoctrine()->getManager()->getRepository('FarpostCatalogueBundle:CatalogueObject');
+        $object = $objectRepository->findOneBy(['id' => $id]);
+        if (!$object) {
+            return new JsonResponse(null, 404);
+        }
+        return new JsonResponse($this->get('farpost_catalogue.serializer.object')->serializeOne($object, ObjectSerializer::EDITOR_CARD));
+    }
+
     public function createEdgeAction(Request $request)
     {
         if ($request->getMethod() !== 'POST') {
