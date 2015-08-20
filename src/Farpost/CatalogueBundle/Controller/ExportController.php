@@ -12,7 +12,7 @@ class ExportController extends Controller
 {
     public function exportAction()
     {
-        shell_exec("../app/console catalogue:export > /dev/null 2>/dev/null &");
+        shell_exec("../app/console catalogue:export > catalogue_export.log 2>catalogue_export_2.log &");
         sleep(1);
         return $this->redirect($this->generateUrl('sonata_admin_dashboard'));
     }
