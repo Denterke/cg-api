@@ -17,14 +17,14 @@ class ExportController extends Controller
         return $this->redirect($this->generateUrl('sonata_admin_dashboard'));
     }
 
-    public function rescueAction()
+    private function performCommand($command)
     {
         $kernel = $this->get('kernel');
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
         $input = new ArrayInput([
-            'command' => 'catalogue:rescue'
+            'command' => $command
         ]);
 
         $output = new BufferedOutput();
@@ -34,20 +34,23 @@ class ExportController extends Controller
         return new Response($content);
     }
 
+    public function rescueAction()
+    {
+        return $this->performCommand('catalogue:rescue');
+    }
+
+    public function fixBadEdgesAction()
+    {
+        return $this->performCommand('catalogue:fix');
+    }
+
+    public function resetProcessingCatalogueAction()
+    {
+        return $this->performCommand('catalogue:reset_processing');
+    }
+
     public function warnAction()
     {
-        $kernel = $this->get('kernel');
-        $application = new Application($kernel);
-        $application->setAutoExit(false);
-
-        $input = new ArrayInput([
-            'command' => 'catalogue:warn'
-        ]);
-
-        $output = new BufferedOutput();
-        $application->run($input, $output);
-
-        $content = $output->fetch();
-        return new Response($content);
+        return $this->performCommand('catalogue:warn');
     }
 }

@@ -17,6 +17,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 class CatalogueCategoryObjectEdgeAdmin extends Admin {
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $formMapper->add('isPrefix', 'checkbox', [
+            'label' => 'label.isPrefix'
+        ]);
+
         if ($this->getRoot()->getClass() !== 'Farpost\CatalogueBundle\Entity\CatalogueCategory') {
             $formMapper
                 ->add('category', 'sonata_type_model', ['label' => 'label.parent_category'])

@@ -22,6 +22,14 @@ farpost_catalogue_rescue:
     path:     /admin/catalogue/rescue
     defaults: { _controller: FarpostCatalogueBundle:Export:rescue }
 
+farpost_catalogue_fix:
+    path:     /admin/catalogue/fix
+    defaults: { _controller: FarpostCatalogueBundle:Export:fixBadEdges }
+
+farpost_catalogue_reset_processing:
+    path:     /admin/catalogue/reset_processing
+    defaults: { _controller: FarpostCatalogueBundle:Export:resetProcessingCatalogue }
+
 farpost_catalogue_warn:
     path:     /admin/catalogue/warn
     defaults: { _controller: FarpostCatalogueBundle:Export:warn }

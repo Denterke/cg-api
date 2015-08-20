@@ -42,7 +42,7 @@ class CatalogueObject
                 'PK' => false,
                 'nullable' => true,
                 'RK' => '',
-                'getter' => 'getDescription',
+                'getter' => 'getDescriptionWithParent',
                 'virtualGetter' => 'getDescriptionWithNode',
                 'virtual' => true
             ],
@@ -233,6 +233,21 @@ class CatalogueObject
         }
 
         return $description;
+    }
+
+    public function getDescriptionWithParent()
+    {
+        $prefix = '';
+        for ($i = 0; $i < $this->categories->count(); $i++) {
+            if ($this->categories[$i]->getIsPrefix()) {
+                $prefix = $this->categories[$i]->getCategory()->getName() . '\n';
+                break;
+            }
+        }
+
+//        echo $prefix . $this->description;
+
+        return $prefix . $this->description;
     }
 
     /**

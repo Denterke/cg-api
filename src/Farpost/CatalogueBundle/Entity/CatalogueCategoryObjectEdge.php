@@ -75,6 +75,13 @@ class CatalogueCategoryObjectEdge {
     protected $category;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_prefix", type="boolean", nullable=true)
+     */
+    protected $isPrefix;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -128,5 +135,28 @@ class CatalogueCategoryObjectEdge {
     public function getCategory()
     {
         return $this->category;
+    }
+
+    /**
+     * Set isPrefix
+     *
+     * @param boolean $isPrefix
+     * @return CatalogueCategoryObjectEdge
+     */
+    public function setIsPrefix($isPrefix)
+    {
+        $this->isPrefix = $isPrefix;
+
+        return $this;
+    }
+
+    /**
+     * Get isPrefix
+     *
+     * @return boolean 
+     */
+    public function getIsPrefix()
+    {
+        return $this->isPrefix;
     }
 }
