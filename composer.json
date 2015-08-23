@@ -25,7 +25,8 @@
         "gregwar/image-bundle": "^2.0",
         "jms/serializer-bundle": "~0.13",
         "sonata-project/easy-extends-bundle": "^2.1",
-        "sonata-project/media-bundle": "^2.3"
+        "sonata-project/media-bundle": "^2.3",
+        "phpoffice/phpexcel": "^1.8"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
