@@ -35,7 +35,7 @@ class CatalogueImageAdmin extends Admin {
         ];
         if ($image && ($webPath = $image->getWebPath())) {
             $container = $this->getConfigurationPool()->getContainer();
-            $fullPath = $container->get('request')->getBasePath() . '/' . $webPath;
+            $fullPath = $container->get('request')->getBasePath() . $webPath;
             $fileFieldOptions['help'] = "<img src='$fullPath' class='admin-preview' />";
         }
         $formMapper
