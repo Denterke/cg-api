@@ -71,8 +71,6 @@ class TypeSerializer
     }
 
     /**
-     *
-     *
      * @param $object
      * @return array
      */
@@ -83,6 +81,7 @@ class TypeSerializer
         } else {
             $iconCard = [];
         }
+
         $objectCard = [
             'id' => $object->getId(),
             'groupId' => $object->getGroup()->getId(),

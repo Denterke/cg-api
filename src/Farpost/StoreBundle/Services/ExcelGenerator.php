@@ -31,7 +31,7 @@ class ExcelGenerator
     }
     public function export($group_opts, $output)
     {
-
+        mb_internal_encoding("UTF-8");
         $template_map = array(
             1 => 13,
             2 => 25,

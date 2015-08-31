@@ -222,21 +222,33 @@ class SchedulePart
     {
         return $this->lessonType;
     }
+<<<<<<< HEAD
 
     /**
+<<<<<<< HEAD
      * Set ReportType
      *
      * @param \Farpost\StoreBundle\Entity\ReportType $reportType
+=======
+     * Set reportType
+     *
+     * @param \Farpost\StoreBundle\Entity\LessonType $reportType
+>>>>>>> Добавил ученую степень и вид отчетсности
      * @return SchedulePart
      */
     public function setReportType(\Farpost\StoreBundle\Entity\ReportType $reportType = null)
     {
+<<<<<<< HEAD
         $this->ReportType = $reportType;
+=======
+        $this->reportType = $reportType;
+>>>>>>> Добавил ученую степень и вид отчетсности
 
         return $this;
     }
 
     /**
+<<<<<<< HEAD
      * Get ReportType
      *
      * @return \Farpost\StoreBundle\Entity\ReportType 
@@ -244,5 +256,16 @@ class SchedulePart
     public function getReportType()
     {
         return $this->ReportType;
+=======
+     * Get reportType
+     *
+     * @return \Farpost\StoreBundle\Entity\ReportType
+     */
+    public function getReportType()
+    {
+        return $this->reportType;
+>>>>>>> Добавил ученую степень и вид отчетсности
     }
+=======
+>>>>>>> Revert "Добавил ученую степень и вид отчетсности"
 }
