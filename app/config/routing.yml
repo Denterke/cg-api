@@ -68,3 +68,6 @@ farpost_api:
 farpost_api_v2:
     resource: "@FarpostAPIBundle/Resources/config/routing_v2.yml"
     prefix:   /api2/method/
+store_api:
+    resource: "@FarpostStoreBundle/Resources/config/routing.yml"
+    prefix:   /store/

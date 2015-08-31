@@ -24,7 +24,8 @@ function Editor(id, cb) {
             create: '/admin/catalogue/editor/edge/create',
             delete: '/admin/catalogue/editor/edge/delete',
             revert: '/admin/catalogue/editor/edge/revert'
-        }
+        },
+        findObject: '/admin/catalogue/editor/object'
     };
 
     this.init(cb);
@@ -231,6 +232,75 @@ Editor.prototype.applyStyleForSelected = function() {
     connectedEdges.targets().addClass('inherits');
 };
 
+Editor.prototype.linkObject = function(category) {
+    var objectsListUrl = '/admin/farpost/catalogue/catalogueobject/list?filter%5Bname%5D%5Btype%5D=&filter%5Bname%5D%5Bvalue%5D=&filter%5Bwithout_node%5D%5Btype%5D=&filter%5Bstrange%5D%5Btype%5D=&filter%5Bwithout_parents%5D%5Btype%5D=&filter%5Bwithout_parents%5D%5Bvalue%5D=1&filter%5B_page%5D=1&filter%5B_sort_by%5D=id&filter%5B_sort_order%5D=ASC&filter%5B_per_page%5D=25';
+    this.loadModalData(objectsListUrl, function() {
+        $('#modal-form').modal('show');
+    });
+};
+
+Editor.prototype.selectObject = function(objectId) {
+    var id = 'o' + objectId,
+        node = this.cy.$('node#' + id),
+        editor = this;
+    if (node.length == 0) {
+        $.ajax(this.urls.findObject + '?id=' + objectId)
+            .done(function(data) {
+                if (!data.data) {
+                    console.log('WARN: no node found');
+                    return;
+                }
+                var position = {
+                    x: editor.state.selectedNode.position().x,
+                    y: editor.state.selectedNode.position().y - 200
+                };
+                //position.y -= 100;
+                editor.cy.add({
+                    group: 'nodes',
+                    data: data.data,
+                    position: position
+                });
+                editor.linkWithSelected(editor.cy.$('node#' + id)[0]);
+            });
+    } else {
+        this.linkWithSelected(node[0]);
+    }
+};
+
+Editor.prototype.patchModal = function(data) {
+    var $modal = $('#modal-form');
+    var editor = this;
+    $('#modal-form .modal-body').html(data);
+    $('#modal-form a').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var href = $(this).attr('href');
+        editor.loadModalData(href);
+    });
+    $('#modal-form td.sonata-ba-list-field-select a').off('click');
+    $('#modal-form td.sonata-ba-list-field-select a').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        editor.selectObject($(this).closest('td').attr('objectid'));
+        $('#modal-form').modal('hide');
+    });
+    $('#modal-form button').closest('form').ajaxForm(function(a) {
+        editor.patchModal(a);
+    });
+
+};
+
+Editor.prototype.loadModalData = function(url, cb) {
+    var editor = this;
+    $.ajax(url)
+        .done(function(data) {
+            editor.patchModal(data);
+            if (cb) {
+                cb();
+            }
+        });
+};
+
 Editor.prototype.initContextMenus = function() {
     var editor = this;
     this.menus = {};
@@ -275,6 +345,13 @@ Editor.prototype.initContextMenus = function() {
             content: 'Связать с открытым',
             select: function() {
                 editor.linkWithSelected(this);
+            }
+        },
+        {
+            content: 'Привязать объект',
+            select: function() {
+                editor.clickCategory(this);
+                editor.linkObject(this);
             }
         }
     ];

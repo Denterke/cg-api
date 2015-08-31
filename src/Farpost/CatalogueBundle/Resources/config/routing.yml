@@ -46,6 +46,10 @@ farpost_catalogue_category_objects:
     path:     /admin/catalogue/category
     defaults: { _controller: FarpostCatalogueBundle:Editor:getCategoryObjects }
 
+farpost_catalogue_object:
+    path:     /admin/catalogue/editor/object
+    defaults: { _controller: FarpostCatalogueBundle:Editor:getObject }
+
 farpost_catalogue_create_edge:
     path:     /admin/catalogue/editor/edge/create
     defaults: { _controller: FarpostCatalogueBundle:Editor:createEdge }

@@ -240,12 +240,14 @@ class CatalogueObject
         $prefix = '';
         for ($i = 0; $i < $this->categories->count(); $i++) {
             if ($this->categories[$i]->getIsPrefix()) {
-                $prefix = $this->categories[$i]->getCategory()->getName() . '\n';
+                $prefix = $this->categories[$i]->getCategory()->getName() . '. ';
                 break;
             }
         }
 
 //        echo $prefix . $this->description;
+
+        echo $prefix . $this->description;
 
         return $prefix . $this->description;
     }
