@@ -205,6 +205,7 @@ class Type
     public function __construct()
     {
         $this->points = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->visible = true;
     }
 
     /**

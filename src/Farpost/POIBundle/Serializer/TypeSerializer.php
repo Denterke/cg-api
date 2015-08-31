@@ -62,19 +62,31 @@ class TypeSerializer
      */
     public function fullCard($object)
     {
-        $format = $this->imageProvider->getFormatName($object->getIcon(), 'icon');
-        $properties = $this->imageProvider->getHelperProperties($object->getIcon(), $format);
-//        var_dump($properties);
-        return [
+        $result = [
+            'icon' => '',
+            'width' => 0,
+            'height' => 0
+        ];
+
+        if ($object->getIcon()) {
+            $format = $this->imageProvider->getFormatName($object->getIcon(), 'icon');
+            $properties = $this->imageProvider->getHelperProperties($object->getIcon(), $format);
+            $result = [
+                'icon' => $this->imageProvider->generatePublicUrl($object->getIcon(), $format),
+                'width' => $properties['width'],
+                'height' => $properties['height']
+            ];
+        }
+
+        $result = $result + [
             'id' => $object->getId(),
             'groupId' => $object->getGroup()->getId(),
             'name' => $object->getName(),
             'alias' => $object->getAlias(),
             'visible' => $object->getVisible(),
-            'icon' => $this->imageProvider->generatePublicUrl($object->getIcon(), $format),
-            'width' => $properties['width'],
-            'height' => $properties['height']
         ];
+
+        return $result;
     }
 
 }
