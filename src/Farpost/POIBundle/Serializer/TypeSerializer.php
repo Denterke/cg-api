@@ -76,11 +76,11 @@ class TypeSerializer
      */
     public function fullCard($object)
     {
-        if ($object->getIcon()) {
-            $iconCard = $this->iconCard($object);
-        } else {
-            $iconCard = [];
-        }
+        // if ($object->getIcon()) {
+            // $iconCard = $this->iconCard($object);
+        // } else {
+            // $iconCard = [];
+        // }
 
         $objectCard = [
             'id' => $object->getId(),
@@ -90,7 +90,8 @@ class TypeSerializer
             'visible' => $object->getVisible(),
         ];
 
-        return $iconCard + $objectCard;
+        return $objectCard;
+        // return $iconCard + $objectCard;
     }
 
 }
