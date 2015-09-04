@@ -123,7 +123,8 @@ class CatalogueExporter {
         $em->merge($version);
         $em->flush();
 
-        $this->versionManager->zipLikeMapsVL();
+        $actualArchiveName = $this->versionManager->zipLikeMapsVL();
+        $this->versionManager->cleanup($actualArchiveName, '/var/www/backend/shared/static');
     }
 
     /**
