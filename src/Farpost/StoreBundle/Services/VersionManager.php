@@ -175,26 +175,34 @@ class VersionManager
 
         $actualArchiveName = $this->zipLikeMapsVL();
 
-        $this->cleanup($actualArchiveName, Version::getStaticDir());
+        $this->cleanup($actualArchiveName, '/var/www/backend/shared/static');
     }
 
     public function cleanup($neededFile, $dir)
     {
+        error_log("CLEANUP: STARTED IN FOLDER $dir");
         $elements = scandir($dir);
         if (!$elements) {
+            error_log("CLEANUP: NO FILES FOUND");
             return;
         }
         foreach($elements as $element) {
+            error_log("CLEANUP: $element FOUND");
             if (!is_file("$dir/$element")) {
+                error_log("CLEANUP: $dir/$element IS NOT A FILE");
                 continue;
             }
             if (strpos($element, '200_') === false) {
+                error_log("CLEANUP: $dir/$element SHOULD NOT BE CLEARED");
                 continue;
             }
             if ($element === $neededFile) {
+                error_log("CLEANUP: $element IS NEEDED FOR WORK");
                 continue;
             }
-            unlink("$dir/$element");
+            if (!unlink("$dir/$element")) {
+                error_log("CLEANUP: ERROR OCCURED DURING UNLINKING $dir/$element");
+            }
         }
     }
 
