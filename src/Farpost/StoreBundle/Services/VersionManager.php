@@ -180,28 +180,29 @@ class VersionManager
 
     public function cleanup($neededFile, $dir)
     {
-        error_log("CLEANUP: STARTED IN FOLDER $dir");
+        $logName = '/var/www/backend/current/web/cleanup.log';
+        file_put_contents($logName, "CLEANUP: STARTED IN FOLDER $dir\n", FILE_APPEND);
         $elements = scandir($dir);
         if (!$elements) {
-            error_log("CLEANUP: NO FILES FOUND");
+            file_put_contents($logName, "CLEANUP: NO FILES FOUND\n", FILE_APPEND);
             return;
         }
         foreach($elements as $element) {
-            error_log("CLEANUP: $element FOUND");
+            file_put_contents($logName, "CLEANUP: $element FOUND\n", FILE_APPEND);
             if (!is_file("$dir/$element")) {
-                error_log("CLEANUP: $dir/$element IS NOT A FILE");
+                file_put_contents($logName, "CLEANUP: $dir/$element IS NOT A FILE\n", FILE_APPEND);
                 continue;
             }
             if (strpos($element, '200_') === false) {
-                error_log("CLEANUP: $dir/$element SHOULD NOT BE CLEARED");
+                file_put_contents($logName, "CLEANUP: $dir/$element SHOULD NOT BE CLEARED\n", FILE_APPEND);
                 continue;
             }
             if ($element === $neededFile) {
-                error_log("CLEANUP: $element IS NEEDED FOR WORK");
+                file_put_contents($logName, "CLEANUP: $element IS NEEDED FOR WORK\n", FILE_APPEND);
                 continue;
             }
             if (!unlink("$dir/$element")) {
-                error_log("CLEANUP: ERROR OCCURED DURING UNLINKING $dir/$element");
+                file_put_contents($logName, "CLEANUP: ERROR OCCURED DURING UNLINKING $dir/$element", FILE_APPEND);
             }
         }
     }
