@@ -53,19 +53,25 @@ class ExcelGenerator
 
         foreach($group_opts as $ng => $group_opt) {
             if ($group_opt["type"] == "sub"){
-            }
+                $group_opt['group'] = $this->doctrine
+                    ->getRepository('FarpostStoreBundle:Group')
+                    ->find($group_opt['group'])->getAlias();
+                $group_opt['group'] = explode("-", $group_opt['group'])[0] . "%";
+                $where = "g.alias LIKE :group";
+            } else
+                $where = "g.id = :group";
 
-                $schedules = $this->doctrine->getEntityManager()
-                    ->createQueryBuilder()
-                    ->select('s')
-                    ->from('FarpostStoreBundle:Schedule', 's')
-                    ->innerJoin('s.schedule_part', 'sp')
-                    ->innerJoin('sp.group', 'g')
-                    ->where('g.id = :group AND s.semester = :semester')
-                    ->setParameter('group', $group_opt['group'])
-                    ->setParameter('semester', 2)
-                    ->getQuery()
-                    ->getResult();
+            $schedules = $this->doctrine->getEntityManager()
+                ->createQueryBuilder()
+                ->select('s')
+                ->from('FarpostStoreBundle:Schedule', 's')
+                ->innerJoin('s.schedule_part', 'sp')
+                ->innerJoin('sp.group', 'g')
+                ->where($where . ' AND s.semester = :semester')
+                ->setParameter('group', $group_opt['group'])
+                ->setParameter('semester', 2)
+                ->getQuery()
+                ->getResult();
 
             $days = array(
                 1 => array(),
