@@ -68,6 +68,13 @@ class LoadSemesterData implements FixtureInterface
             $manager->merge($semester);
             $manager->flush();
         }
+        $q = $manager->createQueryBuilder()
+            ->update('FarpostStoreBundle:Schedule', 's')
+            ->set('s.lesson_type', "NULL")
+            ->where('s.semester < ?1')
+            ->setParameter(1, 3)
+            ->getQuery();
+        $q->execute();
         $config = $manager->getRepository('FarpostStoreBundle:Config')
             ->findOneBy(['param' => 'current_semester']);
         if (is_null($config) || !($config->getValue())) {
