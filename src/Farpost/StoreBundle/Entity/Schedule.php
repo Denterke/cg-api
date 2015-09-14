@@ -192,7 +192,7 @@ class Schedule
      * @param \Farpost\StoreBundle\Entity\GeoObject $auditory
      * @return Schedule
      */
-    public function setAuditory(\Farpost\StoreBundle\Entity\GeoObject $auditory = null)
+    public function setAuditory(\Farpost\MapsBundle\Entity\Node $auditory = null)
     {
         $this->auditory = $auditory;
 
