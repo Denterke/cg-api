@@ -74,6 +74,12 @@ class LoadSemesterData implements FixtureInterface
             ->where('s.semester < ?1')
             ->setParameter(1, 3)
             ->getQuery();
+        $q = $manager->createQueryBuilder()
+            ->update('FarpostStoreBundle:SchedulePart', 's')
+            ->set('s.lessonType', "NULL")
+            ->where('s.semester < ?1')
+            ->setParameter(1, 3)
+            ->getQuery();
         $q->execute();
         $config = $manager->getRepository('FarpostStoreBundle:Config')
             ->findOneBy(['param' => 'current_semester']);
