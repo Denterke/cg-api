@@ -28,8 +28,7 @@ class DefaultController extends Controller
         $opts = $request->query->get('options');
         foreach($request->query->get('groups') as $key => $value){
             $opt_groups[$key] = array(
-                // Временный фикс, пока нет поддержки на фронте
-                "type" => "sub",//$opts[$key],
+                "type" => $opts[$key],
                 "group" => $value
             );
         }

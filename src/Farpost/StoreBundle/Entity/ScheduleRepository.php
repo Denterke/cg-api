@@ -208,19 +208,21 @@ class ScheduleRepository extends EntityRepository
      * @param  integer $gId group_id
      * @return Array
      */
-    public function getScheduleRendered($gId, &$lastId = null, $status = 0)
+    public function getScheduleRendered($gId, $status = 0, $semester = null, &$lastId = null)
     {
         $group = $this->_em->getRepository('FarpostStoreBundle:Group')->findOneById($gId);
         if (!$group) {
             return [];
         }
+        if (!$semester)
+            $semester = LoadSemesterData::$CURRENT_SEMESTER;
         $id = $group->getSRFirstId();
         $recs = $this->_prepareQB()
                      ->where('g.id = :gId')
                      ->andWhere('sm.id = :semesterId')
                      ->orderBy('s.id', 'ASC')
                      ->setParameter('gId', $gId)
-                     ->setParameter('semesterId', LoadSemesterData::$CURRENT_SEMESTER)
+                     ->setParameter('semesterId', $semester)
                      ->getQuery()
                      ->getResult();
         $i = 0;

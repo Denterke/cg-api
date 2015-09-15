@@ -260,6 +260,7 @@ class APIV1Controller extends Controller
             return $response;
         }
         $gId = $request->query->getInt('group', 0);
+
         $entities = [
             'professors'  => 'User',
             'disciplines' => 'Discipline',
@@ -277,7 +278,7 @@ class APIV1Controller extends Controller
             ->getQuery()
             ->getArrayResult();
         $result['schedule'] = $em->getRepository('FarpostStoreBundle:Schedule')
-            ->getScheduleRendered($gId);
+            ->getScheduleRendered($gId, 0, $request->query->getInt('semester', 0));
         $result['timestamp'] = $helper->getTimestamp();
         return $response->setStatusCode(200)
             ->setContent(json_encode($result));
