@@ -56,7 +56,7 @@ class APIV1Controller extends Controller
     }
 
     /**
-     * Get group list after timestamp = t
+     * Get group list after timestamp = t (August 2015 if not set)
      * Added: [1.0]
      * Required: [Client 1.0]
      * Replaced: [APIV2Controller::getGroupsAction, 2.0]
@@ -68,7 +68,7 @@ class APIV1Controller extends Controller
         $helper = $this->get('api_helper');
         $response = $helper->create404();
         $em = $this->getDoctrine()->getManager();
-        $t = $request->query->has('t') ? $request->query->get('t') : 1;
+        $t = $request->query->has('t') ? $request->query->get('t') : 1438914776;
         $result = $em->getRepository('FarpostStoreBundle:Group')
             ->getList($t);
         return $response->setContent(json_encode([
