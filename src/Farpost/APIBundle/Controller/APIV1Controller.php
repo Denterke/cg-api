@@ -10,6 +10,7 @@ use Doctrine\ORM\Query\Expr\Join;
 
 class APIV1Controller extends Controller
 {
+    const CURRENT_SEMESTER = 3;
     /**
      * Fake login action
      * Added: [1.0]
@@ -57,6 +58,7 @@ class APIV1Controller extends Controller
 
     /**
      * Get group list after timestamp = t (August 2015 if not set)
+     * with semester specified in "semester" param (default: CURRENT_SEMESTER)
      * Added: [1.0]
      * Required: [Client 1.0]
      * Replaced: [APIV2Controller::getGroupsAction, 2.0]
@@ -68,9 +70,10 @@ class APIV1Controller extends Controller
         $helper = $this->get('api_helper');
         $response = $helper->create404();
         $em = $this->getDoctrine()->getManager();
-        $t = $request->query->has('t') ? $request->query->get('t') : 1438914776;
+        $t = $request->query->get('t', 1438914776);
+        $semester = $request->query->get('semester', $this::CURRENT_SEMESTER);
         $result = $em->getRepository('FarpostStoreBundle:Group')
-            ->getList($t);
+            ->getList($t, $semester);
         return $response->setContent(json_encode([
             'groups' => $result,
             'timestamp' => $helper->getTimestamp()

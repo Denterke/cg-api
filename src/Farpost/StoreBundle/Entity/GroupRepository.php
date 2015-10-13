@@ -32,13 +32,24 @@ class GroupRepository extends EntityRepository
         return $result;
     }
 
-    public function getList($t)
+    public function getList($t, $semester=null)
     {
-        $recs = $this->_prepareQB()
-                    ->where('g.lastModified >= :time')
-                    ->setParameter('time', $t)
-                    ->getQuery()
-                    ->getResult();
+        if ($semester){
+            $qb = $this->_em->createQueryBuilder();
+            $recs = $qb->select('g')
+                ->from('FarpostStoreBundle:SchedulePart', 'sp')
+                ->innerJoin('FarpostStoreBundle:Group', 'g', Join::WITH, 'sp.group = g.id')
+                ->where("sp.semester = :semester")
+                ->setParameter('semester', $semester)
+                ->distinct()
+                ->getQuery()
+                ->getResult();
+        } else
+            $recs = $this->_prepareQB()
+                        ->where('g.lastModified >= :time')
+                        ->setParameter('time', $t)
+                        ->getQuery()
+                        ->getResult();
         return $this->_finalizeList($recs);
     }
 
