@@ -37,6 +37,7 @@ class PointRepository extends EntityRepository
     public function findActualByType($typeId)
     {
         $qb = $this->getActualQB()
+            ->innerJoin('FarpostPOIBundle:Type', 't', 'WITH', 'p.type = t.id')
             ->where('p.type = :type')
             ->setParameter('type', $typeId)
         ;
@@ -46,7 +47,8 @@ class PointRepository extends EntityRepository
 
     public function findActualAll()
     {
-        $qb = $this->getActualQB();
+        $qb = $this->getActualQB()
+            ->innerJoin('FarpostPOIBundle:Type', 't', 'WITH', 'p.type = t.id');
 
         return $qb->getQuery()->getResult();
     }
