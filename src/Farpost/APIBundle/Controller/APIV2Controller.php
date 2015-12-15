@@ -195,16 +195,15 @@ class APIV2Controller extends APIV1Controller
         $typeId = $request->query->get('typeId', null);
         $groupId = $request->query->get('groupId', null);
 
-        $points = $id
-            ? $pointsRepository->findBy(['id' => $id])
-            : ($typeId
-                ? $pointsRepository->findActualByType($typeId)
-                : ($groupId
-                    ? $pointsRepository->findActualByTypeGroup($groupId)
-                    : $pointsRepository->findActualAll()
-                )
-            )
-        ;
+        if ($id) {
+            $points = $pointsRepository->findBy(['id' => $id]);
+        } else if ($typeId) {
+            $points = $pointsRepository->findActualByType($typeId);
+        } else if ($groupId) {
+            $points = $pointsRepository->findActualByTypeGroup($groupId);
+        } else {
+            $points = $pointsRepository->findActualAll();
+        }
 
         $result = $this->get('farpost_poi.serializer.point')->serialize($points, PointSerializer::FULL_CARD);
 

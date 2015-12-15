@@ -26,7 +26,8 @@ class TypeAdmin extends Admin
                 'label' => 'label.alias'
             ])
             ->add('group', 'sonata_type_model_list', [
-                'label' => 'label.group'
+                'label' => 'label.group',
+                'required' => true
             ])
 //            ->add('visible', 'checkbox', [
 //                'label' => 'label.visible',
