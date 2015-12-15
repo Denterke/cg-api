@@ -193,13 +193,13 @@ class APIV2Controller extends APIV1Controller
 
         $id = $request->query->get('id', null);
         $typeId = $request->query->get('typeId', null);
-        $groupId = $request->query->get('groupId', null);
+        $groupId = $request->query->get('groupId', 1);
 
-        if ($id) {
+        if ($id !== null) {
             $points = $pointsRepository->findBy(['id' => $id]);
-        } else if ($typeId) {
+        } else if ($typeId !== null) {
             $points = $pointsRepository->findActualByType($typeId);
-        } else if ($groupId) {
+        } else if ($groupId !== null) {
             $points = $pointsRepository->findActualByTypeGroup($groupId);
         } else {
             $points = $pointsRepository->findActualAll();
