@@ -1,0 +1,24 @@
+{% extends 'FarpostWebBundle:Default:base.html.twig' %}
+
+{% block head %}
+   {{ parent() }}
+   <link type="text/css" href="{{ asset('bundles/fefu-app/css/admin.css') }}" rel="stylesheet"/>
+   <link type="text/css" href="{{ asset('bundles/fefu-app/css/forms.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block title %} - Админ-панель{% endblock %}
+
+{% block body %}
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/admin/schedule">Расписание</a></li>
+        <li><a href="/admin/schools">Школы</a></li>
+        <li><a href="/admin/departments">Направления</a></li>
+        <li><a href="/admin/specializations">Профили</a></li>
+        <li><a href="/admin/base_management">Управление базами</a></li>
+      </ul>
+    </nav>
+  </header>
+  {{ parent() }}
+{% endblock %}

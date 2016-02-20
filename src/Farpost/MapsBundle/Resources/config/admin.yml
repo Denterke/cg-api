@@ -1,0 +1,34 @@
+services:
+    sonata.block.service.graph_importer:
+        class: Farpost\MapsBundle\Block\GraphImporterBlockService
+        arguments: [ "sonata.block.service.graph_importer", @templating, @doctrine.orm.entity_manager ]
+        tags:
+            - { name: sonata.block }
+
+    sonata.block.service.editor:
+        class: Farpost\MapsBundle\Block\EditorBlockService
+        arguments: [ "sonata.block.service.editor", @templating]
+        tags:
+            - { name: sonata.block }
+
+    sonata.admin.maps_node:
+        class: Farpost\MapsBundle\Admin\NodeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Maps", label: "title.nodes", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\MapsBundle\Entity\Node
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostMapsBundle] ]
+
+    sonata.admin.maps_level:
+        class: Farpost\MapsBundle\Admin\LevelAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Maps", label: "title.levels", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\MapsBundle\Entity\Level
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostMapsBundle] ]

@@ -1,0 +1,101 @@
+services:
+    sonata.admin.catalogue_object:
+        class: Farpost\CatalogueBundle\Admin\CatalogueObjectAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.objects" }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueObject
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue_category:
+        class: Farpost\CatalogueBundle\Admin\CatalogueCategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.categories_and_organisations" }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueCategory
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue_category_edge:
+        class: Farpost\CatalogueBundle\Admin\CatalogueCategoryEdgeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_category_edge", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueCategoryEdge
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue_category_object_edge:
+        class: Farpost\CatalogueBundle\Admin\CatalogueCategoryObjectEdgeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_category_object_edge", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueCategoryObjectEdge
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue_category_object_schedule:
+        class: Farpost\CatalogueBundle\Admin\CatalogueObjectScheduleAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_object_schedule", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueObjectSchedule
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue_category_image:
+        class: Farpost\CatalogueBundle\Admin\CatalogueImageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_image", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueImage
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue__object_media:
+        class: Farpost\CatalogueBundle\Admin\CatalogueObjectMediaAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_object_media", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueObjectMedia
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+    sonata.admin.catalogue__category_media:
+        class: Farpost\CatalogueBundle\Admin\CatalogueCategoryMediaAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Catalogue", label: "title.catalogue_category_media", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Farpost\CatalogueBundle\Entity\CatalogueCategoryMedia
+            - ~
+        calls:
+            - [ setTranslationDomain, [FarpostCatalogueBundle] ]
+
+
+    sonata.block.service.versions:
+        class: Farpost\CatalogueBundle\Block\VersionBlockService
+        arguments: [ "sonata.block.service.versions", @templating, @doctrine.orm.entity_manager ]
+        tags:
+            - { name: sonata.block }
+
+    sonata.block.service.graph:
+        class: Farpost\CatalogueBundle\Block\GraphBlockService
+        arguments: [ "sonata.block.service.graph", @templating, @doctrine.orm.entity_manager ]
+        tags:
+            - { name: sonata.block }

@@ -1,0 +1,35 @@
+#!/bin/bash
+#1
+#app/console doctrine:database:drop --force;
+#2
+#app/console doctrine:database:create;
+#3
+
+app/console doctrine:generate:entities --no-backup Farpost;
+#4
+app/console doctrine:schema:update --force --em=default;
+#5
+#app/console cache:warmup --env=prod --no-debug;
+#6
+#rm -f web/static/*;
+#7
+#rm -f web/uploads/documents/*;
+#8
+#rm -f web/uploads/tmp/*;
+#9
+#rm -f web/uploads/schedules/*;
+#a
+#rm -f web/astarot_log.txt;
+#b
+#php scripts/FillDb.php;
+#c
+app/console doctrine:fixtures:load --no-interaction --append;
+#d
+#app/console csmc --clear
+#e
+#app/console paimon
+#f
+#rm -f web/paimon_log.txt;
+#g
+#rm -f web/static/newsImgs/*;
+#this is a fake line, specially for Jenkins rebuild

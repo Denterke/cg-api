@@ -1,0 +1,28 @@
+{% extends 'FarpostWebBundle:Admin:base.html.twig' %}
+{% block head %}
+   {{ parent() }}
+   <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/ajax2.js') }}"></script>
+   <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/ajax.form.js') }}"></script>
+{% endblock %}
+{% block title %}{{ parent() }} - Управление базами{% endblock %}
+
+{% block body %}
+   {{ parent() }}
+   <h1>Загрузка нового файла баз</h1>
+   <div class="left_block">
+      {# {{ form(version_form) }} #}
+         {{ form_start(version_form) }}
+         {# {{ form_errors(version_form) }} #}
+         {# {{ form_widget(version_form.id) }} #}
+      <div class="form_block">
+         {{ form_label(version_form.file, type) }}
+         {# {{ form_errors(version_form) }} #}
+         {{ form_widget(version_form.file) }}
+      </div>
+      <div class="buttons">
+         {{ form_widget(version_form.save) }}
+      </div>
+      {{ form_end(version_form) }}
+      {# {{ form(version_form) }} #}
+   </div>
+{% endblock %}

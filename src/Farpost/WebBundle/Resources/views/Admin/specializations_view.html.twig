@@ -1,0 +1,56 @@
+{% extends 'FarpostWebBundle:Admin:base.html.twig' %}
+
+{% block title %}{{ parent() }} - Направления{% endblock %}
+
+{% block head %}
+   {{ parent() }}
+   <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/specializations.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+   {{ parent() }}
+   <h1>Профили</h1>
+   <div class="top_div">
+      <button title="Добавить" onClick="javascript:location.assign('{{ path('admin_add', {'entity': 'specializations'}) }}')">
+         Добавить
+      </button>
+   </div>
+   <div class="top_div">
+         {{ form_start(specializations_view_form) }}
+            {{ form_errors(specializations_view_form) }}
+            <div class="form_block">
+              {{ form_label(specializations_view_form.school, 'Укажите школу') }}
+              {{ form_errors(specializations_view_form.school) }}
+              {{ form_widget(specializations_view_form.school, { 'attr': {'class': 'school_select'} }) }}
+            </div>
+            <div class="form_block">
+              {{ form_label(specializations_view_form.department, 'Укажите направление') }}
+              {{ form_errors(specializations_view_form.department) }}
+              {{ form_widget(specializations_view_form.department, { 'attr': {'class': 'department_select'} }) }}
+            </div>
+            <div class="buttons">{{ form_widget(specializations_view_form.show) }}</div>
+            {{ form_end(specializations_view_form) }}
+         {{ form(specializations_view_form) }}
+   </div>
+   <div class="right_block">
+      <table>
+         <tr class="head">
+            <td>Название</td>
+            <td></td>
+         </tr>
+         {% for specialization in specializations %}
+         <tr>
+            <td>{{ specialization.getAlias() }}</td>
+            <td class="buttons">
+            <button title="Редактировать" class="edit"
+            onClick="javascript:location.assign('{{ path('admin_edit', {'entity': 'specializations', 'id': specialization.getId()}) }}')">
+            </button>
+            <button title="Удалить" class="delete"
+            onClick="javascript:location.assign('{{ path('admin_delete', {'entity': 'specializations', 'id': specialization.getId()}) }}')">
+            </button>
+            </td>
+         </tr>
+         {% endfor %}
+      </table>
+   </div>
+{% endblock %}

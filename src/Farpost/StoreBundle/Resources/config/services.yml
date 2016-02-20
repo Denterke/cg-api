@@ -1,0 +1,7 @@
+parameters:
+    farpost_store.version_manager.class: Farpost\StoreBundle\Services\VersionManager
+
+services:
+    farpost_store.version_manager:
+        class: %farpost_store.version_manager.class%
+        arguments: ["@doctrine.orm.entity_manager"]

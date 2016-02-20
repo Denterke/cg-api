@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="FarpostCatalogueBundle.ru.xliff" >
+        <body>
+            <trans-unit id="title.objects">
+                <source>title.objects</source>
+                <target>Объекты</target>
+            </trans-unit>
+            <trans-unit id="title.categories_and_organisations">
+                <source>title.categories_and_organisations</source>
+                <target>Категории и организации</target>
+            </trans-unit>
+            <trans-unit id="title.catalogue">
+                <source>title.catalogue</source>
+                <target>Справочник</target>
+            </trans-unit>
+            <trans-unit id="title.catalogue_image">
+                <source>title.catalogue_image</source>
+                <target>Изображения</target>
+            </trans-unit>
+
+            <trans-unit id="label.name">
+                <source>label.name</source>
+                <target>Название</target>
+            </trans-unit>
+            <trans-unit id="label.node">
+                <source>label.node</source>
+                <target>Вершина</target>
+            </trans-unit>
+            <trans-unit id="label.object">
+                <source>label.object</source>
+                <target>Объект справочника</target>
+            </trans-unit>
+            <trans-unit id="label.description">
+                <source>label.description</source>
+                <target>Описание</target>
+            </trans-unit>
+            <trans-unit id="label.phone">
+                <source>label.phone</source>
+                <target>Номер телефона</target>
+            </trans-unit>
+            <trans-unit id="label.site">
+                <source>label.site</source>
+                <target>Адрес сайта</target>
+            </trans-unit>
+            <trans-unit id="label.parent_categories">
+                <source>label.parent_categories</source>
+                <target>Родительские категории</target>
+            </trans-unit>
+            <trans-unit id="label.parent_category">
+                <source>label.parent_category</source>
+                <target>Родительская категория</target>
+            </trans-unit>
+            <trans-unit id="label.is_organization">
+                <source>label.is_organization</source>
+                <target>Является организацией</target>
+            </trans-unit>
+            <trans-unit id="label.children_categories">
+                <source>label.children_categories</source>
+                <target>Дочерние категории</target>
+            </trans-unit>
+            <trans-unit id="label.children_objects">
+                <source>label.children_objects</source>
+                <target>Дочерние объекты (не категории)</target>
+            </trans-unit>
+            <trans-unit id="label.child_category">
+                <source>label.child_category</source>
+                <target>Дочерняя категория</target>
+            </trans-unit>
+            <trans-unit id="label.schedule">
+                <source>label.schedule</source>
+                <target>Расписание</target>
+            </trans-unit>
+            <trans-unit id="label.start_at">
+                <source>label.start_at</source>
+                <target>Время начала работы</target>
+            </trans-unit>
+            <trans-unit id="label.end_at">
+                <source>label.end_at</source>
+                <target>Время окончания работы</target>
+            </trans-unit>
+            <trans-unit id="label.day_number">
+                <source>label.day_number</source>
+                <target>День недели</target>
+            </trans-unit>
+
+            <trans-unit id="dow.monday">
+                <source>dow.monday</source>
+                <target>Понедельник</target>
+            </trans-unit>
+            <trans-unit id="dow.tuesday">
+                <source>dow.tuesday</source>
+                <target>Вторник</target>
+            </trans-unit>
+            <trans-unit id="dow.wednesday">
+                <source>dow.wednesday</source>
+                <target>Среда</target>
+            </trans-unit>
+            <trans-unit id="dow.thursday">
+                <source>dow.thursday</source>
+                <target>Четверг</target>
+            </trans-unit>
+            <trans-unit id="dow.friday">
+                <source>dow.friday</source>
+                <target>Пятница</target>
+            </trans-unit>
+            <trans-unit id="dow.saturday">
+                <source>dow.saturday</source>
+                <target>Суббота</target>
+            </trans-unit>
+            <trans-unit id="dow.sunday">
+                <source>dow.sunday</source>
+                <target>Воскресенье</target>
+            </trans-unit>
+
+            <trans-unit id="label.image">
+                <source>label.image</source>
+                <target>Изображение</target>
+            </trans-unit>
+            <trans-unit id="label.logo">
+                <source>label.logo</source>
+                <target>Логотип</target>
+            </trans-unit>
+            <trans-unit id="label.versions">
+                <source>label.versions</source>
+                <target>Версии файлов</target>
+            </trans-unit>
+            <trans-unit id="label.id">
+                <source>label.id</source>
+                <target>Идентификатор</target>
+            </trans-unit>
+
+            <trans-unit id="help.is_organisation">
+                <source>help.is_organisation</source>
+                <target>Отметьте это поле, если эту категорию следует считать организацией</target>
+            </trans-unit>
+            <trans-unit id="help.children_objects">
+                <source>help.children_objects</source>
+                <target>Список объектов справочника, в которые можно будет перейти из этой категории (организации) </target>
+            </trans-unit>
+            <trans-unit id="help.children_categories">
+                <source>help.children_categories</source>
+                <target>Список категорий (и организаций) справочника, в которые можно будет перейти из этой категории (организации)</target>
+            </trans-unit>
+            <trans-unit id="help.parent_categories">
+                <source>help.parent_categories</source>
+                <target>Список категорий, из которых можно сюда перейти</target>
+            </trans-unit>
+
+            <trans-unit id="text.start_catalogue_export">
+                <source>text.start_catalogue_export</source>
+                <target>Начать генерацию справочника</target>
+            </trans-unit>
+            <trans-unit id="text.catalogue_generation_in_process">
+                <source>text.catalogue_generation_in_process</source>
+                <target>Генерация справочника уже идет</target>
+            </trans-unit>
+
+            <trans-unit id="label.media">
+                <source>label.media</source>
+                <target>Фотографии</target>
+            </trans-unit>
+            <trans-unit id="label.editor">
+                <source>label.editor</source>
+                <target>Редактор графа справочника</target>
+            </trans-unit>
+            <trans-unit id="label.without_node">
+                <source>label.without_node</source>
+                <target>Без привязки к карте</target>
+            </trans-unit>
+            <trans-unit id="label.strange">
+                <source>label.strange</source>
+                <target>Подозрительные</target>
+            </trans-unit>
+            <trans-unit id="label.without_objects">
+                <source>label.without_objects</source>
+                <target>Без объектов</target>
+            </trans-unit>
+            <trans-unit id="label.without_children">
+                <source>label.without_children</source>
+                <target>Без дочерних категорий</target>
+            </trans-unit>
+            <trans-unit id="label.without_parents">
+                <source>label.without_parents</source>
+                <target>Без родительских категорий</target>
+            </trans-unit>
+            <trans-unit id="label.without_subobjects">
+                <source>label.without_subobjects</source>
+                <target>Без объектов/подкатегорий</target>
+            </trans-unit>
+            <trans-unit id="label.isPrefix">
+                <source>label.isPrefix</source>
+                <target>Добавить к описанию объекта</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

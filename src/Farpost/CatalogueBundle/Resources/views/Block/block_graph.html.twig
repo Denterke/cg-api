@@ -1,0 +1,14 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+    {%  trans_default_domain "FarpostCatalogueBundle" %}
+    <table class="table table-bordered sonata-ba-list">
+        <thead>
+        <tr>
+            <th>
+                <a class="btn btn-primary col-md-12" href="{{ path('farpost_catalogue_editor') }}">{% trans %}label.editor{% endtrans %}</a>
+            </th>
+        </tr>
+        </thead>
+    </table>
+{% endblock %}

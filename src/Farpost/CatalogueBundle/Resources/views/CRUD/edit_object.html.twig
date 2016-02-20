@@ -1,0 +1,6 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/farpostcatalogue/js/objects.js') }}" type="text/javascript"></script>
+{% endblock %}

@@ -1,0 +1,49 @@
+.menu-item {
+    color: #FFFFFF;
+}
+
+.menu-item input {
+    color: #000000;
+}
+
+h3.sidebar-title {
+    color: #FFFFFF;
+}
+
+#vertex-description {
+    margin-top: 20px;
+}
+
+#vertex-objects {
+    overflow: auto;
+    max-height: 300px;
+    margin-bottom: 10px;
+}
+
+div.object-description a.form-control.multiline {
+    height: auto;
+    display: block !important;
+}
+
+div.object-description span.multiline {
+    padding: 0;
+    margin: 0;
+}
+
+div.object-description button {
+    padding: 0 6px;
+    height: 100%;
+    border: 0;
+}
+
+.typeahead.dropdown-menu li a {
+    white-space: normal;
+}
+
+ul.typeahead.dropdown-menu {
+    max-height: 250px;
+    overflow-y: auto;
+}
+.spin {
+    -webkit-animation: spin 1s infinite linear;
+}

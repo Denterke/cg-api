@@ -1,0 +1,49 @@
+{% extends 'FarpostWebBundle:Default:base.html.twig' %}
+
+{% block head %}
+   {{ parent() }}
+   <link type="text/css" href="{{ asset('bundles/fefu-app/css/schedule.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block title %} Редактор расписания {% endblock %}
+
+{% block body %}
+   <table class = "cool-table">
+      {% for dset in dows %}
+         <thead>
+            {% for day in dset %}
+               <td class = "grey"> {{ day }} </td>
+            {% endfor %}
+         </thead>
+         <tbody>
+         {% for num in nums %}
+            <tr>
+               <td> {{ num }} </td>
+               {% for day in dset %}
+                  {% if day != '' %}
+                     <td class = "blue">
+                        {% if items is defined and items[day] is defined and items[day][num] is defined %}
+                           <table class = "embeded-table">
+                              <tr>
+                                 <td colspan = "2" class = "discipline">
+                                    {{ items[day][num]['Дисциплина'] }}
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td class = "little"> {{ items[day][num]['Тип занятия'] }} </td>
+                                 <td class = "little"> {{ items[day][num]['Профессор'] }} </td>
+                              </tr>
+                              <tr>
+                                 <td colspan = "2" class="little"> Аудитория: {{ items[day][num]['Аудитория'] }} </td>
+                              </tr>
+                           </table>
+                        {% endif %}
+                     </td>
+                  {% endif %}
+               {% endfor %}
+            </tr>
+         {% endfor %}
+         </tbody>
+      {% endfor %}
+   </table>
+{% endblock %}

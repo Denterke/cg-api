@@ -1,0 +1,28 @@
+{% extends 'FarpostWebBundle:Admin:base.html.twig' %}
+
+{% block title %}{{ parent() }} - Школы{% endblock %}
+
+{% block head %}
+   {{ parent() }}
+   <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/select_plugin.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+   {{ parent() }}
+   <h1>Школы</h1>
+   <div class="right_block">
+      {% include 'FarpostWebBundle:Templates:select_forms.html.twig' with {'label': 'Выберите школу', 'collection': schools} only %}
+      <h2>Редактирование школы</h2>
+      {{ form_start(school_edit_form) }}
+         {{ form_errors(school_edit_form) }}
+         {{ form_widget(school_edit_form.id) }}
+         <div class="form_block">
+              {{ form_label(school_edit_form.alias, 'Название школы') }}
+              {{ form_errors(school_edit_form.alias) }}
+              {{ form_widget(school_edit_form.alias) }}
+         </div>
+         <div class="buttons">{{ form_widget(school_edit_form.save) }}</div>
+         {{ form_end(school_edit_form) }}
+      {{ form(school_edit_form) }}
+   </div>
+{% endblock %}

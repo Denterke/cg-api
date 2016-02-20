@@ -1,0 +1,7 @@
+parameters:
+#    farpost_api.example.class: Farpost\APIBundle\Example
+
+services:
+#    farpost_api.example:
+#        class: %farpost_api.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

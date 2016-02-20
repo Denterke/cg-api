@@ -1,0 +1,51 @@
+admin_index:
+   path:     /
+   defaults: { _controller: FarpostWebBundle:Admin:index }
+
+admin_add:
+   path:     /add
+   defaults: { _controller: FarpostWebBundle:Admin:change, isAdd: true }
+
+admin_edit:
+   path:     /edit
+   defaults: { _controller: FarpostWebBundle:Admin:change, isAdd: false }
+
+admin_delete:
+   path:     /delete
+   defaults: { _controller: FarpostWebBundle:Admin:delete }
+
+admin_schedule:
+   path:     /schedule
+   defaults: { _controller: FarpostWebBundle:Admin:schedule }
+
+admin_schools:
+   path:     /schools
+   defaults: { _controller: FarpostWebBundle:Admin:schools }
+
+admin_departments:
+   path:     /departments
+   defaults: { _controller: FarpostWebBundle:Admin:departments }
+
+admin_specializations:
+   path:     /specializations
+   defaults: { _controller: FarpostWebBundle:Admin:specializations }
+
+admin_basemanagement:
+   path:     /base_management
+   defaults: { _controller: FarpostWebBundle:Admin:basemanagment }
+
+admin_astarotlog:
+   path:     /schedule_log
+   defaults: { _controller: FarpostWebBundle:Admin:scheduleLog }
+
+admin_astarotstart:
+   path:     /astarot_start
+   defaults: { _controller: FarpostWebBundle:Admin:astarotStart }
+
+admin_management:
+   path:     /management/{actions}
+   defaults: { _controller: FarpostWebBundle:Admin:management }
+
+admin_delete_group:
+   path:     /group/delete/{group}
+   defaults: { _controller: FarpostWebBundle:Admin:deleteGroup }

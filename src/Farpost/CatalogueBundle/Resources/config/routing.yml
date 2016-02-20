@@ -1,0 +1,63 @@
+farpost_catalogue_upload_version:
+    path:    /admin/version/upload
+    defaults: { _controller: FarpostCatalogueBundle:Default:uploadVersion }
+
+farpost_export_catalogue:
+    path:     /admin/export/catalogue
+    defaults: { _controller: FarpostCatalogueBundle:Export:export }
+
+farpost_catalogue_get_objects:
+    path:     /admin/catalogue/objects
+    defaults: { _controller: FarpostCatalogueBundle:Default:getObjects }
+
+farpost_catalogue_attach_object_to_node:
+    path:     /admin/catalogue/objects/attach
+    defaults: { _controller: FarpostCatalogueBundle:Default:attachObject }
+
+farpost_catalogue_detach_object_from_node:
+    path:     /admin/catalogue/objects/detach
+    defaults: { _controller: FarpostCatalogueBundle:Default:detachObject }
+
+farpost_catalogue_rescue:
+    path:     /admin/catalogue/rescue
+    defaults: { _controller: FarpostCatalogueBundle:Export:rescue }
+
+farpost_catalogue_fix:
+    path:     /admin/catalogue/fix
+    defaults: { _controller: FarpostCatalogueBundle:Export:fixBadEdges }
+
+farpost_catalogue_reset_processing:
+    path:     /admin/catalogue/reset_processing
+    defaults: { _controller: FarpostCatalogueBundle:Export:resetProcessingCatalogue }
+
+farpost_catalogue_warn:
+    path:     /admin/catalogue/warn
+    defaults: { _controller: FarpostCatalogueBundle:Export:warn }
+
+farpost_catalogue_editor:
+    path:     /admin/catalogue/editor
+    defaults: { _controller: FarpostCatalogueBundle:Editor:index }
+
+farpost_catalogue_graph:
+    path:     /admin/catalogue/graph
+    defaults: { _controller: FarpostCatalogueBundle:Editor:getGraph }
+
+farpost_catalogue_category_objects:
+    path:     /admin/catalogue/category
+    defaults: { _controller: FarpostCatalogueBundle:Editor:getCategoryObjects }
+
+farpost_catalogue_object:
+    path:     /admin/catalogue/editor/object
+    defaults: { _controller: FarpostCatalogueBundle:Editor:getObject }
+
+farpost_catalogue_create_edge:
+    path:     /admin/catalogue/editor/edge/create
+    defaults: { _controller: FarpostCatalogueBundle:Editor:createEdge }
+
+farpost_catalogue_delete_edge:
+    path:     /admin/catalogue/editor/edge/delete
+    defaults: { _controller: FarpostCatalogueBundle:Editor:deleteEdge }
+
+farpost_catalogue_revert_edge:
+    path:     /admin/catalogue/editor/edge/revert
+    defaults: { _controller: FarpostCatalogueBundle:Editor:revertEdge }

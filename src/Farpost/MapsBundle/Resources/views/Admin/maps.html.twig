@@ -1,0 +1,97 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/farpostmaps/js/require.js') }}"></script>
+    <script src="{{ asset('bundles/farpostmaps/js/map.js') }}"></script>
+    <script src="{{ asset('bundles/farpostmaps/js/editor.js') }}"></script>
+    <script src="{{ asset('bundles/farpostmaps/js/bootstrap-typeahead.min.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/farpostmaps/css/menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/farpostmaps/css/ol.css') }}">
+
+{% endblock %}
+
+{% trans_default_domain "FarpostMapsBundle" %}
+
+{% block sonata_left_side %}
+    <aside class="left-side sidebar-offcanvas">
+        <div class="container" style="width:inherit">
+            <div class="row">
+                <div class="col-md-12 menu-item">
+                    <h3>{% trans %}label.level{% endtrans %}</h3>
+                    <select id="select-level">
+                        {% for i in range(1, 12) %}
+                            <option value="{{ i }}">{{ i }} {% trans %}label.level{% endtrans %}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div style="margin-top: 5px" class="col-md-12 menu-item">
+                    <button type="button" id="refresh-graph-btn" class="btn btn-success">
+                        {% trans %}label.refresh{% endtrans %}
+                        <span id="refresh-graph-spinner" class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                </div>
+                <div style="display: none" class="form-group col-md-12 menu-item" id="vertex-description">
+                    <h3>{% trans %}label.vertex{% endtrans %}</h3>
+                    <label for="vertex-alias">{% trans %}label.vertex_alias{% endtrans %}</label>
+                    <input readonly="readonly" class="form-control" type="text" id="vertex-alias" />
+                    <label for="vertex-type">{% trans %}label.vertex_type{% endtrans %}</label>
+                    <input readonly="readonly" class="form-control" type="text" readonly="readonly" id="vertex-type" />
+                </div>
+                <div style="display: none" class="form-group col-md-12 menu-item" id="vertex-objects-description">
+                    <h3>{% trans %}label.objects{% endtrans %}</h3>
+                    <div id="vertex-objects">
+
+                    </div>
+                    <label for="object-selector">{% trans %}help.choose_object_to_attach{% endtrans %}</label>
+                    <div class="input-group">
+                        <input id="object-selector" class="form-control" placeholder="{% trans %}help.start_typing{% endtrans %}" />
+                        <span class="input-group-btn">
+                            <button id="attach" class="btn btn-success" type="button">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <div style="margin-top: 3px" class="form-group">
+                        <button id="create-new-object" class="btn btn-primary form-control">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Создать новый
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a></li>
+    <li class="active">{% trans %}label.editor{% endtrans %}</li>
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans %}label.editor{% endtrans %}</h1>
+    <div id="map" class="col-md-12">
+    </div>
+    <div id="choose-node-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{% trans %}label.choose_node.title{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans %}label.choose_node.text{% endtrans %}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}btn.close{% endtrans %}</button>
+                    <button type="button" id="choose-node-modal-choose" class="btn btn-primary">{% trans %}btn.choose_node{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+body {
+  background: white;
+  margin: 0 auto;
+  font-family: Roboto;
+}
+
+#wrap {
+  /*min-height: 880px;*/
+  height: auto;
+  margin: 0 auto;
+  background: white;
+}
+
+button {
+  padding: 7px 10px;
+  display: block;
+  cursor: pointer;
+  background: #e67e22;
+  color: white;
+  border: 0;
+}
+
+button:hover {
+  background: #e67e22;
+}
+
+a {
+  color: #e67e22;
+}

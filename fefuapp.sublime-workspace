@@ -1,0 +1,447 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"Package",
+				"Package Control: Install Package"
+			],
+			[
+				"Php",
+				"Set Syntax: PHP"
+			],
+			[
+				"packa",
+				"Package Control: Disable Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Discover Packages"
+			],
+			[
+				"Package Control",
+				"Preferences: Package Control Settings – User"
+			],
+			[
+				"Package Controll",
+				"Package Control: Disable Package"
+			],
+			[
+				"Package Control: Remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"SQL",
+				"Set Syntax: SQL"
+			],
+			[
+				"Package Con",
+				"Package Control: List Packages"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"goto",
+				"Goto Documentation"
+			],
+			[
+				"sspyth",
+				"Set Syntax: Python"
+			],
+			[
+				"sssq",
+				"Set Syntax: SQL"
+			],
+			[
+				"sssql",
+				"Set Syntax: SQL"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"setsyntaxph",
+				"Set Syntax: PHP"
+			],
+			[
+				"syntaxper",
+				"Set Syntax: Perl"
+			]
+		],
+		"width": 476.0
+	},
+	"console":
+	{
+		"height": 367.0,
+		"history":
+		[
+			"`CLS`",
+			"system('CLS');",
+			"CLS",
+			"clrscr",
+			"clear",
+			"reload packages",
+			"ls",
+			"cd ..",
+			"ls",
+			"ды",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/kaduev/Coding/Web/fefuapp/app/config/config.yml",
+		"/home/kaduev/Coding/Web/fefuapp/web/config.php",
+		"/home/kaduev/Coding/Web/fefuapp/app/console",
+		"/home/kaduev/Coding/Web/fefuapp/composer.json",
+		"/home/kaduev/Coding/Web/fefuapp/web/app_dev.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/docs/en/tutorials/extra-lazy-associations.rst",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/sensio/framework-extra-bundle/Sensio/Bundle/FrameworkExtraBundle/.travis.yml",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/doc/extending.md",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/jdorn/sql-formatter/examples/examples.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/tests/bootstrap.php",
+		"/home/kaduev/Coding/Web/fefuapp/app/bootstrap.php.cache",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/swiftmailer/swiftmailer/tests/bootstrap.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/twig/twig/test/bootstrap.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/doctrine-bundle/Doctrine/Bundle/DoctrineBundle/Tests/bootstrap.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bridge/Doctrine/Tests/bootstrap.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/bin/build_bootstrap.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Form/Extension/Core/DataTransformer/BooleanToStringTransformer.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Form/Tests/Extension/Core/DataTransformer/BooleanToStringTransformerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/QuoteStrategy.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/AnsiQuoteStrategy.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/DefaultQuoteStrategy.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/monolog-bundle/Symfony/Bundle/MonologBundle/NotFoundActivationStrategy.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/monolog-bundle/Symfony/Bundle/MonologBundle/Tests/NotFoundActivationStrategyTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/doctrine-bundle/Doctrine/Bundle/DoctrineBundle/Tests/DependencyInjection/AbstractDoctrineExtensionTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Tests/Validator/ConstraintValidatorFactoryTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Tools/ResolveTargetEntityListener.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/sensio/framework-extra-bundle/Sensio/Bundle/FrameworkExtraBundle/Tests/DependencyInjection/SensioFrameworkExtraExtensionTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/sensio/generator-bundle/Sensio/Bundle/GeneratorBundle/Resources/skeleton/crud/tests/others/short_scenario.php.twig",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bridge/Doctrine/Form/DataTransformer/CollectionToArrayTransformer.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bridge/Propel1/Form/DataTransformer/CollectionToArrayTransformer.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bridge/Doctrine/Tests/Form/DataTransformer/CollectionToArrayTransformerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bridge/Propel1/Tests/Form/DataTransformer/CollectionToArrayTransformerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/swiftmailer/swiftmailer/VERSION",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Query/AST/Functions/BitOrFunction.php",
+		"/home/kaduev/Coding/Web/fefuapp/app/AppKernel.php",
+		"/home/kaduev/Coding/Web/fefuapp/app/logs/dev.log",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/router_dev.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/CHANGELOG-2.2.md",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/monolog-bundle/Symfony/Bundle/MonologBundle/MonologBundle.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/CHANGELOG-2.3.md",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/CHANGELOG-2.4.md",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/CHANGELOG-2.5.md",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/common/lib/Doctrine/Common/Proxy/ProxyGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/app/logs/.gitkeep",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/doctrine-bundle/Doctrine/Bundle/DoctrineBundle/Changelog.md",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/tests/Monolog/Handler/SyslogHandlerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/src/Monolog/Handler/SyslogUdpHandler.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/kriswallsmith/assetic/CHANGELOG-1.1.md",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/kriswallsmith/assetic/CHANGELOG-1.0.md",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/incenteev/composer-parameter-handler/Incenteev/ParameterHandler/CHANGELOG.md",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/swiftmailer/swiftmailer/lib/classes/Swift/Mime/EncodingObserver.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/dbal/lib/Doctrine/DBAL/Logging/SQLLogger.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/twig/extensions/lib/Twig/Extensions/Grammar/Optional.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/src/Monolog/Handler/SyslogHandler.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/Tests/ClassMapGeneratorTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents/GInterface.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/CHANGELOG.mdown",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/twig/twig/CHANGELOG",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/ClassLoader/ClassMapGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/ExpressionLanguage/Resources/bin/generate_operator_regex.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Id/BigIntegerIdentityGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Tests/Logout/CookieClearingLogoutHandlerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Tools/EntityRepositoryGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Logout/CookieClearingLogoutHandler.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Tools/Console/Command/GenerateRepositoriesCommand.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Tools/Console/Command/GenerateProxiesCommand.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Tools/Console/Command/GenerateEntitiesCommand.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Id/AbstractIdGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/app/cache/dev/appDevDebugProjectContainerCompiler.log",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/CustomIdGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Tools/Event/GenerateSchemaTableEventArgs.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/SequenceGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Id/SequenceGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Id/IdentityGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Id/AssignedGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Tools/Event/GenerateSchemaEventArgs.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Tools/EntityGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Query/AST/GroupByClause.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Query/AST/GeneralCaseExpression.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Query/Expr/GroupBy.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Id/TableGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Id/UuidGenerator.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Event/InteractiveLoginEvent.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/CsrfFormLoginBundle/CsrfFormLoginBundle.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/GeneratedValue.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Tests/Logout/DefaultLogoutSuccessHandlerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Tests/Logout/SessionLogoutHandlerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/CsrfFormLoginTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/app/logs/prod.log",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Logout/DefaultLogoutSuccessHandler.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/FormLoginBundle/Resources/views/Login/after_login.html.twig",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/CsrfFormLoginBundle/Resources/views/Login/after_login.html.twig",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/CsrfFormLoginBundle/Form/UserLoginFormType.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Logout/SessionLogoutHandler.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Console/Tests/Logger/ConsoleLoggerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/FormLoginBundle/DependencyInjection/FormLoginExtension.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Acl/Tests/Domain/AuditLoggerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/FormLoginBundle/FormLoginBundle.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Acl/Model/AuditLoggerInterface.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/EventListener/ErrorsLoggerListener.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Console/Logger/ConsoleLogger.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/DependencyInjection/Security/Factory/FormLoginFactory.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Acl/Domain/AuditLogger.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Log/DebugLoggerInterface.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/FormLoginBundle/Resources/views/Login/login.html.twig",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/FormLoginBundle/Resources/views/Localized/login.html.twig",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/CsrfFormLoginBundle/Resources/views/Login/login.html.twig",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/FormLoginTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bridge/Propel1/Logger/PropelLogger.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bridge/Doctrine/Tests/Logger/DbalLoggerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/swiftmailer/swiftmailer/tests/unit/Swift/Plugins/Loggers/ArrayLoggerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/swiftmailer/swiftmailer/lib/classes/Swift/Plugins/MessageLogger.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/skeleton/acme-demo-bundle/Acme/DemoBundle/Resources/views/Secured/login.html.twig",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/doctrine-bundle/Doctrine/Bundle/DoctrineBundle/Tests/DependencyInjection/Fixtures/config/yml/dbal_logging.yml",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/doctrine-bundle/Doctrine/Bundle/DoctrineBundle/Tests/DependencyInjection/Fixtures/config/xml/dbal_logging.xml",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/doctrine/common/tests/Doctrine/Tests/Common/Proxy/ProxyLogicTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/swiftmailer/swiftmailer/tests/unit/Swift/Plugins/Loggers/EchoLoggerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/swiftmailer/swiftmailer/lib/classes/Swift/Plugins/Loggers/ArrayLogger.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/psr/log/Psr/Log/AbstractLogger.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/tests/Monolog/Handler/ErrorLogHandlerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Log/NullLogger.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/FormLoginBundle/Controller/LoginController.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Tests/Functional/Bundle/CsrfFormLoginBundle/Controller/LoginController.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Bridge/Doctrine/Logger/DbalLogger.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/swiftmailer/swiftmailer/lib/classes/Swift/Plugins/Loggers/EchoLogger.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/monolog/monolog/src/Monolog/Handler/ErrorLogHandler.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Tests/Firewall/LogoutListenerTest.php",
+		"/home/kaduev/Coding/Web/fefuapp/vendor/symfony/symfony/src/Symfony/Component/Security/Http/Logout/LogoutSuccessHandlerInterface.php"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"/home/kaduev/Coding/Web/fefuapp/",
+			"/home/kaduev/Coding/Web/LAB/Lab-Present-Site",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"extra",
+			"test",
+			"Symfony_test",
+			"Coding/Web",
+			"Symfo",
+			"symfony",
+			"Symfony_test",
+			"group",
+			"hello",
+			"Hello World",
+			"CodeIntel",
+			"CodeIn",
+			"rander",
+			"$fast"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"fefuapp"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.gotodocumentation":
+	{
+		"height": 100.0
+	},
+	"project": "fefuapp.sublime-workspace",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"config.",
+				"app/config/config.yml"
+			],
+			[
+				"composer",
+				"composer.json"
+			],
+			[
+				"bootstrap",
+				"app/bootstrap.php.cache"
+			],
+			[
+				"bootst",
+				"vendor/monolog/monolog/tests/bootstrap.php"
+			],
+			[
+				"app_dev.php",
+				"web/app_dev.php"
+			],
+			[
+				"sess_sqbeqju9f974a49iciurm48rb6",
+				"web/tmp/sessions/sess_sqbeqju9f974a49iciurm48rb6"
+			],
+			[
+				"routerl",
+				"vendor/symfony/symfony/src/Symfony/Component/HttpKernel/EventListener/RouterListener.php"
+			],
+			[
+				"group",
+				"vendor/monolog/monolog/src/Monolog/Handler/GroupHandler.php"
+			],
+			[
+				"school",
+				"src/Farpost/FefuAppBundle/Entity/Schools.php"
+			],
+			[
+				"app/config.",
+				"app/config/config.yml"
+			],
+			[
+				"appkernel",
+				"app/AppKernel.php"
+			],
+			[
+				"controller",
+				"vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Controller/Controller.php"
+			],
+			[
+				"hellocontroller",
+				"src/Acme/HelloBundle/Controller/HelloController.php"
+			],
+			[
+				"routing.yml",
+				"src/Acme/HelloBundle/Resources/config/routing.yml"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 339.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

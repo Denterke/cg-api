@@ -1,0 +1,19 @@
+<script type="text/javascript">
+   var schools = [];
+
+   {% for item in collection %}
+      schools[{{ item.id }}] = {{ item.getData()|json_encode()|raw }}
+   {% endfor %}
+
+   function select_plugin_callback(id) {
+      $('#school_id').val(schools[id].id);
+      $('#school_alias').val(schools[id].alias);
+   }
+</script>
+
+<label for="choose_item">{{ label }}</label>
+<select id="choose_item">
+{% for item in collection %}
+   <option value="{{ item.id }}">{{ item.getName() }}</option>
+{% endfor %}
+</select>

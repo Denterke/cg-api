@@ -1,0 +1,39 @@
+farpost_api2_server_time_get:
+   path:     /server.time.get.json
+   defaults: { _controller: FarpostAPIBundle:System:getTime }
+
+farpost_api2_groups_get:
+   path:     /groups.get.json
+   defaults: { _controller: FarpostAPIBundle:APIV2:getGroups }
+
+farpost_api2_update_get:
+   path:    /updates.get.json
+   defaults: { _controller: FarpostAPIBundle:APIV2:getUpdates }
+
+farpost_api2_base_update_get:
+   path:    /base_update.get.json
+   defaults: { _controller: FarpostAPIBundle:APIV2:getBaseUpdates }
+
+farpost_api2_get_news:
+   path:    /news.get.json
+   defaults: { _controller: FarpostAPIBundle:APIV2:getNews }
+
+farpost_api2_full_schedule:
+   path:    /full.schedule.get.json
+   defaults: { _controller: FarpostAPIBundle:APIV2:getFullSchedule }
+
+farpost_api2_poi_groups:
+  path:     /poi/groups
+  defaults:  { _controller: FarpostAPIBundle:APIV2:getPOIGroups }
+
+farpost_api2_poi_types:
+  path:     /poi/types
+  defaults:  { _controller: FarpostAPIBundle:APIV2:getPOITypes }
+
+farpost_api2_poi_points:
+  path:     /poi/points
+  defaults:  { _controller: FarpostAPIBundle:APIV2:getPOIPoints }
+
+farpost_api2_feedback_add:
+  path:     /feedback
+  defaults:  { _controller: FarpostAPIBundle:APIV2:addFeedback }

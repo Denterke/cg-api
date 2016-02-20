@@ -1,0 +1,73 @@
+farpost_feedback:
+    resource: "@FarpostFeedbackBundle/Resources/config/routing.yml"
+    prefix:   /
+
+farpost_poi:
+    resource: "@FarpostPOIBundle/Resources/config/routing.yml"
+    prefix:   /
+
+farpost_news:
+    resource: "@FarpostNewsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+farpost_maps:
+    resource: "@FarpostMapsBundle/Resources/config/routing.yml"
+    prefix:   /admin/
+
+farpost_moderator:
+    resource: "@FarpostModeratorBundle/Resources/config/routing.yml"
+    prefix:   /moderator/
+
+gallery:
+    resource: '@SonataMediaBundle/Resources/config/routing/gallery.xml'
+    prefix: /media/gallery
+
+media:
+    resource: '@SonataMediaBundle/Resources/config/routing/media.xml'
+    prefix: /media
+
+#farpost_admin:
+#    resource: "@FarpostWebBundle/Resources/config/admin_routing.yml"
+#    prefix:   /admin/
+
+farpost_ajax:
+    resource: "@FarpostWebBundle/Resources/config/ajax_routing.yml"
+    prefix:   /ajax/
+
+#sonata
+farpost_admin:
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+
+#catalogue
+
+farpost_catalogue:
+    resource: "@FarpostCatalogueBundle/Resources/config/routing.yml"
+    prefix: ""
+
+#API
+#system methods
+farpost_bases:
+    path: /update/{filename}
+    defaults: { _controller: FarpostAPIBundle:System:getFile }
+
+farpost_init_app:
+   path:     /init_app
+   defaults: { _controller: FarpostAPIBundle:System:initApp }
+
+#version 1
+farpost_api:
+    resource: "@FarpostAPIBundle/Resources/config/routing_v1.yml"
+    prefix:   /method/
+#version 2
+farpost_api_v2:
+    resource: "@FarpostAPIBundle/Resources/config/routing_v2.yml"
+    prefix:   /api2/method/
+store_api:
+    resource: "@FarpostStoreBundle/Resources/config/routing.yml"
+    prefix:   /store/

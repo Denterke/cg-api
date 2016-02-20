@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="ru" datatype="plaintext" original="FarpostPOIBundle.ru.xliff" >
+        <body>
+            <trans-unit id="title.groups">
+                <source>title.groups</source>
+                <target>Группы</target>
+            </trans-unit>
+            <trans-unit id="title.types">
+                <source>title.types</source>
+                <target>Типы</target>
+            </trans-unit>
+            <trans-unit id="title.points">
+                <source>title.points</source>
+                <target>Точки интереса</target>
+            </trans-unit>
+
+            <trans-unit id="label.name">
+                <source>label.name</source>
+                <target>Название</target>
+            </trans-unit>
+            <trans-unit id="label.alias">
+                <source>label.alias</source>
+                <target>Псевдоним</target>
+            </trans-unit>
+            <trans-unit id="label.visible">
+                <source>label.visible</source>
+                <target>Отображать?</target>
+            </trans-unit>
+
+            <trans-unit id="label.group">
+                <source>label.group</source>
+                <target>Группа</target>
+            </trans-unit>
+            <trans-unit id="label.icon">
+                <source>label.icon</source>
+                <target>Иконка</target>
+            </trans-unit>
+
+            <trans-unit id="label.startAt">
+                <source>label.startAt</source>
+                <target>Время начала показа</target>
+            </trans-unit>
+            <trans-unit id="label.endAt">
+                <source>label.endAt</source>
+                <target>Время окончания показа</target>
+            </trans-unit>
+            <trans-unit id="label.content">
+                <source>label.content</source>
+                <target>Контент</target>
+            </trans-unit>
+            <trans-unit id="label.type">
+                <source>label.type</source>
+                <target>Тип</target>
+            </trans-unit>
+            
+            <trans-unit id="label.lat">
+                <source>label.lat</source>
+                <target>Широта</target>
+            </trans-unit>
+            <trans-unit id="label.lon">
+                <source>label.lon</source>
+                <target>Долгота</target>
+            </trans-unit>
+            <trans-unit id="label.level">
+                <source>label.level</source>
+                <target>Уровень</target>
+            </trans-unit>
+            <trans-unit id="label.node">
+                <source>label.node</source>
+                <target>Вершина</target>
+            </trans-unit>
+            <trans-unit id="btn.map">
+                <source>btn.map</source>
+                <target>На карте</target>
+            </trans-unit>
+
+
+            <trans-unit id="point.tabs.general">
+                <source>point.tabs.general</source>
+                <target>Главное</target>
+            </trans-unit>
+            <trans-unit id="point.tabs.position">
+                <source>point.tabs.position</source>
+                <target>Местонахождение</target>
+            </trans-unit>
+            <trans-unit id="error.poi_not_attached">
+                <source>error.poi_not_attached</source>
+                <target>Точка интереса должна быть прикреплена к вершине графа, либо к набору (широта, долгота, уровень)</target>
+            </trans-unit>
+            
+            <trans-unit id="description.point.general">
+                <source>description.point.general</source>
+                <target>Основная информация</target>
+            </trans-unit>
+
+            <trans-unit id="label.label">
+                <source>label.label</source>
+                <target>Лэйбл</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

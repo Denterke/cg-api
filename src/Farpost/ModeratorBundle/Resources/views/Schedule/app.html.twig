@@ -1,0 +1,45 @@
+{% extends 'FarpostWebBundle:Default:base.html.twig' %}
+
+{% block title %}{{ parent() }} - Конвертация расписания{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+
+
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">	
+    <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/schedule_app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/xls.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/filesaver.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/jszip.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/xlsx.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/fefu-app/js/jquery_ui.1.11.2.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/fefu-app/js/handsontable/jquery.handsontable.full.js') }}"></script>
+	<link type="text/css" media="screen" href="{{ asset('bundles/fefu-app/css/handsontable/jquery.handsontable.full.css') }}" rel="stylesheet"/>
+   	<link type="text/css" href="{{ asset('bundles/fefu-app/css/jquery_ui.1.11.2.css') }}" rel="stylesheet"/>
+   	<link type="text/css" href="{{ asset('bundles/fefu-app/css/schedule_app.css') }}" rel="stylesheet"/>
+{# <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"> #}
+{% endblock %}
+
+{% block body %}
+	<div class="fileUpload pure-button pure-button-primary">
+    	<span>Загрузить файл с расписанием</span>
+    	<input id="fileInput" type="file" class="upload" onchange="processFiles(this.files)"/>
+	</div>
+	<div id="content" class="centerWrap">
+		<div id="metaDiv">
+			<div id="metaInfoTable" class="tableWrap">
+			</div>
+		</div>
+		<div id="scheduleDiv">
+			<div id="scheduleTable"  class="tableWrap">
+			</div>
+			<div id="scheduleBtns" class="invisible">
+				<input type="button" id="saveBtn" value="Сохранить" class="button button-success pure-button"></input>
+				<input type="button" id="clearBtn" value="Очистить" class="button button-error pure-button"></input>
+			</div>
+		</div>
+		</div>
+
+	<div id="fileOutput">
+	</div>
+{% endblock %}

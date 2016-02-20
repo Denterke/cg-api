@@ -1,0 +1,11 @@
+# farpost_web_index:
+#     path:     /
+#     defaults: { _controller: FarpostWebBundle:Default:index }
+
+farpost_web_schedule:
+    path:     /schedule
+    defaults: { _controller: FarpostWebBundle:Schedule:schedule }
+
+farpost_main_page:
+    path:     /
+    defaults: { _controller: FarpostWebBundle:Default:index }

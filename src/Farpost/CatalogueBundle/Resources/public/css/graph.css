@@ -1,0 +1,12 @@
+.loading {
+    -webkit-filter: brightness(60%);
+    -webkit-transition: -webkit-filter 2000ms linear;
+}
+
+/*body .modal {*/
+    /*width: 1200px;*/
+/*}*/
+
+body .modal-dialog {
+    width: 1200px;
+}

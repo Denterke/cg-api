@@ -1,0 +1,62 @@
+{% extends 'FarpostWebBundle:Admin:base.html.twig' %}
+
+{% block title %}{{ parent() }} - Управление базами{% endblock %}
+
+{% block head %}
+   {{ parent() }}
+   <script type="text/javascript" src="{{ asset('bundles/fefu-app/js/select_plugin.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+   {{ parent() }}
+   <h1>Управление базами</h1>
+   <div id="container">
+      <div class="left_block">
+      <h2>Картография</h2>
+         <table>
+            <tr class="head">
+               <td>Тип базы</td>
+               <td>Дата обновления</td>
+               <td></td>
+            </tr>
+            {% for row in versions %}
+            <tr>
+               <td>{{ row.type }}</td>
+               <td>{{ row.version }}</td>
+               <td></td>
+               <td class="buttons">
+                  <button title="Загрузить базу" class="edit" onClick="javascript:location.assign('{{ path('admin_edit', {'entity': 'versions', 'id': row.type_id}) }}')">
+                  </button>
+               </td>
+            </tr>
+            {% endfor %}
+         </table>
+      </div>
+
+      <div class="right_block">
+      <h2>Расписание</h2>
+         <div id="table-wrapper">
+            <div id="table-scroll">
+               <table>
+                  <tr class="head">
+                     <td>Группа</td>
+                     <td>Дата обновления</td>
+                     <td></td>
+                  </tr>
+                  {% for ssource in ssources %}
+                  <tr>
+                     <td>{{ ssource.group }}</td>
+                     <td>{{ ssource.vdt }}</td>
+                     <!-- <td class="buttons"> -->
+                  </tr>
+                  {% endfor %}
+               </table>
+            </div>
+         </div>
+         <div id="ssrc_btns">
+            <button title="Добавить" id="ssrc_btn_add" class="edit" onClick="javascript:location.assign('{{ path('admin_edit', {'entity': 'ssources', 'id': 0}) }}')"></button>
+            <button title="Добавить ZIP" id="ssrc_zip_btn_add" class="editzip" onClick="javascript:location.assign('{{ path('admin_edit', {'entity': 'ssources', 'id': -1}) }}')"></button>
+         </div>
+      </div>
+   </div>
+{% endblock %}
