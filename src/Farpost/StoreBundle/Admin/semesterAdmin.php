@@ -10,5 +10,22 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class SemesterAdmin extends Admin
 {
-// Здесь будет ваш код
+
+        protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->add('id', 'text', [
+                'label' => 'Ололо',
+                'data'  => '5'
+            ])
+            ->add('alias')
+            ->add('time_start')
+            ->add('time_end')
+        ;
+    }
+
+    public function prePersist($semester)
+    {
+
+    }
 }

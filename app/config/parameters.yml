@@ -1,19 +1,19 @@
 # This file is auto-generated during the composer install
 parameters:
     default_database_driver: pdo_pgsql
-    default_database_host: 127.0.0.1
+    default_database_host: 31.131.24.188
     default_database_port: 5432
-    default_database_name: backend
-    default_database_user: backend
-    default_database_password: ahjihaR1eeQu
+    default_database_name: campus_guide
+    default_database_user: postgres
+    default_database_password: vdz659196
     backup_database_driver: pdo_pgsql
-    backup_database_host: 127.0.0.1
+    backup_database_host: 31.131.24.188
     backup_database_port: 5432
-    backup_database_name: back_up_catalog
-    backup_database_user: back_up_catalog
-    backup_database_password: Xt4Mc5hm$v
+    backup_database_name: campus_guide
+    backup_database_user: postgres
+    backup_database_password: vdz659196
     mailer_transport: smtp
-    mailer_host: 127.0.0.1
+    mailer_host: 31.131.24.188
     mailer_user: null
     mailer_password: null
     locale: ru

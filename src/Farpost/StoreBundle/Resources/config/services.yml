@@ -5,3 +5,12 @@ services:
     farpost_store.version_manager:
         class: %farpost_store.version_manager.class%
         arguments: ["@doctrine.orm.entity_manager"]
+
+    sonata.admin.semester:
+            class: Farpost\StoreBundle\Admin\SemesterAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Store", label: "семестр" }
+            arguments:
+                - ~
+                - Farpost\StoreBundle\Entity\Semester
+                - ~

@@ -44,6 +44,7 @@ _sonata_admin:
     type: sonata_admin
     prefix: /admin
 
+
 #catalogue
 
 farpost_catalogue:

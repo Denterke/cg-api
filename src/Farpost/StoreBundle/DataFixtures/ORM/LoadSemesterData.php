@@ -25,6 +25,7 @@ class LoadSemesterData implements FixtureInterface
             $manager->persist($semester);
             $manager->flush();
         }
+
         $semester = $manager->getRepository('FarpostStoreBundle:Semester')
             ->findOneBy(['id' => 2]);
         if (is_null($semester)) {
@@ -47,6 +48,7 @@ class LoadSemesterData implements FixtureInterface
             $manager->merge($semester);
             $manager->flush();
         }
+
         $semester = $manager->getRepository('FarpostStoreBundle:Semester')
             ->findOneBy(['id' => 3]);
         if (is_null($semester)) {
